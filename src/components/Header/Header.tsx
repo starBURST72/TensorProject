@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import './Header.css';
 import logo from '../../img/logo2.png';
 import {elements} from "../ElementsList/ElementsList";
-import {ElementInfo} from "../SelectedElement/SelectedElement";
 
 interface IElement {
     name: string;
@@ -10,24 +9,28 @@ interface IElement {
     order: number;
 }
 
-export function Header() {
-    const [selectedElement, setSelectedElement] = useState<IElement | null>(null);
+export function Header({ onElementSelect }: { onElementSelect: (element: IElement | null) => void }) {
     const [activeElement, setActiveElement] = useState<number | null>(null);
 
     const handleClick = (order: number) => {
-        const selected = elements.find(el => el.order === order);
-        if (selected) {
-            setSelectedElement(selected);
-            setActiveElement(order); // устанавливаем активный элемент
+        if (activeElement === order) {
+            // Если текущий элемент уже активен, снимаем его выбор
+            setActiveElement(null);
+            onElementSelect(null); // Уведомляем компонент App о снятии выбора
+        } else {
+            const selected = elements.find(el => el.order === order);
+            if (selected) {
+                onElementSelect(selected);
+                setActiveElement(order);
+            }
         }
-    }
-
+    };
     return (
         <>
         <nav className="nav">
             <div className="container">
                 <div className="nav-row">
-                    <div className="logo"><img className="logo-img" src={logo}/>
+                    <div className="logo"><img className="logo-img"  src={logo} alt="Travel Together Logo"/>
                         <a href="" className="logo-text">Travel Together</a></div>
                     <ul className="nav-list">
                         {elements.map((element: IElement) => (
@@ -40,11 +43,6 @@ export function Header() {
 
             </div>
         </nav>
-            {selectedElement && (
-                <div>
-                    <ElementInfo element={selectedElement} />
-                </div>
-            )}
         </>
     );
 }
