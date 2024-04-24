@@ -1,6 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { YMaps, Map, Placemark, SearchControl, ZoomControl} from '@pbe/react-yandex-maps';
-//import ymaps from 'yandex-maps';
+import React, {useState } from 'react';
+import { YMaps, Map, Placemark, ZoomControl} from '@pbe/react-yandex-maps';
 import axios from 'axios';
 import './MapComponent.css';
 
@@ -10,16 +9,13 @@ import './MapComponent.css';
 
 const MapComponent: React.FC = () => {
     const [inputValue, setInputValue] = useState('')
-    const [addressText, setAddressText] = useState('')
+    const [addressText] = useState('')
     const [geoCodecCoordinates, setGeoCodecCoordinates] = useState([57.152985, 65.541227])
-    const [mapRef, setMapRef] = useState()
+    //const [mapRef] = useState()
     const mapState = {
         center: [geoCodecCoordinates[0], geoCodecCoordinates[1]],
         zoom: 16
     };
-    // const [newCoords, setNewCoords] = useState([
-    //     0, 0
-    // ]);
 
     const handleSearch = async () => {
         try {
@@ -37,21 +33,6 @@ const MapComponent: React.FC = () => {
           console.error('Ошибка при запросе геокодирования:', error);
         }
       };
-    
-    
-
-    // const changeMap = () => {
-    //     // console.log(inputValue)
-    //     // setInputValue(address)
-    //     mapRef.geocode(inputValue).then(result => setGeoCodecCoordinates(result.geoObjects.get(0).geometry.getCoordinates()))
-    //     mapRef.geocode(inputValue).then(result => getAddress(result.geoObjects.get(0).geometry.getCoordinates()))
-
-
-    // }
-    // const getAddress = (a) => {
-    //     console.log(a)
-    //     mapRef.geocode(a).then(result => setAddressText(result.geoObjects.get(0).getAddressLine()))
-    // }
     return (
         <>
             
@@ -77,14 +58,8 @@ const MapComponent: React.FC = () => {
 
             >
                 <div style={{ width: '100%', height: 750 }}>
-                    <Map style={{ width: '100%', height: 750 }} state={mapState}
-                    
-                        // onLoad={a => setMapRef(a)}
-                    // func={ymaps => geocodeFunc(ymaps)}
-                    >
+                    <Map style={{ width: '100%', height: 750 }} state={mapState}>
                         <ZoomControl/>
-                        {/* <SearchControl onChange={handleSearch()} options={{ float: "right", visible:false }} /> */}
-                        {/* <Placemark geometry={{ coordinates: state }} /> */}
                         <Placemark geometry={[geoCodecCoordinates[0], geoCodecCoordinates[1]]}
                             options={
                                 {

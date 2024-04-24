@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import type { DrawerProps, RadioChangeEvent } from 'antd';
-import { Button, Drawer, Radio, Space } from 'antd';
+import type { DrawerProps } from 'antd';
+import { Button, Drawer } from 'antd';
 import {MenuOutlined} from '@ant-design/icons';
 import './Sidebar.css';
 
@@ -10,7 +10,7 @@ interface SidebarProps {
 
   const Sidebar: React.FC<SidebarProps> = ({ adventures }) => {
   const [open, setOpen] = useState(false);
-  const [placement, setPlacement] = useState<DrawerProps['placement']>('right');
+  const [placement] = useState<DrawerProps['placement']>('right');
 
   const showDrawer = () => {
     setOpen(true);
