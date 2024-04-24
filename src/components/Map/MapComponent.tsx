@@ -11,7 +11,6 @@ const MapComponent: React.FC = () => {
     const [inputValue, setInputValue] = useState('')
     const [addressText] = useState('')
     const [geoCodecCoordinates, setGeoCodecCoordinates] = useState([57.152985, 65.541227])
-    //const [mapRef] = useState()
     const mapState = {
         center: [geoCodecCoordinates[0], geoCodecCoordinates[1]],
         zoom: 16
