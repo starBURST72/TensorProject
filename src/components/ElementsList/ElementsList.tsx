@@ -7,12 +7,12 @@ export const elements=[
     {
         name:'Вкусно и точка',
         address:'Тюмень. ул Мориса Тореза',
-        order:2
+        order:1
     },
     {
         name:'Драмтеатр',
         address:'г.Тюмень, ул.Республики,129',
-        order:1
+        order:2
     }
 ]
 export function ElementsList() {
@@ -30,7 +30,7 @@ export function ElementsList() {
                     )
                 })
             }
-    </>
-            )
+        </>
+    )
     
 }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import './Header.css';
 import logo from '../../img/logo2.png';
 import {elements} from "../ElementsList/ElementsList";
+import Sidebar from "../SideBar/Sidebar";
 
 interface IElement {
     name: string;
@@ -25,13 +26,16 @@ export function Header({ onElementSelect }: { onElementSelect: (element: IElemen
             }
         }
     };
+    const adventures = ['Маршрут 1','Маршрут 2','Маршрут 3']
     return (
         <>
         <nav className="nav">
             <div className="container">
                 <div className="nav-row">
                     <div className="logo"><img className="logo-img"  src={logo} alt="Travel Together Logo"/>
-                        <a href="" className="logo-text">Travel Together</a></div>
+                        <a href="" className="logo-text">Travel Together</a>
+                    </div>
+                    <div className="nav-row">
                     <ul className="nav-list">
                         {elements.map((element: IElement) => (
                             <li key={element.order} className="nav-list__item" onClick={() => handleClick(element.order)}>
@@ -39,8 +43,11 @@ export function Header({ onElementSelect }: { onElementSelect: (element: IElemen
                             </li>
                         ))}
                     </ul>
+                    <Sidebar adventures={adventures}/>
+                    </div>
+                    
                 </div>
-
+                
             </div>
         </nav>
         </>
