@@ -1,7 +1,7 @@
-import React, { useState,useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import './Header.css';
 import logo from '../../img/logo2.png';
-import {elements} from "../ElementsList/ElementsList";
+import { elements } from "../ElementsList/ElementsList";
 import Sidebar from "../SideBar/Sidebar";
 
 interface IElement {
@@ -13,15 +13,32 @@ interface IElement {
 export function Header({ onElementSelect }: { onElementSelect: (element: IElement | null) => void }) {
     const [activeElement, setActiveElement] = useState<number | null>(null);
 
+    // Загрузка выбранного элемента из локального хранилища при загрузке компонента
+    useEffect(() => {
+        const savedActiveElement = localStorage.getItem('activeElement');
+        if (savedActiveElement) {
+            setActiveElement(parseInt(savedActiveElement));
+        }
+    }, []);
+
+    // Сохранение выбранного элемента в локальное хранилище при изменении
+    useEffect(() => {
+        if (activeElement !== null) {
+            localStorage.setItem('activeElement', activeElement.toString());
+        }
+    }, [activeElement]);
+
     const handleClick = useCallback((order: number) => {
         if (activeElement === order) {
             setActiveElement(null);
             onElementSelect(null);
+            localStorage.removeItem('activeElement'); // Удаляем выбранный элемент из локального хранилища
         } else {
             const selected = elements.find(el => el.order === order);
             if (selected) {
                 onElementSelect(selected);
                 setActiveElement(order);
+                localStorage.setItem('activeElement', order.toString()); // Сохраняем выбранный элемент в локальное хранилище
             }
         }
     }, [activeElement, onElementSelect]);
