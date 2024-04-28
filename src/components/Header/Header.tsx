@@ -9,6 +9,7 @@ interface IElement {
     address: string;
     order: number;
 }
+const adventures = ['Маршрут 1', 'Маршрут 2', 'Маршрут 3'];
 
 export function Header({ onElementSelect }: { onElementSelect: (element: IElement | null) => void }) {
     const [activeElement, setActiveElement] = useState<number | null>(null);
@@ -29,22 +30,13 @@ export function Header({ onElementSelect }: { onElementSelect: (element: IElemen
     }, [activeElement]);
 
     const handleClick = useCallback((order: number) => {
-        if (activeElement === order) {
-            setActiveElement(null);
-            onElementSelect(null);
-            localStorage.removeItem('activeElement'); // Удаляем выбранный элемент из локального хранилища
-        } else {
             const selected = elements.find(el => el.order === order);
             if (selected) {
                 onElementSelect(selected);
                 setActiveElement(order);
                 localStorage.setItem('activeElement', order.toString()); // Сохраняем выбранный элемент в локальное хранилище
             }
-        }
     }, [activeElement, onElementSelect]);
-
-    const adventures = ['Маршрут 1', 'Маршрут 2', 'Маршрут 3'];
-
     return (
         <nav className="nav">
             <div className="container">

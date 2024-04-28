@@ -13,31 +13,29 @@ interface IElement {
 function App() {
     const [selectedElement, setSelectedElement] = useState<IElement | null>(null);
 
+
     useEffect(() => {
         const savedSelectedElement = localStorage.getItem('selectedElement');
         if (savedSelectedElement) {
-            setSelectedElement(JSON.parse(savedSelectedElement));
+            const parsedElement = JSON.parse(savedSelectedElement);
+            setSelectedElement(parsedElement);
         }
     }, []);
 
     const handleElementSelect = (element: IElement | null) => {
-        if (element === selectedElement) {
-            // Если текущий элемент уже выбран, делаем его неактивным
-            setSelectedElement(null);
-            localStorage.removeItem('selectedElement'); // Удаляем выбранный элемент из локального хранилища
-        } else {
-            setSelectedElement(element);
-            localStorage.setItem('selectedElement', JSON.stringify(element)); // Сохраняем выбранный элемент в локальное хранилище
-        }
+        setSelectedElement(element);
+        localStorage.setItem('selectedElement', JSON.stringify(element)); // Сохраняем выбранный элемент в локальное хранилище
     };
 
     return (
         <div className="app">
             <Header onElementSelect={handleElementSelect} />
-            {selectedElement && (
+            {selectedElement && selectedElement.order != 0 && (
                 <ElementInfo element={selectedElement} />
             )}
-            <MapComponent />
+            {selectedElement && selectedElement.order === 0 && (
+                <MapComponent />
+            )}
         </div>
     );
 }
