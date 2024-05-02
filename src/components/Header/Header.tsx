@@ -26,7 +26,20 @@ export function Header({ onElementSelect }: { onElementSelect: (element: IElemen
             }
         }
     };
-    const adventures = ['Маршрут 1','Маршрут 2','Маршрут 3']
+    const adventures = [
+        {
+            id: 1,
+            name: 'Маршрут 1'
+        },
+        {
+            id: 2,
+            name: 'Маршрут 2'
+        },
+        {
+            id: 3,
+            name: 'Маршрут 3'
+        }
+]
     return (
         <>
         <nav className="nav">

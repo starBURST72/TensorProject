@@ -1,5 +1,5 @@
-import React, {useState } from 'react';
-import { YMaps, Map, Placemark, ZoomControl} from '@pbe/react-yandex-maps';
+import React, {useRef, useState } from 'react';
+import { YMaps, Map, Placemark, ZoomControl, SearchControl} from '@pbe/react-yandex-maps';
 import axios from 'axios';
 import './MapComponent.css';
 
@@ -15,7 +15,7 @@ const MapComponent: React.FC = () => {
         center: [geoCodecCoordinates[0], geoCodecCoordinates[1]],
         zoom: 16
     };
-
+    const searchControlRef = useRef(inputValue);
     const handleSearch = async () => {
         try {
           const response = await axios.get('https://geocode-maps.yandex.ru/1.x/', {
@@ -32,6 +32,19 @@ const MapComponent: React.FC = () => {
           console.error('Ошибка при запросе геокодирования:', error);
         }
       };
+
+
+      const handleSearchControlResultChange = (event: any) => {
+        const result = event.get('target').get('result');
+        if (result.get('collection').get('children').get('length') > 0) {
+          const firstResult = result.get('collection').get('children').get(0);
+          setInputValue(firstResult.get('properties').get('name'));
+          const coords = firstResult.get('geometry').get('coordinates');
+          setGeoCodecCoordinates([coords[1], coords[0]]);
+        }
+      };
+
+
     return (
         <>
             
@@ -51,7 +64,7 @@ const MapComponent: React.FC = () => {
                 query={{
                     ns: "use-load-option",
                     apikey: "8dd7f097-6399-475c-bb7f-1139673cf402",
-                    load: "Map,Placemark,control.ZoomControl"
+                    load: "Map,Placemark,control.ZoomControl,control.SearchControl"
                     // load: "загружаемые модули"
                 }}
 
@@ -59,6 +72,17 @@ const MapComponent: React.FC = () => {
                 <div style={{ width: '100%', height: 750 }}>
                     <Map style={{ width: '100%', height: 750 }} state={mapState}>
                         <ZoomControl/>
+                        <SearchControl
+                        
+                        ref={searchControlRef}
+                        options={{
+                            
+                            provider: 'yandex#search',
+                        }}
+                        events={{onChange:handleSearchControlResultChange}}
+                        //onResultShow={handleSearchControlResultChange}
+                        
+                        />
                         <Placemark geometry={[geoCodecCoordinates[0], geoCodecCoordinates[1]]}
                             options={
                                 {

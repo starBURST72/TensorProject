@@ -4,13 +4,19 @@ import { Button, Drawer } from 'antd';
 import {MenuOutlined} from '@ant-design/icons';
 import './Sidebar.css';
 
+interface Adventure {
+  id: number;
+  name: string;
+}
+
 interface SidebarProps {
-    adventures: string[];
-  }
+  adventures: Adventure[];
+}
 
   const Sidebar: React.FC<SidebarProps> = ({ adventures }) => {
   const [open, setOpen] = useState(false);
   const [placement] = useState<DrawerProps['placement']>('right');
+
 
   const showDrawer = () => {
     setOpen(true);
@@ -39,7 +45,7 @@ interface SidebarProps {
       >
         {
             adventures.map(adv=>
-                <h1 style={{marginBottom:15}}>{adv}</h1>
+                <h1 key={adv.id} style={{marginBottom:15}}>{adv.name}</h1>
                 
             )
         }
