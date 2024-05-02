@@ -1,10 +1,7 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import './styles/App.css';
 import {Header} from "./components/Header/Header";
-
 import {ElementInfo} from "./components/SelectedElement/SelectedElement";
-import { Sidebar } from 'react-pro-sidebar';
-import SidebarComponent from './components/SideBar/Sidebar';
 import MapComponent from './components/Map/MapComponent';
 
 interface IElement {
@@ -16,19 +13,31 @@ interface IElement {
 function App() {
     const [selectedElement, setSelectedElement] = useState<IElement | null>(null);
 
+
+    useEffect(() => {
+        const savedSelectedElement = localStorage.getItem('selectedElement');
+        if (savedSelectedElement) {
+            const parsedElement = JSON.parse(savedSelectedElement);
+            setSelectedElement(parsedElement);
+        }
+    }, []);
+
     const handleElementSelect = (element: IElement | null) => {
         setSelectedElement(element);
+        localStorage.setItem('selectedElement', JSON.stringify(element)); // Сохраняем выбранный элемент в локальное хранилище
     };
+
     return (
         <div className="app">
             <Header onElementSelect={handleElementSelect} />
-            {selectedElement && (
-                    <ElementInfo element={selectedElement} />
+            {selectedElement && selectedElement.order != 0 && (
+                <ElementInfo element={selectedElement} />
             )}
-            {/* <SidebarComponent collapsed={false} onToggleCollapse={()=>false}/> */}
-            <MapComponent/>
+            {selectedElement && selectedElement.order === 0 && (
+                <MapComponent />
+            )}
         </div>
     );
-} 
+}
 
 export default App;
