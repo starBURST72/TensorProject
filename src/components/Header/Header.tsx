@@ -36,7 +36,25 @@ export function Header({ onElementSelect }: { onElementSelect: (element: IElemen
                 setActiveElement(order);
                 localStorage.setItem('activeElement', order.toString()); // Сохраняем выбранный элемент в локальное хранилище
             }
+
+        }
+    };
+    const adventures = [
+        {
+            id: 1,
+            name: 'Маршрут 1'
+        },
+        {
+            id: 2,
+            name: 'Маршрут 2'
+        },
+        {
+            id: 3,
+            name: 'Маршрут 3'
+        }
+]
     }, [activeElement, onElementSelect]);
+
     return (
         <nav className="nav">
             <div className="container">
