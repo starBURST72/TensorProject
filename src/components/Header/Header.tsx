@@ -68,6 +68,7 @@ export function Header({ onElementSelect }: { onElementSelect: (element: IElemen
                                 </li>
                             ))}
                         </ul>
+                        <div><a href="/auth">auth</a></div>
                         <Sidebar adventures={adventures}/>
                     </div>
                 </div>
