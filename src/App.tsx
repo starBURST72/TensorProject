@@ -1,9 +1,10 @@
 import React,{useState,useEffect} from 'react';
 import './styles/App.css';
 import {Header} from "./components/Header/Header";
-import {ElementInfo} from "./components/SelectedElement/SelectedElement";
-import MapComponent from './components/Map/MapComponent';
-
+import {Routes,Route} from "react-router-dom";
+import MapPage from "./pages/MapPage";
+import NotFound from "./pages/NotFound";
+import HomePage from "./pages/HomePage";
 interface IElement {
     name: string;
     address: string;
@@ -30,12 +31,17 @@ function App() {
     return (
         <div className="app">
             <Header onElementSelect={handleElementSelect} />
-            {selectedElement && selectedElement.order != 0 && (
-                <ElementInfo element={selectedElement} />
-            )}
-            {selectedElement && selectedElement.order === 0 && (
-                <MapComponent />
-            )}
+            {/*{selectedElement && selectedElement.order != 0 && (*/}
+            {/*    <ElementInfo element={selectedElement} />*/}
+            {/*)}*/}
+            <Routes>
+                <Route path="/" element={<HomePage/>}/>
+                <Route path="/map" element={<MapPage/>}/>
+                <Route path="*" element={<NotFound/>}/>
+            </Routes>
+            {/*{selectedElement && selectedElement.order === 0 && (*/}
+            {/*    <MapComponent />*/}
+            {/*)}*/}
         </div>
     );
 }
