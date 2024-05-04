@@ -63,10 +63,11 @@ export function Header({ onElementSelect }: { onElementSelect: (element: IElemen
                         <ul className="nav-list">
                             {elements.map((element: IElement) => (
                                 <li key={element.order} className="nav-list__item" onClick={() => handleClick(element.order)}>
-                                    <a href="#" className={`nav-list__link ${activeElement === element.order ? 'nav-list__link--active' : ''}`}>{element.order}</a>
+                                    <a href="" className={`nav-list__link ${activeElement === element.order ? 'nav-list__link--active' : ''}`}>{element.order}</a>
                                 </li>
                             ))}
                         </ul>
+                        <div><a href="/auth">auth</a></div>
                         <Sidebar adventures={adventures}/>
                     </div>
                 </div>
