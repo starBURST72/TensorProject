@@ -3,6 +3,7 @@ import './Header.css';
 import logo from '../../img/logo2.png';
 import { elements } from "../ElementsList/ElementsList";
 import Sidebar from "../SideBar/Sidebar";
+import {Link} from "react-router-dom";
 
 interface IElement {
     name: string;
@@ -63,7 +64,7 @@ export function Header({ onElementSelect }: { onElementSelect: (element: IElemen
                         <ul className="nav-list">
                             {elements.map((element: IElement) => (
                                 <li key={element.order} className="nav-list__item" onClick={() => handleClick(element.order)}>
-                                    <a href="#" className={`nav-list__link ${activeElement === element.order ? 'nav-list__link--active' : ''}`}>{element.order}</a>
+                                    <Link to="/map" className={`nav-list__link ${activeElement === element.order ? 'nav-list__link--active' : ''}`}>{element.order}</Link>
                                 </li>
                             ))}
                         </ul>
