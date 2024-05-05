@@ -50,8 +50,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-transform-private-property-in-object": "^7.24.1",
-    "@yandex/ymaps3-types": "^0.0.25",
-    "typescript": "^5.2.2"
+    "@babel/plugin-transform-private-property-in-object": "^7.24.1"
   }
 }
