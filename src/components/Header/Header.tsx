@@ -68,7 +68,7 @@ export function Header({ onElementSelect }: { onElementSelect: (element: IElemen
                                 </li>
                             ))}
                         </ul>
-                        <Sidebar adventures={adventures}/>
+                        
                     </div>
                 </div>
             </div>

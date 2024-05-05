@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { DrawerProps } from 'antd';
 import { Button, Drawer } from 'antd';
-import {MenuOutlined} from '@ant-design/icons';
+import { MenuOutlined } from '@ant-design/icons';
 import './Sidebar.css';
 
 interface Adventure {
@@ -13,7 +13,7 @@ interface SidebarProps {
   adventures: Adventure[];
 }
 
-  const Sidebar: React.FC<SidebarProps> = ({ adventures }) => {
+const Sidebar: React.FC<SidebarProps> = ({ adventures }) => {
   const [open, setOpen] = useState(false);
   const [placement] = useState<DrawerProps['placement']>('right');
 
@@ -28,11 +28,11 @@ interface SidebarProps {
 
 
   return (
+    // <div style={{position:'relative'}}>
+
     <>
- 
-        
-        <Button ghost onClick={showDrawer} icon={ <MenuOutlined />}>
-        </Button>
+      <Button ghost onClick={showDrawer} style={{ color: 'black' }} icon={<MenuOutlined />}>
+      </Button>
 
       <Drawer
         title="Меню"
@@ -41,17 +41,22 @@ interface SidebarProps {
         onClose={onClose}
         open={open}
         key={placement}
-        //width={'25%'}
+        // style={{maxHeight:'100%'}}
+        mask={false}
+        getContainer={false}
+        className='sidebar'
+      //width={'25%'}
       >
         {
-            adventures.map(adv=>
-                <h1 key={adv.id} style={{marginBottom:15}}>{adv.name}</h1>
-                
-            )
+          adventures.map(adv =>
+            <h1 key={adv.id} style={{ marginBottom: 15 }}>{adv.name}</h1>
+
+          )
         }
-        
+
       </Drawer>
     </>
+    // </div>
   );
 };
 

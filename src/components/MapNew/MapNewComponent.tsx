@@ -1,19 +1,17 @@
-import React, { useRef, useState } from 'react';
-import { YMaps, Map, Placemark, ZoomControl, SearchControl } from '@pbe/react-yandex-maps';
+import React, {useRef, useState } from 'react';
+import { YMaps, Map, Placemark, ZoomControl, SearchControl} from '@pbe/react-yandex-maps';
 import axios from 'axios';
-import './MapComponent.css';
-import Sidebar from '../SideBar/Sidebar';
+import './MapNewComponent.css';
+import type { YMapLocationRequest } from 'ymaps3';
 
 
 
 
-
-const MapComponent: React.FC = () => {
+const MapNewComponent: React.FC = () => {
     const [inputValue, setInputValue] = useState('');
     const [addressText] = useState('');
     const [geoCodecCoordinates, setGeoCodecCoordinates] = useState([57.152985, 65.541227]);
     const [loading, setLoading] = useState(false); // Состояние для отслеживания загрузки
-
     const mapState = {
         center: [geoCodecCoordinates[0], geoCodecCoordinates[1]],
         zoom: 16
@@ -21,7 +19,28 @@ const MapComponent: React.FC = () => {
 
     const searchControlRef = useRef(null);
 
+
+
+
+    async function handleSearch2(): Promise<void> {
+        await ymaps3.ready;
+    
+        // const LOCATION: YMapLocationRequest = {
+        //     center: [37.623082, 55.75254],
+        //     zoom: 9
+        // };
+    
+        // const { YMap, YMapDefaultSchemeLayer } = ymaps3;
+    
+        // const map = new YMap(document.querySelector("map"), { location: LOCATION });
+        // map.addChild(new YMapDefaultSchemeLayer({}));
+    }
+
+
+
+
     const handleSearch = async () => {
+        await ymaps3.ready;
         try {
             setLoading(true); // Устанавливаем состояние загрузки в true
             const response = await axios.get('https://geocode-maps.yandex.ru/1.x/', {
@@ -52,10 +71,9 @@ const MapComponent: React.FC = () => {
     };
 
     return (
-        <div style={{position:'relative'}}>
-            <Sidebar adventures={[]} />
+        <>
             {loading && <div className="loader">Loading...</div>}
-            <div className='searchConteiner'>
+            <div id='map' className='searchConteiner'>
                 <h2>Введите адрес</h2>
                 <div className='SearcgLineAndButton'>
                     <input
@@ -68,41 +86,36 @@ const MapComponent: React.FC = () => {
                 </div>
             </div>
             <YMaps
-
                 query={{
                     ns: "use-load-option",
                     apikey: "8dd7f097-6399-475c-bb7f-1139673cf402",
                     load: "Map,Placemark,control.ZoomControl,control.SearchControl"
                 }}
             >
-                <div style={{ width: '100%', height: 750}}>
+                <div style={{ width: '100%', height: 750 }}>
                     <Map style={{ width: '100%', height: 750 }} state={mapState}>
-
-                        <ZoomControl />
+                        <ZoomControl/>
                         <SearchControl
                             ref={searchControlRef}
                             options={{
                                 provider: 'yandex#search',
                             }}
-                            events={{ onChange: handleSearchControlResultChange }}
+                            events={{onChange: handleSearchControlResultChange}}
                         />
                         <Placemark geometry={[geoCodecCoordinates[0], geoCodecCoordinates[1]]}
-                            options={{
-                                //preset: 'islands#circleIcon',
-                                //iconColor: 'green',
-                            }}
-                            properties={{
-                                balloonContentHeader: inputValue,
-                                balloonContentBody: addressText
-                            }} />
-
+                                   options={{
+                                       //preset: 'islands#circleIcon',
+                                       //iconColor: 'green',
+                                   }}
+                                   properties={{
+                                       balloonContentHeader: inputValue,
+                                       balloonContentBody: addressText
+                                   }} />
                     </Map>
-
                 </div>
             </YMaps>
-
-        </div>
+        </>
     )
 }
 
-export default MapComponent;
+export default MapNewComponent;
