@@ -27,6 +27,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy" : "npm run build",
+    "deploy" : "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -51,6 +53,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-private-property-in-object": "^7.24.1",
+    "gh-pages": "^6.1.1",
     "typescript": "^5.4.5"
   }
 }
