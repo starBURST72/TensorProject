@@ -7,8 +7,8 @@ import {Link} from "react-router-dom";
 
 interface IElement {
     name: string;
-    address: string;
     order: number;
+    link: string;
 }
 const adventures = [
     {
@@ -40,7 +40,7 @@ export function Header({ onElementSelect }: { onElementSelect: (element: IElemen
         if (activeElement !== null) {
             localStorage.setItem('activeElement', activeElement.toString());
         }
-    }, [activeElement]);
+    }, []);
 
     const handleClick = useCallback((order: number) => {
             const selected = elements.find(el => el.order === order);
@@ -50,7 +50,7 @@ export function Header({ onElementSelect }: { onElementSelect: (element: IElemen
                 localStorage.setItem('activeElement', order.toString()); // Сохраняем выбранный элемент в локальное хранилище
             }
 
-    }, [activeElement, onElementSelect]);
+    }, [onElementSelect]);
 
     return (
         <nav className="nav">
@@ -64,11 +64,10 @@ export function Header({ onElementSelect }: { onElementSelect: (element: IElemen
                         <ul className="nav-list">
                             {elements.map((element: IElement) => (
                                 <li key={element.order} className="nav-list__item" onClick={() => handleClick(element.order)}>
-                                    <Link to="/map" className={`nav-list__link ${activeElement === element.order ? 'nav-list__link--active' : ''}`}>{element.order}</Link>
+                                    <Link to={element.link} className={`nav-list__link ${activeElement === element.order ? 'nav-list__link--active' : ''}`}>{element.name}</Link>
                                 </li>
                             ))}
                         </ul>
-                        <div><a href="/auth">auth</a></div>
                         <Sidebar adventures={adventures}/>
                     </div>
                 </div>
