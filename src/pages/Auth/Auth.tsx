@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input } from 'antd';
 import './Auth.css';
-
+import {Context} from '../../components/Context/AppContext';
 
 type FieldType = {
   username?: string;
@@ -20,7 +20,7 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
 
 
 export default function Auth() {
-  const [isLogin, setIsLogin] = useState(false)
+  const { signedIn, setSignedIn } = useContext(Context);
   return (
     <div className='form_conteiner'>
       <Form
@@ -43,7 +43,7 @@ export default function Auth() {
         </Form.Item>
 
 
-        {isLogin ? <></> :
+        {signedIn ? <></> :
           <Form.Item<FieldType>
             label="Почта"
             name="username"
@@ -65,7 +65,7 @@ export default function Auth() {
         </Form.Item>
 
 
-        {isLogin ? <></> :
+        {signedIn ? <></> :
           <Form.Item<FieldType>
 
             label="Пароль"
@@ -86,19 +86,19 @@ export default function Auth() {
 
         <Form.Item style={{ alignSelf: 'center' }}>
           <Button type="primary" htmlType="submit">
-            {isLogin ? 'Войти' : 'Регистрация'}
+            {signedIn ? 'Войти' : 'Регистрация'}
           </Button>
         </Form.Item>
 
         {/* пока такие онклики, потом мб по ссылке менять не состояние, а перекидывать на другой роут чела*/}
         <Form.Item style={{ alignSelf: 'center' }}>
-          {isLogin ?
+          {signedIn ?
             <div >
-              Нет аккаунта? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => setIsLogin(!isLogin)}>Зарегистрироваться</span>
+              Нет аккаунта? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => setSignedIn(!signedIn)}>Зарегистрироваться</span>
             </div>
             :
             <div>
-              Есть аккаунт? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => setIsLogin(!isLogin)}>Войти</span>
+              Есть аккаунт? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => setSignedIn(!signedIn)}>Войти</span>
             </div>
           }
         </Form.Item>
