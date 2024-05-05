@@ -43,7 +43,7 @@ export function Header() {
                                 </li>
                             ))}
                         </ul>
-                        <Sidebar adventures={adventures}/>
+                        
                     </div>
                 </div>
             </div>
