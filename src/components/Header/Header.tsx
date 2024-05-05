@@ -1,8 +1,8 @@
-import React from "react";
+import React,{useContext} from "react";
 import './Header.css';
 import logo from '../../img/logo2.png';
 import { ElementsList } from "../ElementsList/ElementsList";
-import Sidebar from "../SideBar/Sidebar";
+import { Context } from '../Context/AppContext';
 import {NavLink} from "react-router-dom";
 
 interface IElement {
@@ -26,7 +26,7 @@ const adventures = [
     }
 ]
 export function Header() {
-
+    const { signedIn } = useContext(Context);
     return (
         <nav className="nav">
             <div className="container">
@@ -37,13 +37,16 @@ export function Header() {
                     </div>
                     <div className="nav-row">
                         <ul className="nav-list">
-                            {elements.map((element: IElement) => (
-                                <li key={element.order} className="nav-list__item">
-                                    <NavLink to={element.link} className={({isActive})=>isActive ? 'nav-list__link--active':'nav-list__link'}>{element.name}</NavLink>
-                                </li>
+                            {elements.map((element: IElement, index: number) => (
+                                // Проверяем, является ли текущий элемент последним и подписан ли пользователь
+                                index !== elements.length - 1 || !signedIn ? (
+                                    <li key={element.order} className="nav-list__item">
+                                        <NavLink to={element.link}
+                                                 className={({isActive}) => isActive ? 'nav-list__link--active' : 'nav-list__link'}>{element.name}</NavLink>
+                                    </li>
+                                ) : null
                             ))}
                         </ul>
-                        
                     </div>
                 </div>
             </div>
