@@ -1,13 +1,13 @@
 import React, { createContext } from 'react';
 
 interface AppContextType {
-    signedIn: boolean;
-    setSignedIn: React.Dispatch<React.SetStateAction<boolean>>;
+    isAuth: boolean;
+    setAuth: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const initialContext: AppContextType = {
-    signedIn: false,
-    setSignedIn: () => {},
+    isAuth: false,
+    setAuth: () => {},
 };
 
 export const Context = createContext<AppContextType>(initialContext);

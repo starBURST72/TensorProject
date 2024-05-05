@@ -20,7 +20,11 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
 
 
 export default function Auth() {
-  const { signedIn, setSignedIn } = useContext(Context);
+  const { isAuth, setAuth } = useContext(Context);
+  const login = () => {
+    setAuth(true)
+    localStorage.setItem('auth','true');
+  };
   return (
     <div className='form_conteiner'>
       <Form
@@ -43,7 +47,7 @@ export default function Auth() {
         </Form.Item>
 
 
-        {signedIn ? <></> :
+        {isAuth ? <></> :
           <Form.Item<FieldType>
             label="Почта"
             name="username"
@@ -65,7 +69,7 @@ export default function Auth() {
         </Form.Item>
 
 
-        {signedIn ? <></> :
+        {isAuth ? <></> :
           <Form.Item<FieldType>
 
             label="Пароль"
@@ -86,19 +90,19 @@ export default function Auth() {
 
         <Form.Item style={{ alignSelf: 'center' }}>
           <Button type="primary" htmlType="submit">
-            {signedIn ? 'Войти' : 'Регистрация'}
+            {isAuth ? 'Войти' : 'Регистрация'}
           </Button>
         </Form.Item>
 
         {/* пока такие онклики, потом мб по ссылке менять не состояние, а перекидывать на другой роут чела*/}
         <Form.Item style={{ alignSelf: 'center' }}>
-          {signedIn ?
+          {isAuth ?
             <div >
-              Нет аккаунта? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => setSignedIn(!signedIn)}>Зарегистрироваться</span>
+              Нет аккаунта? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => login()}>Зарегистрироваться</span>
             </div>
             :
             <div>
-              Есть аккаунт? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => setSignedIn(!signedIn)}>Войти</span>
+              Есть аккаунт? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => login()}>Войти</span>
             </div>
           }
         </Form.Item>
