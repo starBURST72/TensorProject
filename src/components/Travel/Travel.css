@@ -1,0 +1,22 @@
+.travel-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Выравнивание слева */
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  
+  .travel-card {
+    margin-bottom: 20px;
+    flex-basis: calc(25% - 20px); /* Определяем фиксированную ширину, учитывая отступы */
+    min-width: 200px;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    padding: 10px;
+    box-sizing: border-box;
+    color: black;
+  }
+  
+  .travel-card:not(:last-child) {
+    margin-right: 20px; /* Устанавливаем отступ только для первых трех карточек в каждой строке */
+  }

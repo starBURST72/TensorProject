@@ -1,6 +1,6 @@
 function HomePage() {
-    return(<div>
-        <p>Главная страница</p>
+    return(<div className="title">
+        <p style={{textAlign:'center'}}>Главная страница</p>
     </div>);
 }
 export default HomePage;

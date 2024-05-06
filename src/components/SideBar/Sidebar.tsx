@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import type { DrawerProps } from 'antd';
 import { Button, Drawer } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import './Sidebar.css';
+import { ContextTravel } from '../Context/AppContext';
 
 interface Adventure {
   id: number;
@@ -14,9 +15,9 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ adventures }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [placement] = useState<DrawerProps['placement']>('right');
-
+  const { travel, setTravel } = useContext(ContextTravel);
 
   const showDrawer = () => {
     setOpen(true);
@@ -35,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ adventures }) => {
       </Button>
 
       <Drawer
-        title="Меню"
+        title={travel.title}
         placement={'right'}
         closable={true}
         onClose={onClose}
@@ -48,10 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({ adventures }) => {
       //width={'25%'}
       >
         {
-          adventures.map(adv =>
-            <h1 key={adv.id} style={{ marginBottom: 15 }}>{adv.name}</h1>
-
-          )
+          travel.description
         }
 
       </Drawer>
