@@ -1,8 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input } from 'antd';
 import './Auth.css';
-import {Context} from '../../components/Context/AppContext';
+import { Context } from '../../components/Context/AppContext';
+import { start } from 'repl';
 
 type FieldType = {
   username?: string;
@@ -21,17 +22,19 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
 
 export default function Auth() {
   const { isAuth, setAuth } = useContext(Context);
+
+  const [isAuthForm, setIsAuthForm ] = useState(false);
+
   const login = () => {
     setAuth(true)
-    localStorage.setItem('auth','true');
+    localStorage.setItem('auth', 'true');
   };
   return (
     <div className='form_conteiner'>
       <Form
         className='form'
         name="basic"
-        labelCol={{ span: 4 }}
-
+        labelCol={{ span: 6 }}
         style={{ maxWidth: 500 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
@@ -47,7 +50,7 @@ export default function Auth() {
         </Form.Item>
 
 
-        {isAuth ? <></> :
+        {isAuthForm ? <></> :
           <Form.Item<FieldType>
             label="Почта"
             name="username"
@@ -69,12 +72,13 @@ export default function Auth() {
         </Form.Item>
 
 
-        {isAuth ? <></> :
+        {isAuthForm ? <></> :
           <Form.Item<FieldType>
-
-            label="Пароль"
+            className="form-item-label"
+            label="Повторите пароль"
             name="password"
             rules={[{ required: true, message: 'Введите пароль' }]}
+
           >
             <Input.Password />
           </Form.Item>
@@ -90,19 +94,20 @@ export default function Auth() {
 
         <Form.Item style={{ alignSelf: 'center' }}>
           <Button type="primary" htmlType="submit">
-            {isAuth ? 'Войти' : 'Регистрация'}
+            {isAuthForm ? <span onClick={() => login()}>Войти</span> : 
+            <span onClick={() => login()}>Регистрация</span>}
           </Button>
         </Form.Item>
 
         {/* пока такие онклики, потом мб по ссылке менять не состояние, а перекидывать на другой роут чела*/}
         <Form.Item style={{ alignSelf: 'center' }}>
-          {isAuth ?
+          {isAuthForm ?
             <div >
-              Нет аккаунта? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => login()}>Зарегистрироваться</span>
+              Нет аккаунта? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => setIsAuthForm(!isAuthForm)}>Зарегистрироваться</span>
             </div>
             :
             <div>
-              Есть аккаунт? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => login()}>Войти</span>
+              Есть аккаунт? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => setIsAuthForm(!isAuthForm)}>Войти</span>
             </div>
           }
         </Form.Item>

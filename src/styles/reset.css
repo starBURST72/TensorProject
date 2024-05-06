@@ -87,3 +87,7 @@ label {
 legend {
     display: block;
 }
+
+.app {
+    height: calc(100vh - var(--nav-height));
+  }

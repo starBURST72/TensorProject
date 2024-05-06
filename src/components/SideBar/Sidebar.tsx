@@ -30,8 +30,8 @@ const Sidebar: React.FC<SidebarProps> = ({ adventures }) => {
   return (
     // <div style={{position:'relative'}}>
 
-    <>
-      <Button ghost onClick={showDrawer} style={{ color: 'black' }} icon={<MenuOutlined />}>
+    <div className='draw'>
+      <Button onClick={showDrawer} className='drawButton' icon={<MenuOutlined />}>
       </Button>
 
       <Drawer
@@ -55,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ adventures }) => {
         }
 
       </Drawer>
-    </>
+    </div>
     // </div>
   );
 };
