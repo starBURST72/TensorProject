@@ -42,7 +42,7 @@ export default function MapNewComponent() {
     const [ymap, setYmap] = useState<YMaps.YMap>();
     const [inputValue, setInputValue] = useState('');
     const [addressText] = useState('');
-    const [geoCodecCoordinates, setGeoCodecCoordinates] = useState<YMapLocation>( { center: [ 65.541227, 57.152985], zoom: 17 });
+    const [point, setPoint] = useState<YMapLocation>( { center: [ 65.541227, 57.152985], zoom: 17 });
     const [loading, setLoading] = useState(false); // Состояние для отслеживания загрузки
 
 
@@ -85,8 +85,8 @@ export default function MapNewComponent() {
 
             const coords = response.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ');
             // setGeoCodecCoordinates([parseFloat(coords[1]), parseFloat(coords[0])]);
+            setPoint({center: [ parseFloat(coords[0]), parseFloat(coords[1])], zoom: 17})
             setLocation({center: [ parseFloat(coords[0]), parseFloat(coords[1])], zoom: 17})
-            
         } catch (error) {
             console.error('Ошибка при запросе геокодирования:', error);
         } finally {
@@ -133,7 +133,7 @@ export default function MapNewComponent() {
 
                         <YMapListener onUpdate={onUpdate} />
 
-                        <YMapDefaultMarker coordinates={location.center} />
+                        <YMapDefaultMarker coordinates={point.center} />
 
                         <YMapControls position="bottom">
                             <YMapZoomControl />

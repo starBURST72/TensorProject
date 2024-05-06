@@ -1,4 +1,4 @@
 .mapPage{
-    height: 100%;
+    height: calc(100vh - var(--nav-height));
     width: 100%;
 }

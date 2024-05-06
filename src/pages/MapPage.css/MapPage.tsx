@@ -2,11 +2,15 @@ import MapComponent from '../../components/Map/MapComponent';
 import MapNewComponent from '../../components/MapNew/MapNewComponent';
 // import Sidebar from '../components/SideBar/Sidebar';
 import './MapPage.css';
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function MapPage() {
-    const a=document.querySelector('nav')?.offsetHeight
-    console.log("fsdfsdfsdfsdfsdfs"+a)
+    useEffect(() => {
+        const navElement = document.querySelector('nav');
+        const navHeight = navElement?.offsetHeight || 0;
+        document.documentElement.style.setProperty('--nav-height', `${navHeight}px`);
+    }, []);
+
     return (
         
         <div className='mapPage'>

@@ -43,7 +43,9 @@ export default function Auth() {
       >
         <Form.Item<FieldType>
           label="Логин"
+          key={'login'}
           name="username"
+          id='login'
           rules={[{ required: true, message: 'Введите логин' }]}
         >
           <Input />
@@ -53,7 +55,9 @@ export default function Auth() {
         {isAuthForm ? <></> :
           <Form.Item<FieldType>
             label="Почта"
-            name="username"
+            key={'mail'}
+            
+            id='mail'
             rules={[{ required: true, message: 'Введите почту' }]}
           >
             <Input />
@@ -66,6 +70,8 @@ export default function Auth() {
 
           label="Пароль"
           name="password"
+          key={'password'}
+          id='password'
           rules={[{ required: true, message: 'Введите пароль' }]}
         >
           <Input.Password />
@@ -76,7 +82,9 @@ export default function Auth() {
           <Form.Item<FieldType>
             className="form-item-label"
             label="Повторите пароль"
-            name="password"
+            
+            id='confirm_password'
+            key={'confirm_password'}
             rules={[{ required: true, message: 'Введите пароль' }]}
 
           >
