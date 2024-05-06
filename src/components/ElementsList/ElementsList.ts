@@ -5,19 +5,26 @@ import { Context } from '../Context/AppContext';
 const elements = [
     {
         name: 'Главная',
-        order: 0,
+        key: 0,
         link: '/',
     },
     {
         name: 'Карта',
-        order: 1,
+        key: 1,
         link: '/map',
     },
     {
+        name: 'Мои маршруты',
+        key: 2,
+        link: '/travels',
+    },
+    {
         name: 'Авторизация',
-        order: 2,
+        key: 3,
         link: '/auth',
     },
+
+
 ];
 
 export function ElementsList() {

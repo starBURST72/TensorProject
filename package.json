@@ -24,7 +24,8 @@
     "react-scripts": "^5.0.1",
     "react-sidebar": "^3.0.2",
     "typescript-estree": "^18.1.0",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "ymap3-components": "^1.1.6"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -54,6 +55,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-private-property-in-object": "^7.24.1",
-    "gh-pages": "^6.1.1"
+    "gh-pages": "^6.1.1",
+    "@yandex/ymaps3-types": "^0.0.25"
   }
 }

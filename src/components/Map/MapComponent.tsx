@@ -52,7 +52,7 @@ const MapComponent: React.FC = () => {
     };
 
     return (
-        <div style={{position:'relative'}}>
+        <div style={{ position: 'relative' }}>
             <Sidebar adventures={[]} />
             {loading && <div className="loader">Loading...</div>}
             <div className='searchConteiner'>
@@ -75,7 +75,7 @@ const MapComponent: React.FC = () => {
                     load: "Map,Placemark,control.ZoomControl,control.SearchControl"
                 }}
             >
-                <div style={{ width: '100%', height: 750}}>
+                <div style={{ width: '100%', height: 750 }}>
                     <Map style={{ width: '100%', height: 750 }} state={mapState}>
 
                         <ZoomControl />

@@ -2,6 +2,18 @@
     position:absolute;
 
     right: 0;
-
+    z-index: 1000;
   }
 
+.draw{
+  pointer-events:all;
+  height: 100%;
+  
+}
+.drawButton{
+  pointer-events:all;
+  background-color: #fff;
+  opacity: 0.7;
+  border-color: black;
+  color: black;
+}
