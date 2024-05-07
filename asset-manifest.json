@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/TensorProject/static/css/main.a2646bbd.css",
-    "main.js": "/TensorProject/static/js/main.03630188.js",
+    "main.css": "/TensorProject/static/css/main.1c6b464a.css",
+    "main.js": "/TensorProject/static/js/main.670fb60c.js",
     "static/media/logo2.png": "/TensorProject/static/media/logo2.cfb37f59221f31cd1a17.png",
     "index.html": "/TensorProject/index.html",
-    "main.a2646bbd.css.map": "/TensorProject/static/css/main.a2646bbd.css.map",
-    "main.03630188.js.map": "/TensorProject/static/js/main.03630188.js.map"
+    "main.1c6b464a.css.map": "/TensorProject/static/css/main.1c6b464a.css.map",
+    "main.670fb60c.js.map": "/TensorProject/static/js/main.670fb60c.js.map"
   },
   "entrypoints": [
-    "static/css/main.a2646bbd.css",
-    "static/js/main.03630188.js"
+    "static/css/main.1c6b464a.css",
+    "static/js/main.670fb60c.js"
   ]
 }
