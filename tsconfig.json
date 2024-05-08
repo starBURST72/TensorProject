@@ -18,11 +18,19 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+
+    "paths": {
+      "ymaps3": [
+        "./node_modules/@yandex/ymaps3-types"
+      ]
+    },
+    
   },
   "include": [
     "src",
     "declaration.d.ts"
   ],
-  "typeRoots": ["node_modules/@types", "src/types"]
+  
+  "typeRoots": ["node_modules/@types", "src/types", "node_modules/@yandex/ymaps3-types"]
 }
