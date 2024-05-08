@@ -1,4 +1,4 @@
-.mapnew {
+.map-container {
     height: 100%;
     width: 100%;
     position: relative;
@@ -54,7 +54,7 @@
 .searchConteiner {
     pointer-events:all;
 }
-.map-container2 {
+.map {
     position: relative;
     height: 100%;
 

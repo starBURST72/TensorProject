@@ -99,7 +99,7 @@ export default function MapNewComponent() {
     // const gridSizedMethod = useMemo(() => clusterByGrid({ gridSize: 64 }), []);
 
     return (
-        <div className="map">
+        <div className="mapnew">
             {/* <MapLocation location={location} /> */}
             <div className="overlay-container">
                 
@@ -118,7 +118,7 @@ export default function MapNewComponent() {
                 </div>
                 <Sidebar adventures={[]} />
             </div>
-            <div className="map-container">
+            <div className="map-container2">
                 <YMapComponentsProvider apiKey={apiKey} lang="en_EN">
                     <YMap
                         key="map"

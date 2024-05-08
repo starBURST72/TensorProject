@@ -1,5 +1,6 @@
 import MapComponent from '../../components/Map/MapComponent';
 import MapNewComponent from '../../components/MapNew/MapNewComponent';
+import MapNewComponent2 from '../../components/MapNew2/MapNewComponent2';
 // import Sidebar from '../components/SideBar/Sidebar';
 import './MapPage.css';
 import React, { useEffect } from "react";
@@ -13,9 +14,9 @@ export default function MapPage() {
 
     return (
         
-        <div className='mapPage'>
+        <div className='mapPage' id='mapPage'>
             
-            <MapNewComponent />
+            <MapNewComponent2 />
             
         </div>
 
