@@ -1,10 +1,10 @@
 openapi: 3.0.3
 info:
   title: Authentication API
-  description: API for user authentication and registration
+  description: API for user authentication, registration and travels
   version: 1.0.0
 servers:
-  - url: 'http://127.0.0.1:8888'
+  - url: "http://127.0.0.1:8888"
 paths:
   /auth:
     post:
@@ -14,19 +14,9 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                  description: User's username
-                password:
-                  type: string
-                  description: User's password
-              required:
-                - username
-                - password
+              $ref: "#/components/schemas/UserAuth"
       responses:
-        '200':
+        "200":
           description: Successful authentication
           content:
             application/json:
@@ -39,9 +29,9 @@ paths:
                   refreshToken:
                     type: string
                     description: JWT refresh token
-        '400':
+        "400":
           description: Invalid request data
-        '401':
+        "401":
           description: Unauthorized - Invalid credentials
   /register:
     post:
@@ -51,24 +41,9 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                  description: User's email address
-                username:
-                  type: string
-                  description: User's username
-                password:
-                  type: string
-                  description: User's password
-              required:
-                - email
-                - username
-                - password
+              $ref: "#/components/schemas/UserRegister"
       responses:
-        '200':
+        "200":
           description: Successful registration
           content:
             application/json:
@@ -78,7 +53,115 @@ paths:
                   message:
                     type: string
                     description: Success message
-        '400':
+        "400":
           description: Invalid request data
-        '409':
+        "409":
           description: Conflict - User already exists
+
+  /travels:
+    post:
+      summary: Create a new travel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Travel"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Travel"
+        "400":
+          description: Invalid request data
+    get:
+      summary: Get all travels
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Travel"
+        "500":
+          description: Internal server error
+
+  /travels/{id}:
+    get:
+      summary: Get travel by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Travel ID
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Travel"
+        "404":
+          description: Travel not found
+        "500":
+          description: Internal server error
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          description: User's username
+        password:
+          type: string
+          description: User's password
+    UserAuth:
+      allOf:
+        - $ref: "#/components/schemas/User"
+    UserRegister:
+      allOf:
+        - $ref: "#/components/schemas/User"
+        - type: object
+          properties:
+            email:
+              type: string
+              format: email
+              description: User's email address
+    Travel:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Travel ID
+        name:
+          type: string
+          description: Travel name
+        description:
+          type: string
+          description: Travel description
+        places:
+          type: array
+          items:
+            $ref: "#/components/schemas/Place"
+    Place:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Place ID
+        address:
+          type: string
+          description: Place address
+        name:
+          type: string
+          description: Place name
+        type:
+          type: string
+          description: Place type
