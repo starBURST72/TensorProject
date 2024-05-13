@@ -1,4 +1,5 @@
 {
+  "homepage": "https://starBURST72.github.io/TensorProject",
   "name": "untitled1",
   "version": "0.1.0",
   "private": true,
@@ -12,8 +13,9 @@
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
     "@types/react-sidebar": "^3.0.4",
-    "antd": "^5.16.4",
+    "antd": "^5.17.0",
     "axios": "^1.6.8",
+    "openapi": "^1.0.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
@@ -28,6 +30,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -53,6 +57,9 @@
   "devDependencies": {
     "@babel/plugin-transform-private-property-in-object": "^7.24.1",
     "@yandex/ymaps3-types": "^0.0.25",
+    "gh-pages": "^6.1.1",
+    "msw": "^2.3.0",
+    "openapi-typescript": "^7.0.0-next.11",
     "typescript": "^5.4.5"
   }
 }

@@ -12,20 +12,6 @@ interface IElement {
     link: string;
 }
 const elements = ElementsList();
-// const adventures = [
-//     {
-//         id: 1,
-//         name: 'Маршрут 1'
-//     },
-//     {
-//         id: 2,
-//         name: 'Маршрут 2'
-//     },
-//     {
-//         id: 3,
-//         name: 'Маршрут 3'
-//     }
-// ]
 
 export function Header() {
     const { isAuth, setAuth } = useContext(Context);
@@ -48,16 +34,16 @@ export function Header() {
                     </NavLink>
                     <div className="nav-row">
                         <ul className="nav-list">
-                            {elements.map((element: IElement, index: number) => (
+                            {elements.map((HeaderElements: IElement, index: number) => (
                                 isAuth && index !== elements.length - 1 ? (
-                                    <li key={element.key} className="nav-list__item">
-                                        <NavLink to={element.link}
-                                            className={({ isActive }) => isActive ? 'nav-list__link--active' : 'nav-list__link'}>{element.name}</NavLink>
+                                    <li key={HeaderElements.key} className="nav-list__item">
+                                        <NavLink to={HeaderElements.link}
+                                            className={({ isActive }) => isActive ? 'nav-list__link--active' : 'nav-list__link'}>{HeaderElements.name}</NavLink>
                                     </li>
                                 ) : !isAuth && index === elements.length - 1 ? (
-                                    <li key={element.key} className="nav-list__item">
-                                        <NavLink to={element.link}
-                                            className={({ isActive }) => isActive ? 'nav-list__link--active' : 'nav-list__link'}>{element.name}</NavLink>
+                                    <li key={HeaderElements.key} className="nav-list__item">
+                                        <NavLink to={HeaderElements.link}
+                                            className={({ isActive }) => isActive ? 'nav-list__link--active' : 'nav-list__link'}>{HeaderElements.name}</NavLink>
                                     </li>
                                 ) : null
                             ))}

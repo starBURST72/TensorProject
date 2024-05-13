@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import "./TravelsPage.css";
 import Travel from "../../components/Travel/Travel";
-import { Context, ContextTravel } from "../../components/Context/AppContext";
+import { ContextTravel } from "../../components/Context/AppContext";
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
