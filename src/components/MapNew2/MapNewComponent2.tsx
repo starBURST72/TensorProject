@@ -39,12 +39,16 @@ export default function MapNewComponent2() {
                 map.addChild(new YMapDefaultFeaturesLayer({}));
 
 
+                
             } else {
                 console.log("Ref на элемент карты не установлен");
             }
         }
 
         initMap();
+        return () => {
+            ''
+          }
     }, [location, mapRef]);
 
 
