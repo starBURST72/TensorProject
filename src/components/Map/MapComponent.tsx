@@ -76,27 +76,27 @@ const MapComponent: React.FC = () => {
                 }}
             >
                 <div style={{ width: '100%', height: 750 }}>
-                    <Map style={{ width: '100%', height: 750 }} state={mapState}>
+                    {/*<Map style={{ width: '100%', height: 750 }} state={mapState}>*/}
 
-                        <ZoomControl />
-                        <SearchControl
-                            ref={searchControlRef}
-                            options={{
-                                provider: 'yandex#search',
-                            }}
-                            events={{ onChange: handleSearchControlResultChange }}
-                        />
-                        <Placemark geometry={[geoCodecCoordinates[0], geoCodecCoordinates[1]]}
-                            options={{
-                                //preset: 'islands#circleIcon',
-                                //iconColor: 'green',
-                            }}
-                            properties={{
-                                balloonContentHeader: inputValue,
-                                balloonContentBody: addressText
-                            }} />
+                    {/*    <ZoomControl />*/}
+                    {/*    <SearchControl*/}
+                    {/*        ref={searchControlRef}*/}
+                    {/*        options={{*/}
+                    {/*            provider: 'yandex#search',*/}
+                    {/*        }}*/}
+                    {/*        events={{ onChange: handleSearchControlResultChange }}*/}
+                    {/*    />*/}
+                    {/*    <Placemark geometry={[geoCodecCoordinates[0], geoCodecCoordinates[1]]}*/}
+                    {/*        options={{*/}
+                    {/*            //preset: 'islands#circleIcon',*/}
+                    {/*            //iconColor: 'green',*/}
+                    {/*        }}*/}
+                    {/*        properties={{*/}
+                    {/*            balloonContentHeader: inputValue,*/}
+                    {/*            balloonContentBody: addressText*/}
+                    {/*        }} />*/}
 
-                    </Map>
+                    {/*</Map>*/}
 
                 </div>
             </YMaps>
