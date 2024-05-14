@@ -1,4 +1,3 @@
-// handlers.ts
 import { http,HttpResponse } from 'msw';
 import { OUR_API_ADDRESS, OUR_API_ENDPOINTS } from '../API/constants';
 
@@ -7,9 +6,9 @@ export const handlers = [
     http.post(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.auth}`, (req) => {
         // Возвращаем мокованные данные для успешной аутентификации
         return HttpResponse.json(
-            [{
-                token:"mocked-token"
-            }]
+            {
+                token: "mocked-token"
+            }
         );
     }),
 
@@ -20,4 +19,4 @@ export const handlers = [
             [{ message: 'Registration successful' }]
         );
     }),
-];
+]

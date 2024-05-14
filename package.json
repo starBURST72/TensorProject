@@ -58,8 +58,13 @@
     "@babel/plugin-transform-private-property-in-object": "^7.24.1",
     "@yandex/ymaps3-types": "^0.0.25",
     "gh-pages": "^6.1.1",
-    "msw": "^2.3.0",
-    "openapi-typescript": "^7.0.0-next.11",
-    "typescript": "^5.4.5"
+    "msw": "^2.2.14",
+    "openapi-typescript": "^6.7.5",
+    "typescript": "^4.9.5"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
