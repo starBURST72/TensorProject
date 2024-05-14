@@ -127,20 +127,20 @@ async function handleRequest(event, requestId) {
       const responseClone = response.clone()
 
       sendToClient(
-          client,
-          {
-            type: 'RESPONSE',
-            payload: {
-              requestId,
-              isMockedResponse: IS_MOCKED_RESPONSE in response,
-              type: responseClone.type,
-              status: responseClone.status,
-              statusText: responseClone.statusText,
-              body: responseClone.body,
-              headers: Object.fromEntries(responseClone.headers.entries()),
-            },
+        client,
+        {
+          type: 'RESPONSE',
+          payload: {
+            requestId,
+            isMockedResponse: IS_MOCKED_RESPONSE in response,
+            type: responseClone.type,
+            status: responseClone.status,
+            statusText: responseClone.statusText,
+            body: responseClone.body,
+            headers: Object.fromEntries(responseClone.headers.entries()),
           },
-          [responseClone.body],
+        },
+        [responseClone.body],
       )
     })()
   }
@@ -164,15 +164,15 @@ async function resolveMainClient(event) {
   })
 
   return allClients
-      .filter((client) => {
-        // Get only those clients that are currently visible.
-        return client.visibilityState === 'visible'
-      })
-      .find((client) => {
-        // Find the client ID that's recorded in the
-        // set of clients that have registered the worker.
-        return activeClientIds.has(client.id)
-      })
+    .filter((client) => {
+      // Get only those clients that are currently visible.
+      return client.visibilityState === 'visible'
+    })
+    .find((client) => {
+      // Find the client ID that's recorded in the
+      // set of clients that have registered the worker.
+      return activeClientIds.has(client.id)
+    })
 }
 
 async function getResponse(event, client, requestId) {
@@ -209,27 +209,27 @@ async function getResponse(event, client, requestId) {
   // Notify the client that a request has been intercepted.
   const requestBuffer = await request.arrayBuffer()
   const clientMessage = await sendToClient(
-      client,
-      {
-        type: 'REQUEST',
-        payload: {
-          id: requestId,
-          url: request.url,
-          mode: request.mode,
-          method: request.method,
-          headers: Object.fromEntries(request.headers.entries()),
-          cache: request.cache,
-          credentials: request.credentials,
-          destination: request.destination,
-          integrity: request.integrity,
-          redirect: request.redirect,
-          referrer: request.referrer,
-          referrerPolicy: request.referrerPolicy,
-          body: requestBuffer,
-          keepalive: request.keepalive,
-        },
+    client,
+    {
+      type: 'REQUEST',
+      payload: {
+        id: requestId,
+        url: request.url,
+        mode: request.mode,
+        method: request.method,
+        headers: Object.fromEntries(request.headers.entries()),
+        cache: request.cache,
+        credentials: request.credentials,
+        destination: request.destination,
+        integrity: request.integrity,
+        redirect: request.redirect,
+        referrer: request.referrer,
+        referrerPolicy: request.referrerPolicy,
+        body: requestBuffer,
+        keepalive: request.keepalive,
       },
-      [requestBuffer],
+    },
+    [requestBuffer],
   )
 
   switch (clientMessage.type) {
@@ -258,8 +258,8 @@ function sendToClient(client, message, transferrables = []) {
     }
 
     client.postMessage(
-        message,
-        [channel.port2].concat(transferrables.filter(Boolean)),
+      message,
+      [channel.port2].concat(transferrables.filter(Boolean)),
     )
   })
 }

@@ -4,6 +4,7 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import './Auth.css';
 import { Context } from '../../components/Context/AppContext';
 import { postLogin,postRegister} from "../../API/API";
+import { useNavigate } from 'react-router-dom';
 
 type LoginFields = {
   username: string;
@@ -29,7 +30,7 @@ export default function Auth() {
   const {setAuth} = useContext(Context);
 
   const [isAuthForm, setIsAuthForm ] = useState(false);
-
+  const navigate = useNavigate();
   const onFinish = async (values: LoginFields | RegisterFields) => {
     try {
       if ('email' in values) { // Проверяем наличие свойства email
@@ -39,17 +40,21 @@ export default function Auth() {
           username: values.username,
           password: values.password,
         });
-        console.log('Registration successful:', response.data);
+        console.log('Registration successful:', response);
+        setAuth(true);
+        
       } else {
         // Если email отсутствует, значит это форма входа
         const response = await postLogin({
           username: values.username,
           password: values.password,
         });
-        const token = response.data.token;
+        const token = response.token;
+        console.log(response)
         setAuth(true);
         localStorage.setItem('auth', 'true');
         localStorage.setItem('token', token);
+        
       }
     } catch (error) {
       console.error('Error:', error);
