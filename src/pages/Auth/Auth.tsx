@@ -3,31 +3,57 @@ import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input } from 'antd';
 import './Auth.css';
 import { Context } from '../../components/Context/AppContext';
-import { start } from 'repl';
+import { postLogin,postRegister} from "../../API/API";
 
-type FieldType = {
-  username?: string;
-  password?: string;
-  remember?: string;
+type LoginFields = {
+  username: string;
+  password: string;
+  remember:boolean;
 };
-
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+type RegisterFields = {
+  email: string;
+  username: string;
+  password: string;
+  VerifyPass: string;
+};
+const onFinish: FormProps<LoginFields>['onFinish'] = (values) => {
   console.log('Success:', values);
 };
 
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+const onFinishFailed: FormProps<LoginFields>['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
 
 
 export default function Auth() {
-  const { isAuth, setAuth } = useContext(Context);
+  const {setAuth} = useContext(Context);
 
   const [isAuthForm, setIsAuthForm ] = useState(false);
 
-  const login = () => {
-    setAuth(true)
-    localStorage.setItem('auth', 'true');
+  const onFinish = async (values: LoginFields | RegisterFields) => {
+    try {
+      if ('email' in values) { // Проверяем наличие свойства email
+        // Если email есть, значит это форма регистрации
+        const response = await postRegister({
+          email: values.email,
+          username: values.username,
+          password: values.password,
+        });
+        console.log('Registration successful:', response.data);
+      } else {
+        // Если email отсутствует, значит это форма входа
+        const response = await postLogin({
+          username: values.username,
+          password: values.password,
+        });
+        const token = response.data.token;
+        setAuth(true);
+        localStorage.setItem('auth', 'true');
+        localStorage.setItem('token', token);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
   return (
     <div className='form_conteiner'>
@@ -41,69 +67,85 @@ export default function Auth() {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item<FieldType>
-          label="Логин"
-          key={'login'}
-          name="username"
-          id='login'
-          rules={[{ required: true, message: 'Введите логин' }]}
-        >
-          <Input />
-        </Form.Item>
 
 
-        {isAuthForm ? <></> :
-          <Form.Item<FieldType>
-            label="Почта"
-            key={'mail'}
-            
-            id='mail'
-            rules={[{ required: true, message: 'Введите почту' }]}
-          >
-            <Input />
-          </Form.Item>
+
+        {isAuthForm ?
+            <>
+            <Form.Item<LoginFields>
+                label="Логин"
+                key={'username'}
+                name="username"
+                id='login'
+                rules={[{ required: true, message: 'Введите логин' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item<LoginFields>
+
+                label="Пароль"
+                name={'password'}
+                key={'password'}
+                id='password'
+                rules={[{ required: true, message: 'Введите пароль' }]}
+            >
+              <Input.Password />
+            </Form.Item>
+              <Form.Item<LoginFields>
+                  name="remember"
+                  valuePropName="checked"
+                  style={{ alignSelf: 'center' }}
+              >
+                <Checkbox>Запомнить меня</Checkbox>
+              </Form.Item>
+            </>
+            :
+            <>
+                <Form.Item<RegisterFields>
+                  label="Почта"
+                  key={'email'}
+                  name="email"
+                  id='email'
+                  rules={[{ required: true, message: 'Введите почту' }]}
+                >
+                  <Input />
+                </Form.Item>
+                    <Form.Item<RegisterFields>
+                        label="Логин"
+                        key={'username'}
+                        name="username"
+                        id='login'
+                        rules={[{ required: true, message: 'Введите логин' }]}
+                    >
+                      <Input />
+                    </Form.Item>
+                <Form.Item<RegisterFields>
+
+                label="Пароль"
+                name="password"
+                key={'password'}
+              id='password'
+              rules={[{ required: true, message: 'Введите пароль' }]}
+            >
+              <Input.Password />
+            </Form.Item>
+            <Form.Item<RegisterFields>
+                className="form-item-label"
+                label="Повторите пароль"
+                id='VerifyPass'
+                key={'VerifyPass'}
+                rules={[{ required: true, message: 'Введите пароль' }]}
+
+            >
+              <Input.Password />
+            </Form.Item>
+
+          </>
         }
-
-
-
-        <Form.Item<FieldType>
-
-          label="Пароль"
-          name="password"
-          key={'password'}
-          id='password'
-          rules={[{ required: true, message: 'Введите пароль' }]}
-        >
-          <Input.Password />
-        </Form.Item>
-
-
-        {isAuthForm ? <></> :
-          <Form.Item<FieldType>
-            className="form-item-label"
-            label="Повторите пароль"
-            
-            id='confirm_password'
-            key={'confirm_password'}
-            rules={[{ required: true, message: 'Введите пароль' }]}
-
-          >
-            <Input.Password />
-          </Form.Item>
-        }
-
-        <Form.Item<FieldType>
-          name="remember"
-          valuePropName="checked"
-          style={{ alignSelf: 'center' }}
-        >
-          <Checkbox>Запомнить меня</Checkbox>
-        </Form.Item>
 
         <Form.Item style={{ alignSelf: 'center' }}>
           <Button type="primary" htmlType="submit">
-            {isAuthForm ? <span onClick={() => login()}>Войти</span> : 
-            <span onClick={() => login()}>Регистрация</span>}
+            {isAuthForm ? 'Войти' : 'Регистрация'}
           </Button>
         </Form.Item>
 

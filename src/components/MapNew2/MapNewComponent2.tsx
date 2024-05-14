@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+// @ts-ignore
 import { YMapControlButton, YMapControls, type YMapLocationRequest, type YMapZoomLocation } from 'ymaps3';
 import "./MapNewComponent2.css";
 import axios from 'axios';

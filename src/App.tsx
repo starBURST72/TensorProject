@@ -10,14 +10,11 @@ import { Context, ContextTravel } from "./components/Context/AppContext";
 import { useNavigate } from "react-router-dom";
 import TravelsPage from './pages/TravelsPage/TravelsPage';
 
-
 interface Travel {
     id: number;
     title: string;
     description: string;
 }
-
-
 
 function App() {
     const [isAuth, setAuth] = useState<boolean>(false);
@@ -27,14 +24,7 @@ function App() {
         const navElement = document.querySelector('nav');
         const navHeight = navElement?.offsetHeight || 0;
         document.documentElement.style.setProperty('--nav-height', `${navHeight}px`);
-    }, []);
-
-
-    // const toggle = () => {
-    //     if (localStorage.getItem('auth')) { setAuth(true); }
-    //     setTravel((prev) => prev)
-    // }
-
+    }, []); 
 
     useEffect(() => {
         if (localStorage.getItem('auth')) { setAuth(true); }

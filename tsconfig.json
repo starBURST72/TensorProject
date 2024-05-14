@@ -19,18 +19,15 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-
-    "paths": {
-      "ymaps3": [
-        "./node_modules/@yandex/ymaps3-types"
-      ]
-    },
-    
+    "noUncheckedIndexedAccess": true
   },
   "include": [
     "src",
     "declaration.d.ts"
   ],
-  
-  "typeRoots": ["node_modules/@types", "src/types", "node_modules/@yandex/ymaps3-types"]
+  "typeRoots": [
+    "node_modules/@types",
+    "src/types",
+    "node_modules/@yandex/ymaps3-types"
+  ]
 }
