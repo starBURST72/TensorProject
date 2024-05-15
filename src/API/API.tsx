@@ -66,7 +66,7 @@ export const getAllTravels = async () => {
 export const CreateTravel = async (data: { name: string, description: string, places: Object }) => {
     try {
         // Выполнение POST запроса для регистрации
-        const response = await axios.post(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.newtravel}`, data);
+        const response = await axios.post(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.travels}`, data);
         return response.data;
     } catch (error: any) {
         // Обработка ошибок регистрации

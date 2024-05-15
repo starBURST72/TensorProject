@@ -53,7 +53,7 @@ const MapComponent: React.FC = () => {
 
     return (
         <div style={{ position: 'relative' }}>
-            <Sidebar adventures={[]} />
+            <Sidebar  />
             {loading && <div className="loader">Loading...</div>}
             <div className='searchConteiner'>
                 <h2>Введите адрес</h2>
