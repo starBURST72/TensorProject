@@ -12,25 +12,24 @@ const initialContext: AppContextType = {
 
 export const Context = createContext<AppContextType>(initialContext);
 
-
-
-
-interface TravelContextType {
-    travel: {
-        title: string;
-        description: string;
-        id: number
-    };
-    setTravel: React.Dispatch<React.SetStateAction<any>>;
+interface Travel {
+    title: string;
+    description: string;
+    id: number;
 }
 
+interface TravelContextType {
+    travels: Travel[];
+    selectedTravel: Travel | null;
+    setTravels: React.Dispatch<React.SetStateAction<Travel[]>>;
+    setSelectedTravel: React.Dispatch<React.SetStateAction<Travel | null>>;
+}
 const initialContextTravel: TravelContextType = {
-    travel: {
-        title: 'Выберите маршрут',
-        description: 'Описание',
-        id: 0
-    },
-    setTravel: () => { },
+    travels: [],
+    selectedTravel: null,
+    setTravels: () => { },
+    setSelectedTravel: () => { },
 };
+
 
 export const ContextTravel = createContext<TravelContextType>(initialContextTravel);

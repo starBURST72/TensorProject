@@ -10,15 +10,31 @@ import { Context, ContextTravel } from "./components/Context/AppContext";
 import { useNavigate } from "react-router-dom";
 import TravelsPage from './pages/TravelsPage/TravelsPage';
 
+
+// interface TravelContextType {
+//     travels: {
+//       title: string;
+//       description: string;
+//       id: number;
+//     }[];
+//     setTravel: React.Dispatch<React.SetStateAction<any>>;
+//   }
+
+
 interface Travel {
-    id: number;
     title: string;
     description: string;
-}
+    id: number;
+  }
 
 function App() {
     const [isAuth, setAuth] = useState<boolean>(false);
-    const [travel, setTravel] = useState<Travel>({id:0,title:'Выберите маршрут',description:'Описание'});
+    const [travels, setTravels] = useState<Travel[]>([]);
+    const [selectedTravel, setSelectedTravel] = useState<Travel | null>({
+        title: 'Выберите маршрут',
+        description: 'Описание маршрута',
+        id: 0
+      });
 
     useEffect(() => {
         const navElement = document.querySelector('nav');
@@ -42,7 +58,7 @@ function App() {
         <div className="app">
             <Context.Provider value={{ isAuth, setAuth }}>
                 {isAuth ?
-                    <ContextTravel.Provider value={{ travel, setTravel }}>
+                    <ContextTravel.Provider value={{ travels, setTravels, selectedTravel, setSelectedTravel }}>
                         <Routes>
                             <Route path='/' element={<Layout />}>
                                 <Route index element={<HomePage />} />

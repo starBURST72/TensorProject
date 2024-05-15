@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import "./TravelsPage.css";
 import Travel from "../../components/Travel/Travel";
 import { ContextTravel } from "../../components/Context/AppContext";
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-
+import { getAllTravels, getOneTravel} from "../../API/API";
 
 const travelsData = [
     {
@@ -37,14 +37,28 @@ const travelsData = [
 ];
 
 function TravelsPage() {
-    const { travel, setTravel } = useContext(ContextTravel);
+    const { travels, setTravels } = useContext(ContextTravel);
+
+    useEffect(() => {
+
+        const onFinish = async () => {
+            const respone = await getAllTravels();
+          };
+
+
+
+        setTravels(travelsData);
+        onFinish()
+      }, []);
+
+
     return (
         <div>
             <div className="travels-page">
                 <p className="title">Маршруты</p>
 
                 <div className="travel-cards-container">
-                    {travelsData.map((travel, index) => (
+                    {travels.map((travel, index) => (
                         <Travel key={index} {...travel} />
                     ))}
                 </div>

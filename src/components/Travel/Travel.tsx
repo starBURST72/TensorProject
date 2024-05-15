@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Context, ContextTravel } from "../Context/AppContext";
 import { Link, NavLink } from "react-router-dom";
 import "./Travel.css";
+import { getOneTravel } from "../../API/API";
 
 
 interface TravelProps {
@@ -13,11 +14,16 @@ interface TravelProps {
 
 function Travel(props: TravelProps) {
     const { title, description,id } = props;
-    const { travel, setTravel } = useContext(ContextTravel);
+    const { setSelectedTravel } = useContext(ContextTravel);
     
+    const handleClick = async () => {
+        setSelectedTravel(props);
+        const response = await getOneTravel(id)
+      };
+
     return (
         <Link className="travel-card" to='/map'>
-            <div onClick={() => setTravel(()=>props)}>
+            <div onClick={handleClick}>
 
                 <h3>{title}</h3>
                 <p>{description}</p>

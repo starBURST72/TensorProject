@@ -96,7 +96,7 @@ export default function MapNewComponent2() {
                         <button onClick={() => handleSearch()}>Показать</button>
                     </div>
                 </div>
-                <Sidebar adventures={[]} />
+                <Sidebar  />
             </div>
             <div className="map" ref={mapRef}>
 

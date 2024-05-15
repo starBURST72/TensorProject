@@ -5,19 +5,18 @@ import { MenuOutlined } from '@ant-design/icons';
 import './Sidebar.css';
 import { ContextTravel } from '../Context/AppContext';
 
-interface Adventure {
+interface Travel {
   id: number;
-  name: string;
+  title: string;
+  description: string;
 }
 
-interface SidebarProps {
-  adventures: Adventure[];
-}
 
-const Sidebar: React.FC<SidebarProps> = ({ adventures }) => {
+
+const Sidebar: React.FC= () => {
   const [open, setOpen] = useState(true);
   const [placement] = useState<DrawerProps['placement']>('right');
-  const { travel, setTravel } = useContext(ContextTravel);
+  const { selectedTravel } = useContext(ContextTravel);
 
   const showDrawer = () => {
     setOpen(true);
@@ -36,7 +35,7 @@ const Sidebar: React.FC<SidebarProps> = ({ adventures }) => {
       </Button>
 
       <Drawer
-        title={travel.title}
+        title={selectedTravel?.title}
         placement={'right'}
         closable={true}
         onClose={onClose}
@@ -49,7 +48,7 @@ const Sidebar: React.FC<SidebarProps> = ({ adventures }) => {
       //width={'25%'}
       >
         {
-          travel.description
+          selectedTravel?.description
         }
 
       </Drawer>
