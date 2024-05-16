@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/TensorProject/static/css/main.ff1cfea1.css",
-    "main.js": "/TensorProject/static/js/main.011a61ae.js",
-    "static/js/20.b2abf59d.chunk.js": "/TensorProject/static/js/20.b2abf59d.chunk.js",
+    "main.js": "/TensorProject/static/js/main.e8a0e6f1.js",
+    "static/js/20.b6b4819f.chunk.js": "/TensorProject/static/js/20.b6b4819f.chunk.js",
     "static/js/819.a1bb8f6a.chunk.js": "/TensorProject/static/js/819.a1bb8f6a.chunk.js",
     "static/media/logo2.png": "/TensorProject/static/media/logo2.cfb37f59221f31cd1a17.png",
     "index.html": "/TensorProject/index.html",
     "main.ff1cfea1.css.map": "/TensorProject/static/css/main.ff1cfea1.css.map",
-    "main.011a61ae.js.map": "/TensorProject/static/js/main.011a61ae.js.map",
-    "20.b2abf59d.chunk.js.map": "/TensorProject/static/js/20.b2abf59d.chunk.js.map",
+    "main.e8a0e6f1.js.map": "/TensorProject/static/js/main.e8a0e6f1.js.map",
+    "20.b6b4819f.chunk.js.map": "/TensorProject/static/js/20.b6b4819f.chunk.js.map",
     "819.a1bb8f6a.chunk.js.map": "/TensorProject/static/js/819.a1bb8f6a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ff1cfea1.css",
-    "static/js/main.011a61ae.js"
+    "static/js/main.e8a0e6f1.js"
   ]
 }
