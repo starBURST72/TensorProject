@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/TensorProject/static/css/main.ff1cfea1.css",
-    "main.js": "/TensorProject/static/js/main.d6aec167.js",
+    "main.js": "/TensorProject/static/js/main.4d8f832a.js",
     "static/js/20.c3a49a69.chunk.js": "/TensorProject/static/js/20.c3a49a69.chunk.js",
     "static/js/819.a1bb8f6a.chunk.js": "/TensorProject/static/js/819.a1bb8f6a.chunk.js",
     "static/media/logo2.png": "/TensorProject/static/media/logo2.cfb37f59221f31cd1a17.png",
     "index.html": "/TensorProject/index.html",
     "main.ff1cfea1.css.map": "/TensorProject/static/css/main.ff1cfea1.css.map",
-    "main.d6aec167.js.map": "/TensorProject/static/js/main.d6aec167.js.map",
+    "main.4d8f832a.js.map": "/TensorProject/static/js/main.4d8f832a.js.map",
     "20.c3a49a69.chunk.js.map": "/TensorProject/static/js/20.c3a49a69.chunk.js.map",
     "819.a1bb8f6a.chunk.js.map": "/TensorProject/static/js/819.a1bb8f6a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ff1cfea1.css",
-    "static/js/main.d6aec167.js"
+    "static/js/main.4d8f832a.js"
   ]
 }
