@@ -10,15 +10,17 @@ let serverReady: Promise<void>;
  * Please prefer conditionally including a mocking file via bundler
  * during the build of your application.
  */
-if (process.env.NODE_ENV === 'development') {
+// if (process.env.NODE_ENV === 'development') {
 
-    serverReady = import('./Mocks/index').then(({startWorker})  => {
-        return startWorker();
-    })
-} else {
-    serverReady = Promise.resolve();
-}
-
+//     serverReady = import('./Mocks/index').then(({startWorker})  => {
+//         return startWorker();
+//     })
+// } else {
+//     serverReady = Promise.resolve();
+// }
+serverReady = import('./Mocks/index').then(({startWorker})  => {
+    return startWorker();
+})
 
 
 serverReady.then(() => {
