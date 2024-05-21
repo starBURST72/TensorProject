@@ -19,6 +19,8 @@ if (process.env.NODE_ENV === 'development') {
     serverReady = Promise.resolve();
 }
 
+
+
 serverReady.then(() => {
     const root = ReactDOM.createRoot(
         document.getElementById('root') as HTMLElement
