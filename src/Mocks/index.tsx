@@ -7,6 +7,7 @@ const worker: SetupWorker = setupWorker(
 
 export function startWorker(): Promise<void> {
     return worker.start({
+        serviceWorker:{url:"/TensorProject/mockServiceWorker.js"},
         onUnhandledRequest(req, print) {
             return; // Пропустим все запросы, не подходящие под наши хэндлеры
         }
