@@ -18,7 +18,7 @@ let serverReady: Promise<void>;
 // } else {
 //     serverReady = Promise.resolve();
 // }
-serverReady = import('./Mocks/index').then(({startWorker})  => {
+serverReady = import('./Mocks/Manager').then(({startWorker})  => {
     return startWorker();
 })
 
