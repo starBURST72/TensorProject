@@ -21,7 +21,7 @@ export function Header() {
     }
     return (
         <nav className="nav">
-            <div className="container">
+            <div className="header-container">
                 <div className="nav-row">
                     <NavLink to='/'>
                         <div className="logo">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState,useEffect } from 'react';
 import './styles/App.css';
 import { Routes, Route } from "react-router-dom";
 import MapPage from "./pages/MapPage.css/MapPage";
@@ -7,8 +7,9 @@ import HomePage from "./pages/HomePage/HomePage";
 import Auth from "./pages/Auth/Auth";
 import Layout from "./components/Layout/Layout";
 import { Context, ContextTravel } from "./components/Context/AppContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import TravelsPage from './pages/TravelsPage/TravelsPage';
+import SettingsPage from "./pages/SettingsPage/SettingsPage";
 
 
 // interface TravelContextType {
@@ -30,29 +31,39 @@ interface Travel {
 function App() {
     const [isAuth, setAuth] = useState<boolean>(false);
     const [travels, setTravels] = useState<Travel[]>([]);
+    const [loading, setLoading] = useState(true);
+    let location = useLocation();
     const [selectedTravel, setSelectedTravel] = useState<Travel | null>({
         title: 'Выберите маршрут',
         description: 'Описание маршрута',
         id: 0
       });
-
+    let navigate = useNavigate();
     useEffect(() => {
         const navElement = document.querySelector('nav');
         const navHeight = navElement?.offsetHeight || 0;
         document.documentElement.style.setProperty('--nav-height', `${navHeight}px`);
-    }, []); 
+    }, []);
 
     useEffect(() => {
-        if (localStorage.getItem('auth')) { setAuth(true); }
+        const auth = localStorage.getItem('auth');
+        if (auth) {
+            setAuth(true);
+        }
+        setLoading(false);
+    }, []);
 
-    }, [])
-
-    let navigate = useNavigate();
-    useEffect(() => {
-        if (isAuth) {
-            return navigate("/map");
-        } else { return navigate("/Auth"); }
-    }, [isAuth]);
+    useLayoutEffect(() => {
+        if (!loading) {
+            if (isAuth) {
+                if (location.pathname === '/Auth') {
+                    navigate('/'); // Redirect to the home page if authenticated and on /auth
+                }
+            } else {
+                navigate("/Auth");
+            }
+        }
+    }, [isAuth, loading, navigate]);
     
     return (
         <div className="app">
@@ -63,6 +74,7 @@ function App() {
                             <Route path='/' element={<Layout />}>
                                 <Route index element={<HomePage />} />
                                 <Route path="map" element={<MapPage />} />
+                                <Route path="settings" element={<SettingsPage />} />
                                 <Route path="*" element={<NotFound />} />
                                 <Route path="travels" element={<TravelsPage />} />
                             </Route>
@@ -74,7 +86,7 @@ function App() {
                             <Route index element={<HomePage />} />
                             <Route path="*" element={<NotFound />} />
                             <Route path="Auth" element={<Auth />} />
-
+                            <Route index element={<HomePage />} />
                             <Route path="map" element={<MapPage />} />
                         </Route>
                     </Routes>

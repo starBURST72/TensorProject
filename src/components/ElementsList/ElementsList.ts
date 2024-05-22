@@ -1,6 +1,5 @@
 // ElementsList.ts
-import { useContext } from 'react';
-import { Context } from '../Context/AppContext';
+
 
 const elements = [
     {
@@ -19,11 +18,15 @@ const elements = [
         link: '/travels',
     },
     {
+        name: 'Настройки',
+        key: 4,
+        link: '/settings',
+    },
+    {
         name: 'Авторизация',
         key: 3,
         link: '/auth',
-    },
-
+    }
 
 ];
 
