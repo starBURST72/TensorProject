@@ -1,0 +1,8 @@
+.exit-button:hover {
+    color: red !important;
+    /* Цвет текста при наведении */
+}
+
+.ant-dropdown {
+    padding-top: 10px;
+}

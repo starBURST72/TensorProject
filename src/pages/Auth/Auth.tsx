@@ -3,13 +3,13 @@ import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input } from 'antd';
 import './Auth.css';
 import { Context } from '../../components/Context/AppContext';
-import { postLogin,postRegister} from "../../API/API";
+import { postLogin, postRegister } from "../../API/API";
 import { useNavigate } from 'react-router-dom';
 
 type LoginFields = {
   username: string;
   password: string;
-  remember:boolean;
+  remember: boolean;
 };
 type RegisterFields = {
   email: string;
@@ -27,9 +27,9 @@ const onFinishFailed: FormProps<LoginFields>['onFinishFailed'] = (errorInfo) => 
 
 
 export default function Auth() {
-  const {setAuth} = useContext(Context);
+  const { setAuth } = useContext(Context);
 
-  const [isAuthForm, setIsAuthForm ] = useState(false);
+  const [isAuthForm, setIsAuthForm] = useState(false);
   const navigate = useNavigate();
   const onFinish = async (values: LoginFields | RegisterFields) => {
     try {
@@ -42,7 +42,7 @@ export default function Auth() {
         });
         console.log('Registration successful:', response);
         setAuth(true);
-        
+
       } else {
         // Если email отсутствует, значит это форма входа
         const response = await postLogin({
@@ -54,7 +54,7 @@ export default function Auth() {
         setAuth(true);
         localStorage.setItem('auth', 'true');
         localStorage.setItem('token', token);
-        
+
       }
     } catch (error) {
       console.error('Error:', error);
@@ -76,73 +76,83 @@ export default function Auth() {
 
 
         {isAuthForm ?
-            <>
+          <>
             <Form.Item<LoginFields>
-                label="Логин"
-                key={'username'}
-                name="username"
-                id='login'
-                rules={[{ required: true, message: 'Введите логин' }]}
+              label="Логин"
+              key={'username'}
+              name="username"
+              id='login'
+              rules={[{ required: true, message: 'Введите логин' }]}
             >
-              <Input />
+              <Input placeholder='Логин'/>
             </Form.Item>
             <Form.Item<LoginFields>
 
-                label="Пароль"
-                name={'password'}
-                key={'password'}
-                id='password'
-                rules={[{ required: true, message: 'Введите пароль' }]}
-            >
-              <Input.Password />
-            </Form.Item>
-              <Form.Item<LoginFields>
-                  name="remember"
-                  valuePropName="checked"
-                  style={{ alignSelf: 'center' }}
-              >
-                <Checkbox>Запомнить меня</Checkbox>
-              </Form.Item>
-            </>
-            :
-            <>
-                <Form.Item<RegisterFields>
-                  label="Почта"
-                  key={'email'}
-                  name="email"
-                  id='email'
-                  rules={[{ required: true, message: 'Введите почту' }]}
-                >
-                  <Input />
-                </Form.Item>
-                    <Form.Item<RegisterFields>
-                        label="Логин"
-                        key={'username'}
-                        name="username"
-                        id='login'
-                        rules={[{ required: true, message: 'Введите логин' }]}
-                    >
-                      <Input />
-                    </Form.Item>
-                <Form.Item<RegisterFields>
-
-                label="Пароль"
-                name="password"
-                key={'password'}
+              label="Пароль"
+              name={'password'}
+              key={'password'}
               id='password'
               rules={[{ required: true, message: 'Введите пароль' }]}
             >
-              <Input.Password />
+              <Input.Password placeholder='Пароль'/>
+            </Form.Item>
+            <Form.Item<LoginFields>
+              name="remember"
+              valuePropName="checked"
+              style={{ alignSelf: 'center' }}
+            >
+              <Checkbox>Запомнить меня</Checkbox>
+            </Form.Item>
+          </>
+          :
+          <>
+            <Form.Item
+              label="Почта"
+              key={'email'}
+              name="email"
+              id='email'
+              rules={[
+                {
+                  type: 'email',
+                  message: 'Некорректный email!',
+                },
+                {
+                  required: true,
+                  message: 'Пожалуйста, введите почту!',
+                },
+              ]}
+            >
+              <Input placeholder="Почта" />
+            </Form.Item>
+
+            <Form.Item<RegisterFields>
+              label="Логин"
+              key={'username'}
+              name="username"
+              id='login'
+              rules={[{ required: true, message: 'Введите логин' }]}
+            >
+              <Input placeholder='Логин'/>
             </Form.Item>
             <Form.Item<RegisterFields>
-                className="form-item-label"
-                label="Повторите пароль"
-                id='VerifyPass'
-                key={'VerifyPass'}
-                rules={[{ required: true, message: 'Введите пароль' }]}
+
+              label="Пароль"
+              name="password"
+              key={'password'}
+              id='password'
+              rules={[{ required: true, message: 'Введите пароль' }]}
+            >
+              <Input.Password placeholder='Пароль'/>
+            </Form.Item>
+            <Form.Item<RegisterFields>
+              className="form-item-label"
+              label="Повторите пароль"
+              id='VerifyPass'
+              key={'VerifyPass'}
+              rules={[{ required: true, message: 'Введите пароль' }]}
 
             >
-              <Input.Password />
+              <Input.Password placeholder='Повторите пароль'/>
             </Form.Item>
 
           </>
