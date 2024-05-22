@@ -1,8 +1,8 @@
 import "./SettingsPage.css"
 import React from 'react';
-import {Input, Select, Space} from 'antd';
+import { Button, Form, Input, Select, Space, Typography } from 'antd';
 import type { SelectProps } from 'antd';
-import {useState,ChangeEvent} from "react";
+import { useState, ChangeEvent } from "react";
 const interests = [
     'спорт',
     'концерты',
@@ -47,6 +47,33 @@ function SettingsPage() {
             <div className="settings-avataravatar"></div>
             <h1 className="settings-header">Фамилия имя</h1>
             <div className="settings-form">
+
+                {/* мой вариант, но тут чтобы работало, надо в Form оборачивать*/}
+
+                <Form>
+                    <Typography.Title level={5}>Почта</Typography.Title>
+
+                    <Space.Compact style={{ width: '100%' }} size='middle'>
+                        <Form.Item
+                            style={{ width: '100%' }}
+                            key={'email'}
+                            name="email"
+                            id='email'
+                            rules={[
+                                {
+                                    type: 'email',
+                                    message: 'Некорректный email!',
+                                }
+                            ]}
+                        >
+                            <Input placeholder="Почта" />
+                        </Form.Item>
+                        <Button style={{ backgroundColor: '#5c62ec' }} type="primary">Изменить</Button>
+                    </Space.Compact>
+                </Form>
+
+
+
                 <label className="settings-label">
                     Почта
                     <div>
@@ -58,13 +85,17 @@ function SettingsPage() {
                             onBlur={handleEmailBlur}
                             placeholder="Enter your email"
                         />
-                        {error && <div style={{color: 'red'}}>{error}</div>}
+                        {error && <div style={{ color: 'red' }}>{error}</div>}
                     </div>
-                    <Input datatype={"mail"} className={"settings-input"}/>
+                    {/* <Input datatype={"mail"} className={"settings-input"} /> */}
+                </label>
+                <label className="settings-label">
+                    Логин
+                    <Input type={"text"} className={"settings-input"} />
                 </label>
                 <label className="settings-label">
                     Дата рождения
-                    <Input type={"date"} className={"settings-input"}/>
+                    <Input type={"date"} className={"settings-input"} />
                 </label>
                 <label className="settings-label">
                     Город
