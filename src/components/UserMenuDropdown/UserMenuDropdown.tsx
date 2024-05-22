@@ -5,6 +5,7 @@ import ava from '../../img/ava.jpg';
 import { Context } from '../Context/AppContext';
 import { ElementsList } from "../ElementsList/ElementsList";
 import './UserMenuDropdown.css';
+import { Link } from 'react-router-dom';
 
 export default function UserMenuDropdown() {
     const { isAuth, setAuth } = useContext(Context);
@@ -35,9 +36,21 @@ export default function UserMenuDropdown() {
             label: 'Друзья',
             key: '3',
         },
+        // {
+        //     label: 'Настройки',
+        //     key: '4',
+            
+        // },
         {
-            label: 'Настройки',
-            key: '4',
+            label: (
+                <Link to={'/settings'}>
+                    Настройки
+                </Link>
+                // <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+                //   1st menu item
+                // </a>
+              ),
+            key: 4,
         },
         {
 
@@ -57,7 +70,7 @@ export default function UserMenuDropdown() {
             <a onClick={(e) => e.preventDefault()} >
                 <Space >
                     <Badge count={0} >
-                        <Avatar shape="circle" src={ava} />
+                        <Avatar shape="circle" size={'large'} src={ava} />
                     </Badge>
                 </Space>
             </a>
