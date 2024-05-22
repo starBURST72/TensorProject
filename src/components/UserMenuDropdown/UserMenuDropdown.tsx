@@ -24,7 +24,15 @@ export default function UserMenuDropdown() {
             type: 'divider',
         },
         {
-            label: 'Профиль',
+            label: (
+                <Link to={'/profile'}>
+                    Профиль
+                </Link>
+                // <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+                //   1st menu item
+                // </a>
+            ),
+
             key: '1',
         },
         {

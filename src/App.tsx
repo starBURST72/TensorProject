@@ -10,6 +10,7 @@ import { Context, ContextTravel } from "./components/Context/AppContext";
 import { useNavigate,useLocation } from "react-router-dom";
 import TravelsPage from './pages/TravelsPage/TravelsPage';
 import SettingsPage from "./pages/SettingsPage/SettingsPage";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
 
 
 // interface TravelContextType {
@@ -75,6 +76,7 @@ function App() {
                                 <Route index element={<HomePage />} />
                                 <Route path="map" element={<MapPage />} />
                                 <Route path="settings" element={<SettingsPage />} />
+                                <Route path="profile" element={<ProfilePage />} />
                                 <Route path="*" element={<NotFound />} />
                                 <Route path="travels" element={<TravelsPage />} />
                             </Route>
