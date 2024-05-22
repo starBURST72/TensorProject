@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { Context, ContextTravel } from "../Context/AppContext";
+import {ContextTravel } from "../Context/AppContext";
 import { Link, NavLink } from "react-router-dom";
 import "./Travel.css";
-import { getOneTravel } from "../../API/API";
+import { getOneTravel } from "../../services/TravelService";
 
 
 interface TravelProps {

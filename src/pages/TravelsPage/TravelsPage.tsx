@@ -5,7 +5,7 @@ import Travel from "../../components/Travel/Travel";
 import { ContextTravel } from "../../components/Context/AppContext";
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { getAllTravels, getOneTravel} from "../../API/API";
+import { getAllTravels, getOneTravel} from "../../services/TravelService";
 
 const travelsData = [
     {

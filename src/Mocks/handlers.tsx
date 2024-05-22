@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
-import { OUR_API_ADDRESS, OUR_API_ENDPOINTS } from '../API/constants';
+import { OUR_API_ADDRESS, OUR_API_ENDPOINTS } from '../http/constants';
+import {IUser} from "../Models/IUser";
 
 export const handlers = [
     // Обработчик для POST запроса аутентификации
@@ -7,7 +8,13 @@ export const handlers = [
         // Возвращаем мокованные данные для успешной аутентификации
         return HttpResponse.json(
             {
-                token: "mocked-token"
+                access_token: "access-token",
+                refresh_token: "refresh-token",
+                user: {
+                    username: "string",
+                    isActivated:"boolean",
+                    id:"string"
+                }
             }
         );
     }),
@@ -16,7 +23,13 @@ export const handlers = [
     http.post(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.register}`, (req) => {
         // Возвращаем мокованные данные для успешной регистрации
         return HttpResponse.json(
-            [{ message: 'Registration successful' }]
+            { message: 'Registration successful' }
+        );
+    }),
+    http.post(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.logout}`, (req) => {
+        // Возвращаем мокованные данные для успешной регистрации
+        return HttpResponse.json(
+            { message: 'logout successful' }
         );
     }),
 

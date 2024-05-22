@@ -2,9 +2,8 @@ import React, { useContext } from "react";
 import './Header.css';
 import logo from '../../img/logo2.png';
 import { ElementsList } from "../ElementsList/ElementsList";
-import { Context } from '../Context/AppContext';
+import { Context } from '../../index';
 import { NavLink } from "react-router-dom";
-import { Button } from "antd";
 import UserMenuDropdown from "../UserMenuDropdown/UserMenuDropdown";
 
 interface IElement {
@@ -15,7 +14,7 @@ interface IElement {
 const elements = ElementsList();
 
 export function Header() {
-    const { isAuth, setAuth } = useContext(Context);
+    const {store } = useContext(Context);
     // function logout() {
     //     setAuth(false);
     //     localStorage.removeItem('auth');
@@ -36,12 +35,12 @@ export function Header() {
                     <div className="nav-row">
                         <ul className="nav-list">
                             {elements.map((HeaderElements: IElement, index: number) => (
-                                isAuth && index !== elements.length - 1 ? (
+                                store.isAuth && index !== elements.length - 1 ? (
                                     <li key={HeaderElements.key} className="nav-list__item">
                                         <NavLink to={HeaderElements.link}
                                             className={({ isActive }) => isActive ? 'nav-list__link--active' : 'nav-list__link'}>{HeaderElements.name}</NavLink>
                                     </li>
-                                ) : !isAuth && index === elements.length - 1 ? (
+                                ) : !store.isAuth && index === elements.length - 1 ? (
                                     <li key={HeaderElements.key} className="nav-list__item">
                                         <NavLink to={HeaderElements.link}
                                             className={({ isActive }) => isActive ? 'nav-list__link--active' : 'nav-list__link'}>{HeaderElements.name}</NavLink>
@@ -51,7 +50,7 @@ export function Header() {
                             {/* <li>
                                 <UserMenuDropdown/>
                             </li> */}
-                            {isAuth && (
+                            {store.isAuth && (
                                 <li key={elements.length} className="nav-list__item">
                                     <UserMenuDropdown/>
                                 </li>

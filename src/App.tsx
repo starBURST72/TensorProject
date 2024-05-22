@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState,useEffect } from 'react';
+import React, {useLayoutEffect, useState, useEffect, useContext} from 'react';
 import './styles/App.css';
 import { Routes, Route } from "react-router-dom";
 import MapPage from "./pages/MapPage.css/MapPage";
@@ -6,11 +6,13 @@ import NotFound from "./pages/NotFoundPage/NotFound";
 import HomePage from "./pages/HomePage/HomePage";
 import Auth from "./pages/Auth/Auth";
 import Layout from "./components/Layout/Layout";
-import { Context, ContextTravel } from "./components/Context/AppContext";
+import {ContextTravel } from "./components/Context/AppContext";
 import { useNavigate,useLocation } from "react-router-dom";
 import TravelsPage from './pages/TravelsPage/TravelsPage';
 import SettingsPage from "./pages/SettingsPage/SettingsPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import {Context} from "./index";
+import {observer} from "mobx-react-lite";
 
 
 // interface TravelContextType {
@@ -30,7 +32,7 @@ interface Travel {
   }
 
 function App() {
-    const [isAuth, setAuth] = useState<boolean>(false);
+    const {store}=useContext(Context);
     const [travels, setTravels] = useState<Travel[]>([]);
     const [loading, setLoading] = useState(true);
     let location = useLocation();
@@ -47,16 +49,16 @@ function App() {
     }, []);
 
     useEffect(() => {
-        const auth = localStorage.getItem('auth');
+        const auth = localStorage.getItem("token");
         if (auth) {
-            setAuth(true);
+            store.setAuth(true);
         }
         setLoading(false);
     }, []);
 
     useLayoutEffect(() => {
         if (!loading) {
-            if (isAuth) {
+            if (store.isAuth) {
                 if (location.pathname === '/Auth') {
                     navigate('/'); // Redirect to the home page if authenticated and on /auth
                 }
@@ -64,12 +66,11 @@ function App() {
                 navigate("/Auth");
             }
         }
-    }, [isAuth, loading, navigate]);
+    }, [store.isAuth, loading, navigate]);
     
     return (
         <div className="app">
-            <Context.Provider value={{ isAuth, setAuth }}>
-                {isAuth ?
+                {store.isAuth ?
                     <ContextTravel.Provider value={{ travels, setTravels, selectedTravel, setSelectedTravel }}>
                         <Routes>
                             <Route path='/' element={<Layout />}>
@@ -93,10 +94,8 @@ function App() {
                         </Route>
                     </Routes>
                 }
-
-            </Context.Provider>
         </div>
     );
 }
 
-export default App;
+export default observer(App);

@@ -2,10 +2,8 @@ import React, { useContext, useState } from 'react'
 import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input } from 'antd';
 import './Auth.css';
-import { Context } from '../../components/Context/AppContext';
-import { postLogin, postRegister } from "../../API/API";
-import { useNavigate } from 'react-router-dom';
-
+import {Context} from '../../index';
+import {observer} from "mobx-react-lite";
 type LoginFields = {
   username: string;
   password: string;
@@ -17,44 +15,28 @@ type RegisterFields = {
   password: string;
   VerifyPass: string;
 };
-const onFinish: FormProps<LoginFields>['onFinish'] = (values) => {
-  console.log('Success:', values);
-};
 
 const onFinishFailed: FormProps<LoginFields>['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
 
 
-export default function Auth() {
-  const { setAuth } = useContext(Context);
+ function Auth() {
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const[email, setEmail] = useState<string>('');
+  const {store}=useContext(Context);
 
   const [isAuthForm, setIsAuthForm] = useState(false);
-  const navigate = useNavigate();
   const onFinish = async (values: LoginFields | RegisterFields) => {
     try {
       if ('email' in values) { // Проверяем наличие свойства email
         // Если email есть, значит это форма регистрации
-        const response = await postRegister({
-          email: values.email,
-          username: values.username,
-          password: values.password,
-        });
-        console.log('Registration successful:', response);
-        setAuth(true);
+        await store.reg(email,username,password)
 
       } else {
-        // Если email отсутствует, значит это форма входа
-        const response = await postLogin({
-          username: values.username,
-          password: values.password,
-        });
-        const token = response.token;
-        console.log(response)
-        setAuth(true);
-        localStorage.setItem('auth', 'true');
-        localStorage.setItem('token', token);
-
+         // Если email отсутствует, значит это форма входа
+        await store.login(username,password);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -79,12 +61,17 @@ export default function Auth() {
           <>
             <Form.Item<LoginFields>
               label="Логин"
+
               key={'username'}
               name="username"
               id='login'
               rules={[{ required: true, message: 'Введите логин' }]}
             >
-              <Input placeholder='Логин'/>
+              <Input
+                onChange={e => setUsername(e.target.value)}
+                value={username}
+                placeholder='Логин'
+            />
             </Form.Item>
             <Form.Item<LoginFields>
 
@@ -94,7 +81,10 @@ export default function Auth() {
               id='password'
               rules={[{ required: true, message: 'Введите пароль' }]}
             >
-              <Input.Password placeholder='Пароль'/>
+              <Input.Password
+                  onChange={e => setPassword(e.target.value)}
+                  value={password}
+                  placeholder='Пароль'/>
             </Form.Item>
             <Form.Item<LoginFields>
               name="remember"
@@ -102,6 +92,11 @@ export default function Auth() {
               style={{ alignSelf: 'center' }}
             >
               <Checkbox>Запомнить меня</Checkbox>
+            </Form.Item>
+            <Form.Item style={{ alignSelf: 'center' }}>
+              <Button type="primary" htmlType="submit">
+                Вход
+              </Button>
             </Form.Item>
           </>
           :
@@ -122,7 +117,11 @@ export default function Auth() {
                 },
               ]}
             >
-              <Input placeholder="Почта" />
+              <Input
+                  onChange={e => setEmail(e.target.value)}
+                  value={email}
+                  placeholder="Почта"
+              />
             </Form.Item>
 
             <Form.Item<RegisterFields>
@@ -154,15 +153,15 @@ export default function Auth() {
             >
               <Input.Password placeholder='Повторите пароль'/>
             </Form.Item>
-
+            <Form.Item style={{ alignSelf: 'center' }}>
+              <Button type="primary" htmlType="submit">
+                 Регистрация
+              </Button>
+            </Form.Item>
           </>
         }
 
-        <Form.Item style={{ alignSelf: 'center' }}>
-          <Button type="primary" htmlType="submit">
-            {isAuthForm ? 'Войти' : 'Регистрация'}
-          </Button>
-        </Form.Item>
+
 
         {/* пока такие онклики, потом мб по ссылке менять не состояние, а перекидывать на другой роут чела*/}
         <Form.Item style={{ alignSelf: 'center' }}>
@@ -181,3 +180,4 @@ export default function Auth() {
     </div>
   )
 }
+export default observer(Auth);

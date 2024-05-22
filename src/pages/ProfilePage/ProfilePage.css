@@ -1,4 +1,140 @@
 .profile-container{
     height: 91%;
     background-color: #ab4d4d;
+    padding: 20px;
+}
+.top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    background-color: #5c2c2c;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.user-login {
+    font-size: 18px;
+}
+
+.content {
+    display: flex;
+}
+
+.routes, .friends {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.friends {
+    display: flex;
+    flex-direction: column;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.tab {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.selected {
+    border-bottom: 2px solid blue;
+}
+
+.route-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.route-card {
+    display: flex;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+}
+
+.route-avatar {
+    width: 50px;
+    height: 50px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.route-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.route-name, .route-creator {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.route-info {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.participants {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.participant {
+    width: 20px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin-right: 2px;
+}
+
+.additional-participants {
+    font-size: 14px;
+}
+
+.places {
+    margin-right: 10px;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+}
+
+.star {
+    color: gold;
+    margin-right: 5px;
+}
+
+.rating-value {
+    font-size: 14px;
+}
+
+.friend-card {
+    height: 50px;
+    background-color: #ccc;
+    margin-bottom: 10px;
 }
