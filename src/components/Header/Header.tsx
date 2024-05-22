@@ -5,6 +5,7 @@ import { ElementsList } from "../ElementsList/ElementsList";
 import { Context } from '../Context/AppContext';
 import { NavLink } from "react-router-dom";
 import { Button } from "antd";
+import UserMenuDropdown from "../UserMenuDropdown/UserMenuDropdown";
 
 interface IElement {
     name: string;
@@ -15,10 +16,10 @@ const elements = ElementsList();
 
 export function Header() {
     const { isAuth, setAuth } = useContext(Context);
-    function logout() {
-        setAuth(false);
-        localStorage.removeItem('auth');
-    }
+    // function logout() {
+    //     setAuth(false);
+    //     localStorage.removeItem('auth');
+    // }
     return (
         <nav className="nav">
             <div className="container">
@@ -47,9 +48,12 @@ export function Header() {
                                     </li>
                                 ) : null
                             ))}
+                            {/* <li>
+                                <UserMenuDropdown/>
+                            </li> */}
                             {isAuth && (
                                 <li key={elements.length} className="nav-list__item">
-                                    <Button onClick={() => logout()}>Exit</Button>
+                                    <UserMenuDropdown/>
                                 </li>
                             )}
                         </ul>

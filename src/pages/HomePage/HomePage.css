@@ -1,3 +1,9 @@
-.title{
-    align-self: center;
+.homepage{
+    height: calc(100vh - var(--nav-height));
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
 }
