@@ -1,7 +1,6 @@
 import {IUser} from "../Models/IUser";
 import {makeAutoObservable} from "mobx";
 import AuthService from "../services/AuthService";
-import {Await} from "react-router-dom";
 import axios from "axios";
 import {AuthResponse} from "../Models/responses/AuthResponse";
 import {OUR_API_ADDRESS} from "../http/constants";

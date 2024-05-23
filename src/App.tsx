@@ -15,16 +15,6 @@ import {Context} from "./index";
 import {observer} from "mobx-react-lite";
 
 
-// interface TravelContextType {
-//     travels: {
-//       title: string;
-//       description: string;
-//       id: number;
-//     }[];
-//     setTravel: React.Dispatch<React.SetStateAction<any>>;
-//   }
-
-
 interface Travel {
     title: string;
     description: string;
@@ -49,10 +39,13 @@ function App() {
     }, []);
 
     useEffect(() => {
-        const auth = localStorage.getItem("token");
-        if (auth) {
-            store.setAuth(true);
+        if (localStorage.getItem('token')){
+            store.checkAuth()
         }
+        // const auth = localStorage.getItem("token");
+        // if (auth) {
+        //     store.setAuth(true);
+        // }
         setLoading(false);
     }, []);
 
@@ -70,6 +63,7 @@ function App() {
     
     return (
         <div className="app">
+            <h1>{store.isAuth?"ЗАЛОГИНЕН":"НЕАВТОРИЗОВАН"}</h1>
                 {store.isAuth ?
                     <ContextTravel.Provider value={{ travels, setTravels, selectedTravel, setSelectedTravel }}>
                         <Routes>

@@ -1,10 +1,9 @@
 import "./SettingsPage.css"
 import React from 'react';
-import { Button, DatePicker, Form, Input, Select, Space, Typography } from 'antd';
+import { Button, DatePicker, Form, Select, Space, Typography } from 'antd';
 import type { DatePickerProps, SelectProps } from 'antd';
-import { useState, ChangeEvent } from "react";
 import SettingsInput from "../../components/SettingsInput/SettingsInput";
-import { putProfileSettings, getProfileSettings } from "../../services/ProfileSettingsService";
+import { putProfileSettings } from "../../services/ProfileSettingsService";
 const interests = [
     'спорт',
     'концерты',
@@ -57,7 +56,6 @@ function SettingsPage() {
                     username: values.username,
                     city: values.city,
                     interests: values.interests,
-
 
                 });
 

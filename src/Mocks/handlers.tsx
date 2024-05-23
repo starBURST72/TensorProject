@@ -1,6 +1,5 @@
 import { http, HttpResponse } from 'msw';
 import { OUR_API_ADDRESS, OUR_API_ENDPOINTS } from '../http/constants';
-import {IUser} from "../Models/IUser";
 
 export const handlers = [
     // Обработчик для POST запроса аутентификации
@@ -30,6 +29,20 @@ export const handlers = [
         // Возвращаем мокованные данные для успешной регистрации
         return HttpResponse.json(
             { message: 'logout successful' }
+        );
+    }),
+    http.get(`${OUR_API_ADDRESS}/refresh-token`, (req) => {
+        // Возвращаем мокованные данные для успешной регистрации
+        return HttpResponse.json(
+            {
+                access_token: "access-token",
+                refresh_token: "refresh-token",
+                user: {
+                    username: "string",
+                    isActivated:"boolean",
+                    id:"string"
+                }
+            }
         );
     }),
 
