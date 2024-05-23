@@ -76,7 +76,7 @@ export default function UserMenuDropdown() {
     return (
         <Dropdown menu={{ items }} trigger={['click']} >
             <a onClick={(e) => e.preventDefault()} >
-                <Space >
+                <Space style={{cursor:"pointer"}}>
                     <Badge count={0} >
                         <Avatar shape="circle" size={'large'} src={ava} />
                     </Badge>

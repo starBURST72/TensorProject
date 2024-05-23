@@ -9,4 +9,6 @@ export enum OUR_API_ENDPOINTS {
     register = 'register',
     auth = 'auth',
     travels = 'travels',
+    settings = 'settings',
+    profile = 'profile'
 }
