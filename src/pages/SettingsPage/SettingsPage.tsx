@@ -46,17 +46,20 @@ function SettingsPage() {
         try {
 
 
-            const response = await putProfileSettings({
-                name: values.name,
-                surname: values.surname,
-                gender: values.gender,
-                birthDate: values.birthDate,
-                email: values.email,
-                username: values.username,
-                city: values.city,
-                interests: values.interests
+            const response = await putProfileSettings(
+                1,
+                {
+                    name: values.name,
+                    surname: values.surname,
+                    gender: values.gender,
+                    birthDate: values.birthDate,
+                    email: values.email,
+                    username: values.username,
+                    city: values.city,
+                    interests: values.interests,
 
-            });
+
+                });
 
             console.log('Change settings successful:', response);
 
@@ -130,12 +133,12 @@ function SettingsPage() {
 
                             <Typography.Title level={5}>Дата рождения</Typography.Title>
                             <Form.Item
-                                
+
                                 key={'birthDate'}
                                 name="birthDate"
                                 id='birthDate'
                             >
-                                <DatePicker format={'DD.MM.YYYY'} onChange={onChangeDate} style={{ width: '100%' }}/>
+                                <DatePicker format={'DD.MM.YYYY'} onChange={onChangeDate} style={{ width: '100%' }} />
 
                             </Form.Item>
                         </Space.Compact>

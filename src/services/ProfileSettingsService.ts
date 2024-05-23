@@ -1,5 +1,5 @@
 import $api from "../http";
-import {OUR_API_ENDPOINTS} from "../http/constants";
+import { OUR_API_ENDPOINTS } from "../http/constants";
 
 export const getProfileSettings = async (id: number) => {
     try {
@@ -16,7 +16,7 @@ export const getProfileSettings = async (id: number) => {
     }
 };
 
-export const putProfileSettings = async (data: {
+export const putProfileSettings = async (id: number, data: {
     name: string;
     surname: string;
     gender: string;
@@ -25,10 +25,11 @@ export const putProfileSettings = async (data: {
     username: string;
     city: string;
     interests: string[];
+
 }) => {
     try {
         // Выполнение POST запроса для регистрации
-        const response = await $api.put(`/${OUR_API_ENDPOINTS.profile}/${OUR_API_ENDPOINTS.settings}`, data);
+        const response = await $api.put(`/${OUR_API_ENDPOINTS.profile}/${OUR_API_ENDPOINTS.settings}/${id}`, data);
         return response.data;
     } catch (error: any) {
         // Обработка ошибок регистрации
