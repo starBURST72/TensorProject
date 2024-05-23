@@ -102,27 +102,51 @@ paths:
         "500":
           description: Internal server error
 
-  /travels/{id}:
+  /profile/settings/{id}:
     get:
-      summary: Get travel by ID
+      summary: Получение настроек профиля
       parameters:
         - in: path
           name: id
           schema:
             type: integer
           required: true
-          description: Travel ID
+          description: ID профиля
       responses:
-        "200":
-          description: Successful request
+        '200':
+          description: Успешное получение настроек
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Travel_Item_Get_200"
-        "404":
-          description: Travel not found
-        "500":
-          description: Internal server error
+                $ref: '#/components/schemas/ProfileSettings'
+        '404':
+          description: Профиль не найден
+
+    put:
+      summary: Обновление настроек профиля
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID профиля
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileSettings'
+      responses:
+        '200':
+          description: Успешное обновление настроек
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileSettings'
+        '400':
+          description: Некорректные данные
+
 components:
   securitySchemes:
     BearerAuth:
@@ -252,4 +276,27 @@ components:
         type:
           type: string
           description: Place type
+    ProfileSettings:
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        gender:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+        city:
+          type: string
+        interests:
+          type: array
+          items:
+            type: string
 
