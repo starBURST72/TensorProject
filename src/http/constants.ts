@@ -10,4 +10,6 @@ export enum OUR_API_ENDPOINTS {
     auth = 'auth',
     travels = 'travels',
     logout='logout'
+    settings = 'settings',
+    profile = 'profile'
 }
