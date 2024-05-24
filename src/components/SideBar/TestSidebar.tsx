@@ -1,8 +1,8 @@
 // Sidebar.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import { FaBars } from 'react-icons/fa';
-
+import './Sidebar.css'
 interface SidebarProps {
     collapsed: boolean;
     onToggleCollapse: () => void;

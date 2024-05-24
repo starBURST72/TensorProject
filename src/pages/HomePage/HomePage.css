@@ -1,9 +1,69 @@
-.homepage{
-    height: calc(100vh - var(--nav-height));
+::-webkit-scrollbar { /* chrome based */
+    width: 0;  /* ширина scrollbar'a */
+    background: transparent;  /* опционально */
+}
+
+html {
+    -ms-overflow-style: none;  /* IE 10+ */
+    scrollbar-width: none; /* Firefox */
+}
+.homepage {
+    background-color: #4d2e2e;
+    height: 100vh; /* Сохраняем высоту страницы равной высоте экрана */
+    position: fixed;
     width: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    
+    align-items: center;
+    overflow: hidden; /* Скрываем скроллбар */
+}
+
+.input-container {
+    position: absolute;
+    top: 0;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    gap: 10px;
+    transition: top 0.5s ease, transform 0.5s ease;
+}
+
+.input-container input {
+    padding: 5px;
+}
+
+.input-container button {
+    background-color: #5c62ec;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.hints-container {
+    position: absolute;
+    bottom: -400px; /* Изначально скрыт снизу */
+    text-align: center;
+    width: 1200px;
+    height: 450px;
+
+    transition: bottom 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hints-container div{
+    background-color: #5c62ec;
+    height: 450px;
+    width: 300px;
+    margin-right: 10px;
+}
+.hints-container.visible {
+    bottom: 20px; /* Появляется снизу при прокрутке */
+}
+
+.hidden-scroll {
+    overflow: hidden;
 }

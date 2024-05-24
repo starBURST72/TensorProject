@@ -63,7 +63,7 @@ function App() {
     
     return (
         <div className="app">
-            <h1>{store.isAuth?"ЗАЛОГИНЕН":"НЕАВТОРИЗОВАН"}</h1>
+            {/*<h1>{store.isAuth?"ЗАЛОГИНЕН":"НЕАВТОРИЗОВАН"}</h1>*/}
                 {store.isAuth ?
                     <ContextTravel.Provider value={{ travels, setTravels, selectedTravel, setSelectedTravel }}>
                         <Routes>
