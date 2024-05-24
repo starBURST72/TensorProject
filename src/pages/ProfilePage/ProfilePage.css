@@ -1,20 +1,36 @@
-.profile-container{
-    height: 91%;
-    background-color: #ab4d4d;
-    padding: 20px;
+.profile-container {
+    height: calc(100vh - var(--nav-height));
+
+    padding-top: 50px;
+    padding-left: 15%;
+    padding-right: 15%;
 }
+
+/* .ant-menu-item-selected {
+    color: black !important;
+} */
+
+.ant-menu-horizontal {
+    justify-content: center;
+}
+
+.ant-menu-horizontal {
+    border-bottom: none;
+}
+
+
 .top {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 70px;
 }
 
 .avatar {
-    width: 100px;
-    height: 100px;
-    background-color: #5c2c2c;
+    width: 170px;
+    height: 170px;
+
     border-radius: 50%;
-    margin-right: 20px;
+    margin-right: 3%;
 }
 
 .user-info {
@@ -23,21 +39,23 @@
 }
 
 .user-name {
-    font-size: 24px;
+    font-size: 32px;
     font-weight: bold;
 }
 
 .user-login {
+    font-size: 22px;
+}
+
+.user-city {
     font-size: 18px;
 }
 
-.content {
+.travelsList {
     display: flex;
-}
-
-.routes, .friends {
-    flex: 1;
-    margin-right: 20px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .friends {
@@ -62,79 +80,6 @@
 .route-list {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
-.route-card {
-    display: flex;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-}
-
-.route-avatar {
-    width: 50px;
-    height: 50px;
-    background-color: #ccc;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.route-details {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.route-name, .route-creator {
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
-.route-info {
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
-}
-
-.participants {
-    display: flex;
-    align-items: center;
-    margin-right: 10px;
-}
-
-.participant {
-    width: 20px;
-    height: 20px;
-    background-color: #ccc;
-    border-radius: 50%;
-    margin-right: 2px;
-}
-
-.additional-participants {
-    font-size: 14px;
-}
-
-.places {
-    margin-right: 10px;
-}
-
-.rating {
-    display: flex;
-    align-items: center;
-}
-
-.star {
-    color: gold;
-    margin-right: 5px;
-}
-
-.rating-value {
-    font-size: 14px;
-}
-
-.friend-card {
-    height: 50px;
-    background-color: #ccc;
-    margin-bottom: 10px;
-}
