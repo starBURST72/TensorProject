@@ -1,4 +1,4 @@
 @import "./reset.css";
 body{
-    margin-top: 90px;
+    margin-top: var(--nav-height);
 }

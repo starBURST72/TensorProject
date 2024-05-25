@@ -90,8 +90,8 @@ legend {
 
 .app {
     
-    height: 100vh
+    height: calc(100vh - var(--nav-height));
   }
 #root{
-    height: 100vh;
+    height: calc(100vh - var(--nav-height));
 }
