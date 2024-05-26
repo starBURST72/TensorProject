@@ -1,5 +1,4 @@
 @import "./reset.css";
 body{
-    
     margin-top: var(--nav-height);
 }

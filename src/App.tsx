@@ -32,6 +32,7 @@ function App() {
         id: 0
       });
     let navigate = useNavigate();
+
     useEffect(() => {
         const navElement = document.querySelector('nav');
         const navHeight = navElement?.offsetHeight || 0;
@@ -59,7 +60,7 @@ function App() {
                 navigate("/Auth");
             }
         }
-    }, [store.isAuth, loading, navigate]);
+    }, [store.isAuth]);
     
     return (
         <div className="app">

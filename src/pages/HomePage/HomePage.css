@@ -7,31 +7,32 @@ html {
     -ms-overflow-style: none;  /* IE 10+ */
     scrollbar-width: none; /* Firefox */
 }
+
 .homepage {
-    background-color: #4d2e2e;
-    height: 100vh; /* Сохраняем высоту страницы равной высоте экрана */
+    overflow: scroll;
+    height: 100vh;
+    background-color: #887373;
     position: fixed;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden; /* Скрываем скроллбар */
 }
 
 .input-container {
     position: absolute;
-    top: 0;
-    transform: translateY(-50%);
-    display: flex;
+    top: 50%;
+    display: inline;
     align-items: center;
     padding: 10px;
     border-radius: 5px;
     gap: 10px;
-    transition: top 0.5s ease, transform 0.5s ease;
+    /*transition: top 0.5s ease; !* Adjusted transition for smoothness *!*/
 }
 
 .input-container input {
     padding: 5px;
+    width: 300px;
 }
 
 .input-container button {
@@ -44,17 +45,16 @@ html {
 
 .hints-container {
     position: absolute;
-    bottom: -400px; /* Изначально скрыт снизу */
+    bottom: -100%; /* Изначально скрыт снизу */
     text-align: center;
     width: 1200px;
     height: 450px;
-
     transition: bottom 0.5s ease;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.hints-container div{
+.hints-container div {
     background-color: #5c62ec;
     height: 450px;
     width: 300px;
