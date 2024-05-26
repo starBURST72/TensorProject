@@ -1,64 +1,91 @@
 import React, { useEffect, useRef } from 'react';
-import { Button, Input, Space, Typography } from 'antd';
+import {AutoComplete, Button, Space, Typography} from 'antd';
 import './HomePage.css';
 import { observer } from 'mobx-react-lite';
+import {GetCity} from "../../services/SearchCityService";
+
 
 function HomePage() {
     const homepageRef = useRef<HTMLDivElement>(null);
     const inputContainerRef = useRef<HTMLDivElement>(null);
-    const requestRef = useRef<number | null>(null);
+    const hintsContainerRef = useRef<HTMLDivElement>(null);
+    const [options, setOptions] = React.useState<{ value: string }[]>([]);
 
     useEffect(() => {
-        const lerp = (start: number, end: number, amount: number) => {
-            return (1 - amount) * start + amount * end;
-        };
-
         let lastScrollY = 0;
-        let currentTop = 50;
-
         const handleScroll = () => {
             if (homepageRef.current) {
                 lastScrollY = homepageRef.current.scrollTop;
+                updatePositions();
             }
         };
 
-        const animate = () => {
+        const updatePositions = () => {
             if (inputContainerRef.current && homepageRef.current) {
                 const homepageHeight = homepageRef.current.clientHeight;
-                const targetTop = 50 + (lastScrollY / homepageHeight) * 75;
+                const targetTop = 50 + (lastScrollY / homepageHeight) * 40;
 
-                currentTop = lerp(currentTop, targetTop, 0.1); // 0.1 is the damping factor
-                inputContainerRef.current.style.top = `${currentTop}%`;
-                inputContainerRef.current.style.transform = `translateY(-${(currentTop - 50)}%)`;
+                inputContainerRef.current.style.top = `${targetTop}%`;
             }
-            requestRef.current = requestAnimationFrame(animate);
+            if (hintsContainerRef.current && homepageRef.current) {
+                const homepageHeight = homepageRef.current.clientHeight;
+                const targetBottom = (lastScrollY / homepageHeight) * 40;
+
+                hintsContainerRef.current.style.bottom = `${targetBottom}%`;
+                hintsContainerRef.current.style.transform = `translateY(${(targetBottom + 160)}%)`;
+            }
         };
 
         const currentHomepageRef = homepageRef.current;
         currentHomepageRef?.addEventListener('scroll', handleScroll);
-        requestRef.current = requestAnimationFrame(animate);
 
         return () => {
             currentHomepageRef?.removeEventListener('scroll', handleScroll);
-            if (requestRef.current) {
-                cancelAnimationFrame(requestRef.current);
-            }
         };
     }, []);
 
+    const handleSearch = async (value: string) => {
+        if (value) {
+            try {
+                const responseData = await GetCity(value);
+                const newOptions = responseData.suggestions.map(suggestion=>({
+                    value: `${suggestion.data.city}`
+                }))
+                setOptions(newOptions);
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            setOptions([]);
+        }
+    };
     return (
         <div className='homepage' ref={homepageRef}>
             <div className="input-container" ref={inputContainerRef}>
                 <Typography.Title level={4}>Куда поедем?</Typography.Title>
                 <Space size='large'>
-                    <Input placeholder="Введите город" />
+                    <AutoComplete
+                        style={{ width: 200 }}
+                        options={options}
+                        onSearch={handleSearch}
+                        placeholder="Введите город"
+                        filterOption={(inputValue, option) =>
+                            option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                        }
+                    />
                     <Button type="primary">Поехали!</Button>
                 </Space>
             </div>
-            <div className="hints-container">
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
+            <div className="hints-container" ref={hintsContainerRef}>
+                <div className="hints-card">
+                    <h1>Друзья</h1>
+                </div>
+                <div className="hints-card">
+                    <h1>Популярное</h1>
+                </div>
+                <div className="hints-card">
+                    <h1>Продолжить</h1>
+                </div>
             </div>
         </div>
     );

@@ -87,11 +87,12 @@ label {
 legend {
     display: block;
 }
-
+:root {
+    --nav-height: 0px; /* Предустановленное значение */
+}
 .app {
-    
     height: calc(100vh - var(--nav-height));
-  }
+}
 #root{
     height: calc(100vh - var(--nav-height));
 }

@@ -27,7 +27,7 @@ html {
     padding: 10px;
     border-radius: 5px;
     gap: 10px;
-    /*transition: top 0.5s ease; !* Adjusted transition for smoothness *!*/
+    transition: top 0.1s ease; /* Adjusted transition for smoothness */
 }
 
 .input-container input {
@@ -47,23 +47,26 @@ html {
     position: absolute;
     bottom: -100%; /* Изначально скрыт снизу */
     text-align: center;
-    width: 1200px;
+    width: 70%;
     height: 450px;
-    transition: bottom 0.5s ease;
+    transition: bottom 0.1s ease;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .hints-container div {
     background-color: #5c62ec;
-    height: 450px;
-    width: 300px;
+    height: 90%;
+    width: 30%;
     margin-right: 10px;
-}
-.hints-container.visible {
-    bottom: 20px; /* Появляется снизу при прокрутке */
+    margin-bottom: 300px;
 }
 
 .hidden-scroll {
     overflow: hidden;
+}
+
+.hints-card h1{
+    font-family: 'Poppins', sans-serif ;
+    margin-top: 10px;
 }
