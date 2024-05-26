@@ -10,19 +10,21 @@ type SettingsInputProps = {
     placeholder: string
     classNameSpace: string
     rules:[{}]
+
 };
 
 const SettingsInput: React.FC<SettingsInputProps> = ({ title, classNameFormItemInput, key, name, id, placeholder, classNameSpace, rules }) => {
     return (
-        <Space.Compact className={classNameSpace} size='middle' direction='vertical'>
+        <Space.Compact className={classNameSpace} size='middle' direction='vertical' key={key} >
             <Typography.Title level={5}>{title}</Typography.Title>
             <Form.Item
                 key={key}
                 name={name}
                 id={id}
                 rules={rules}
+                
             >
-                <Input placeholder={placeholder} className={classNameFormItemInput}/>
+                <Input key={key} placeholder={placeholder} className={classNameFormItemInput}/>
             </Form.Item>
         </Space.Compact>
     );
