@@ -47,7 +47,7 @@ function TravelCard(props: TravelProps) {
                 <div className="travelCardPlacesImages">
                     {
                         places.slice(0, 3).map(place=>
-                            <Avatar className="travelCardPlacesImagesOne" src={place.placePhoto}/>
+                            <Avatar className="travelCardPlacesImagesOne" src={place.placePhoto} key={`${id}${place.placeid}`}/>
                         )
                         
                     }

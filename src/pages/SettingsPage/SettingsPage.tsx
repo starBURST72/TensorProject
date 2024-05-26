@@ -1,9 +1,10 @@
 import "./SettingsPage.css"
-import React from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Button, DatePicker, Form, Select, Space, Typography } from 'antd';
 import type { DatePickerProps, SelectProps } from 'antd';
 import SettingsInput from "../../components/SettingsInput/SettingsInput";
-import { putProfileSettings } from "../../services/ProfileSettingsService";
+import { getProfileSettings, getUserProfileInfo, putProfileSettings } from "../../services/UserProfileService";
+import dayjs from 'dayjs';
 const interests = [
     'спорт',
     'концерты',
@@ -20,38 +21,93 @@ const options: SelectProps['options'] = interests.map(interest => ({
     label: interest,
     value: interest
 }));
-const handleChange = (value: string[]) => {
-    console.log(`selected ${value}`);
-};
+
 const onChangeDate: DatePickerProps['onChange'] = (date, dateString) => {
     console.log(date, dateString);
+
 };
 
-type SettingsFields = {
+
+
+type UserInfoFields = {
+    // message: string,
+    // data: {
+    ava: any;
     name: string;
     surname: string;
-    gender: string;
-    birthDate: Date;
-    email: string;
+    gender: string;//мб некторые поля здесь не надо, в профиле мы выводим только часть инфы, или можем сделать доп кнопку типа подробнее и там фул инфа
+    birthdate: string;//и это
+    email: string;//и это
     username: string;
     city: string;
     interests: string[]
+    // }
 };
 
+
 function SettingsPage() {
+    const [userSettingsInfoRes, setUserSettingsInfoRes] = useState<UserInfoFields>({
+        // message: '',
+        // data: {
+        ava: '',
+        name: 'a',
+        surname: 'a',
+        gender: '',
+        birthdate: '',
+        email: '',
+        username: '',
+        city: '',
+        interests: ['']
+        // }
+    })
+    const handleChange = (value: string[]) => {
+        console.log(`selected ${value}`);
+        console.log(userSettingsInfoRes)
+    };
+    useEffect(() => {
+        const onRender = async () => {
+            try {
+
+                const responseUserSettingsInfo = await getProfileSettings(1)
 
 
-    const onFinish = async (values: SettingsFields) => {
+                setUserSettingsInfoRes(responseUserSettingsInfo)
+
+                console.log(responseUserSettingsInfo)
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+        onRender()
+    }, [])
+
+    useEffect(() => {
+        form.setFieldsValue({
+            name: userSettingsInfoRes.name,
+            surname: userSettingsInfoRes.surname,
+            gender: userSettingsInfoRes.gender,
+            birthdate: dayjs(userSettingsInfoRes.birthdate, 'DD.MM.YYYY'),
+            email: userSettingsInfoRes.email,
+            username: userSettingsInfoRes.username,
+            city: userSettingsInfoRes.city,
+            interests: userSettingsInfoRes.interests,
+        });
+    }, [userSettingsInfoRes]);
+
+    const [form] = Form.useForm();
+    const onFinish = async (values: UserInfoFields) => {
         try {
 
 
             const response = await putProfileSettings(
                 1,
                 {
+                    //ava
                     name: values.name,
                     surname: values.surname,
                     gender: values.gender,
-                    birthDate: values.birthDate,
+                    birthDate: values.birthdate,
                     email: values.email,
                     username: values.username,
                     city: values.city,
@@ -71,42 +127,50 @@ function SettingsPage() {
             <div className="settings-avataravatar"></div>
             {/* <h1 className="settings-header">Ваши данные</h1> */}
             <Typography.Title level={4} className="settings-header">Ваши данные</Typography.Title>
+            <div>{userSettingsInfoRes.name}</div>
             <div >
 
                 {/* мой вариант, но тут чтобы работало, надо в Form оборачивать*/}
 
                 <Form
+                    form={form}
                     onFinish={onFinish}
                     className="settings-form"
                     name="settingsForm"
                     style={{ maxWidth: 500 }}
-                    initialValues={{ remember: true }}
+                    initialValues={{
+                        remember: true,
+                    }}
                     autoComplete="off"
+
                 >
                     <Space.Compact style={{ width: '100%' }} size='middle' direction='horizontal' className="topform">
                         <Space.Compact style={{ width: '49%' }} size='middle' direction='vertical'>
 
                             <SettingsInput
-                                title="Имя"
+                                title={userSettingsInfoRes.name}
                                 classNameFormItemInput='settingsFormItemInput'
                                 key='name'
                                 name='name'
                                 id='name'
                                 placeholder='Имя'
                                 classNameSpace='settingsSpace'
+
+
                                 rules={[{}]}
                             />
 
                             <Typography.Title level={5}>Пол</Typography.Title>
                             <Form.Item
                                 className="settingsInput"
-                                key={'gender'}
+                                key='gender'
                                 name="gender"
                                 id='gender'
                             >
                                 <Select
                                     placeholder="Пол"
                                     onChange={handleChange}
+
                                     options={[
                                         { value: 'Мужской', label: 'Мужской' },
                                         { value: 'Женский', label: 'Женский' },
@@ -127,14 +191,15 @@ function SettingsPage() {
                                 placeholder='Фамилия'
                                 classNameSpace='settingsSpace'
                                 rules={[{}]}
+
                             />
 
                             <Typography.Title level={5}>Дата рождения</Typography.Title>
                             <Form.Item
 
-                                key={'birthDate'}
-                                name="birthDate"
-                                id='birthDate'
+                                key={'birthdate'}
+                                name="birthdate"
+                                id='birthdate'
                             >
                                 <DatePicker format={'DD.MM.YYYY'} onChange={onChangeDate} style={{ width: '100%' }} />
 
@@ -155,6 +220,7 @@ function SettingsPage() {
                             type: 'email',
                             message: 'Некорректный email!',
                         }]}
+
                     />
 
                     <SettingsInput
@@ -166,6 +232,7 @@ function SettingsPage() {
                         placeholder='Логин'
                         classNameSpace='settingsSpace'
                         rules={[{}]}
+
                     />
 
                     <SettingsInput
@@ -177,13 +244,14 @@ function SettingsPage() {
                         placeholder='Город'
                         classNameSpace='settingsSpace'
                         rules={[{}]}
+
                     />
 
                     <Space.Compact style={{ width: '100%' }} size='middle' direction='vertical'>
                         <Typography.Title level={5}>Интересы</Typography.Title>
                         <Form.Item
                             style={{ width: '100%' }}
-                            key={'interests'}
+                            key='interests'
                             name="interests"
                             id='interests'
                         >
@@ -192,7 +260,7 @@ function SettingsPage() {
                                 allowClear
                                 style={{ width: '100%' }}
                                 placeholder="Выберите интерес"
-                                defaultValue={['кино']}
+                                // defaultValue={userSettingsInfoRes.interests}
                                 onChange={handleChange}
                                 options={options}
                                 listHeight={150}
