@@ -47,9 +47,6 @@ export function Header() {
                                     </li>
                                 ) : null
                             ))}
-                            {/* <li>
-                                <UserMenuDropdown/>
-                            </li> */}
                             {store.isAuth && (
                                 <li key={elements.length} className="nav-list__item">
                                     <UserMenuDropdown/>

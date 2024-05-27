@@ -3,6 +3,7 @@ import {AutoComplete, Button, Space, Typography} from 'antd';
 import './HomePage.css';
 import { observer } from 'mobx-react-lite';
 import {GetCity} from "../../services/SearchCityService";
+import HintCard from "../../components/HintCard/HintCard";
 
 
 function HomePage() {
@@ -77,15 +78,9 @@ function HomePage() {
                 </Space>
             </div>
             <div className="hints-container" ref={hintsContainerRef}>
-                <div className="hints-card">
-                    <h1>Друзья</h1>
-                </div>
-                <div className="hints-card">
-                    <h1>Популярное</h1>
-                </div>
-                <div className="hints-card">
-                    <h1>Продолжить</h1>
-                </div>
+                <HintCard type={"friends"}/>
+                <HintCard type={"Popular"}/>
+                <HintCard type={"Continue"}/>
             </div>
         </div>
     );

@@ -1,12 +1,13 @@
 import axios, {AxiosResponse} from "axios";
-import {TravelResponse} from "../Models/ISearch";
-const token= "394badd151f838e17536fab3f960978a4b476f12";
+import {SearchResponse} from "../Models/responses/SearchResponse";
+import {token} from "../http/constants";
+
 
 export const GetCity = async (
     query: string
-): Promise<TravelResponse> => {
+): Promise<SearchResponse> => {
     try {
-        const response: AxiosResponse<TravelResponse> = await axios.post<TravelResponse>(
+        const response: AxiosResponse<SearchResponse> = await axios.post<SearchResponse>(
             'http://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address',
             { query: query,
                 "locations": [
