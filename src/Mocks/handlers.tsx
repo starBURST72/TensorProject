@@ -275,4 +275,30 @@ export const handlers = [
 
         );
     }),
+
+    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.places}`, ({ params }) => {
+
+        return HttpResponse.json(
+            {
+                location: {
+                    center: [65.541227, 57.152985], // starting position [lng, lat]
+                    zoom: 14 // starting zoom
+                },
+                markerProps: [
+                    {
+                        coordinates: [65.5600105653111, 57.14883932510754] as LngLat,
+
+                    },
+                    {
+                        coordinates: [65.55036168655934, 57.1485671873132] as LngLat,
+
+                    },
+                    {
+                        coordinates: [65.5340378278529, 57.15222291358625] as LngLat,
+
+                    }
+                ]
+            }
+        );
+    }),
 ]

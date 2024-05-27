@@ -118,7 +118,7 @@ function ProfilePage() {
 
     useEffect(() => {
 
-        const onFinish = async () => {
+        const onFinishRequests = async () => {
             try {
 
                 const responseUserInfo = await getUserProfileInfo(1)
@@ -134,7 +134,7 @@ function ProfilePage() {
                 console.error('Error:', error);
             }
         };
-        onFinish()
+        onFinishRequests()
     }, []);
 
     return (

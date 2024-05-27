@@ -13,7 +13,7 @@ import { ContextTravel } from '../Context/AppContext';
 
 
 
-const Sidebar: React.FC= () => {
+const Sidebar: React.FC = () => {
   const [open, setOpen] = useState(true);
   const [placement] = useState<DrawerProps['placement']>('right');
   const { selectedTravel } = useContext(ContextTravel);
