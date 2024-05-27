@@ -64,7 +64,7 @@ function HomePage() {
         <div className='homepage' ref={homepageRef}>
             <div className="input-container" ref={inputContainerRef}>
                 <Typography.Title level={4}>Куда поедем?</Typography.Title>
-                <Space size='large'>
+                <Space.Compact size='large'>
                     <AutoComplete
                         style={{ width: 200 }}
                         options={options}
@@ -75,7 +75,7 @@ function HomePage() {
                         }
                     />
                     <Button type="primary">Поехали!</Button>
-                </Space>
+                </Space.Compact>
             </div>
             <div className="hints-container" ref={hintsContainerRef}>
                 <HintCard type={"friends"}/>
