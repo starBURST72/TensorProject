@@ -1,0 +1,80 @@
+/* src/components/MyPage.css */
+
+.page-container {
+    height: 100%;
+    width: 100%;
+    display: inline-flex;
+    flex-direction: row;
+}
+.trapezoid {
+    position: absolute;
+    width: 100px;
+    height: 0;
+    top: var(--nav-height);
+    border-top: 50px solid #171818;
+    /*border-bottom: 50px solid #ccc;*/
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    z-index: 900;
+    margin: 0 auto 0;
+}
+.switch-container {
+    color: white;
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.mainFrame{
+    width: 70%;
+    height: 100%;
+    /*display: inline-grid;*/
+}
+
+.search-bar {
+    align-items: flex-end;
+    margin-top: 15px;
+    margin-left: 100px;
+    width: 80%;
+    height: 50px;
+}
+.ListItems{
+    margin-right: 25px;
+    margin-left: 25px;
+    margin-top: 20px;
+}
+.sidebar {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #3b3b3b;
+    padding: 10px;
+}
+
+.add-place {
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: #7d7d7d;
+    color: white;
+}
+
+.add-city {
+    margin-top: auto;
+    background-color: transparent;
+    color: white;
+    border: none;
+}
+
+.ant-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f0f0;
+    margin: 5px 0;
+    padding: 10px;
+}
+
+.ant-rate-star {
+    color: #fadb14;
+}

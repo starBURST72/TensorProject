@@ -3,8 +3,6 @@ import { OUR_API_ADDRESS, OUR_API_ENDPOINTS } from '../http/constants';
 import ava from '../img/ava.jpg'
 import duner from '../img/Duner на углях.png'
 import shaurma from '../img/Шаурма.png'
-import $api from '../http';
-import type { YMapLocationRequest, LngLat } from '@yandex/ymaps3-types';
 
 export const handlers = [
     // Обработчик для POST запроса аутентификации

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 // @ts-ignore
 import { YMapControlButton, YMapControls, YMapMarker, type YMapLocationRequest, type YMapZoomLocation } from 'ymaps3';
 import "./MapNewComponent2.css";
@@ -228,13 +228,9 @@ export default function MapNewComponent2() {
                         <Button type="primary" style={{ backgroundColor: '#5c62ec' }}>Поехали!</Button>
                     </Space.Compact>
                 </div>
-                <Sidebar />
             </div>
             <div className="map" ref={mapRef}>
-
             </div>
-
-
         </div>
     );
 }

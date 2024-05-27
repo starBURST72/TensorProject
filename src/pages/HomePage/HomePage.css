@@ -11,7 +11,7 @@ html {
 .homepage {
     overflow: scroll;
     height: 100vh;
-    background-color: #887373;
+    background-color: #dedede;
     position: fixed;
     width: 100%;
     display: flex;
