@@ -5,6 +5,7 @@ import type { DatePickerProps, SelectProps } from 'antd';
 import SettingsInput from "../../components/SettingsInput/SettingsInput";
 import { getProfileSettings, getUserProfileInfo, putProfileSettings } from "../../services/UserProfileService";
 import dayjs from 'dayjs';
+import SettingsAvatarInput from "../../components/SettingsAvatarInput/SettingsAvatarInput";
 const interests = [
     'спорт',
     'концерты',
@@ -32,7 +33,7 @@ const onChangeDate: DatePickerProps['onChange'] = (date, dateString) => {
 type UserInfoFields = {
     // message: string,
     // data: {
-    ava: any;
+    ava: string;
     name: string;
     surname: string;
     gender: string;//мб некторые поля здесь не надо, в профиле мы выводим только часть инфы, или можем сделать доп кнопку типа подробнее и там фул инфа
@@ -46,6 +47,7 @@ type UserInfoFields = {
 
 
 function SettingsPage() {
+    const [avatarLoaded, setAvatarLoaded] = useState(false);
     const [userSettingsInfoRes, setUserSettingsInfoRes] = useState<UserInfoFields>({
         // message: '',
         // data: {
@@ -84,6 +86,7 @@ function SettingsPage() {
 
     useEffect(() => {
         form.setFieldsValue({
+            ava: userSettingsInfoRes.ava,
             name: userSettingsInfoRes.name,
             surname: userSettingsInfoRes.surname,
             gender: userSettingsInfoRes.gender,
@@ -97,13 +100,14 @@ function SettingsPage() {
 
     const [form] = Form.useForm();
     const onFinish = async (values: UserInfoFields) => {
+
         try {
 
 
             const response = await putProfileSettings(
                 1,
                 {
-                    //ava
+                    ava: values.ava,
                     name: values.name,
                     surname: values.surname,
                     gender: values.gender,
@@ -127,7 +131,7 @@ function SettingsPage() {
             <div className="settings-avataravatar"></div>
             {/* <h1 className="settings-header">Ваши данные</h1> */}
             <Typography.Title level={4} className="settings-header">Ваши данные</Typography.Title>
-            <div>{userSettingsInfoRes.name}</div>
+
             <div >
 
                 {/* мой вариант, но тут чтобы работало, надо в Form оборачивать*/}
@@ -144,19 +148,23 @@ function SettingsPage() {
                     autoComplete="off"
 
                 >
+                    <SettingsAvatarInput
+                        key='ava'
+                        name='ava'
+                        id='ava'
+                        ava={userSettingsInfoRes.ava}
+                        onAvatarLoad={() => setAvatarLoaded(true)} />
                     <Space.Compact style={{ width: '100%' }} size='middle' direction='horizontal' className="topform">
                         <Space.Compact style={{ width: '49%' }} size='middle' direction='vertical'>
 
                             <SettingsInput
-                                title={userSettingsInfoRes.name}
+                                title='Имя'
                                 classNameFormItemInput='settingsFormItemInput'
                                 key='name'
                                 name='name'
                                 id='name'
                                 placeholder='Имя'
                                 classNameSpace='settingsSpace'
-
-
                                 rules={[{}]}
                             />
 
@@ -197,7 +205,7 @@ function SettingsPage() {
                             <Typography.Title level={5}>Дата рождения</Typography.Title>
                             <Form.Item
 
-                                key={'birthdate'}
+                                key='birthdate'
                                 name="birthdate"
                                 id='birthdate'
                             >
@@ -268,7 +276,7 @@ function SettingsPage() {
                         </Form.Item>
 
                     </Space.Compact>
-                    <Button style={{ backgroundColor: '#5c62ec', alignSelf: 'center' }} type="primary">Изменить</Button>
+                    <Button style={{ backgroundColor: '#5c62ec', alignSelf: 'center' }} type="primary" htmlType="submit">Изменить</Button>
                 </Form>
             </div>
         </div>

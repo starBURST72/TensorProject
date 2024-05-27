@@ -17,7 +17,7 @@ export const getProfileSettings = async (id: number) => {
 };
 
 export const putProfileSettings = async (id: number, data: {
-    // ava: any,
+    ava: string,
     name: string;
     surname: string;
     gender: string;
