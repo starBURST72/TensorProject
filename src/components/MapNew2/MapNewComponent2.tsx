@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 // @ts-ignore
 import { YMapControlButton, YMapControls, type YMapLocationRequest, type YMapZoomLocation } from 'ymaps3';
 import "./MapNewComponent2.css";
@@ -96,13 +96,10 @@ export default function MapNewComponent2() {
                         <button onClick={() => handleSearch()}>Показать</button>
                     </div>
                 </div>
-                <Sidebar  />
+
             </div>
             <div className="map" ref={mapRef}>
-
             </div>
-
-
         </div>
     );
 }

@@ -13,6 +13,7 @@ import SettingsPage from "./pages/SettingsPage/SettingsPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import {Context} from "./index";
 import {observer} from "mobx-react-lite";
+import CreateTravel from "./pages/CreateTravel/CreateTravel";
 
 
 interface Travel {
@@ -75,6 +76,7 @@ function App() {
                                 <Route path="profile" element={<ProfilePage />} />
                                 <Route path="*" element={<NotFound />} />
                                 <Route path="travels" element={<TravelsPage />} />
+                                <Route path="createTravel" element={<CreateTravel/>} />
                             </Route>
                         </Routes>
                     </ContextTravel.Provider>

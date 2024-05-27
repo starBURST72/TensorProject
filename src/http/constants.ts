@@ -13,7 +13,7 @@ export enum OUR_API_ENDPOINTS {
     settings = 'settings',
     userProfile = 'userprofile',
     userInfo = 'userinfo',
-    HintCards="HintCards",
+    HintCards="HintCard",
     userCreatedTravelsInfo = 'usercreatedtravelsinfo',
     userHistoryTravelsInfo = 'userhistorytravelsinfo'
 }

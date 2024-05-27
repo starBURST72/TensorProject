@@ -5,11 +5,11 @@ import { MenuOutlined } from '@ant-design/icons';
 import './Sidebar.css';
 import { ContextTravel } from '../Context/AppContext';
 
-interface Travel {
-  id: number;
-  title: string;
-  description: string;
-}
+// interface Travel {
+//   id: number;
+//   title: string;
+//   description: string;
+// }
 
 
 
@@ -33,7 +33,6 @@ const Sidebar: React.FC= () => {
     <div className='draw'>
       <Button onClick={showDrawer} className='drawButton' icon={<MenuOutlined />}>
       </Button>
-
       <Drawer
         title={selectedTravel?.title}
         placement={'right'}

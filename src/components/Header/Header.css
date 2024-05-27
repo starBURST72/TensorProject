@@ -9,7 +9,7 @@
     width: 100%; /* Шапка займёт всю ширину окна браузера */
     z-index: 1000;
     padding: 20px 0;
-    border-bottom: 1px solid #26292D;
+    /*border-bottom: 1px solid #26292D;*/
     background-color: #171818;
     color:#FFFFFF;
 }

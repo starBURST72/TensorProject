@@ -1,3 +1,3 @@
 export interface SearchResponse {
-    suggestions: Array<{ data: { city: string, region_iso_code: string } }>;
+    suggestions: Array<{ data: { value:string,city: string, region_iso_code: string } }>;
 }
