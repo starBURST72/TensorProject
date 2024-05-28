@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { GetHintCards } from "../../services/HintCardsService";
-
+import './HintCard.css'
 // Define the types for the HintCard and the response
 interface Hint {
     type: string;
@@ -42,7 +42,7 @@ function HintCard(props: Hint) {
     }, [props.type]);
 
     return (
-        <div className={props.type}>
+        <div className= {"container"}>
             <h1>{props.type}</h1>
             {loading ? (
                 <p>Loading...</p>

@@ -6,13 +6,14 @@ import { observer } from 'mobx-react-lite';
 import {GetCity} from "../../services/SearchCityService";
 import HintCard from "../../components/HintCard/HintCard";
 
-
+const russianLettersRegex = /^[а-яА-ЯёЁ\s]+$/;
 function HomePage() {
     const [value, setValue] = useState('');
     const homepageRef = useRef<HTMLDivElement>(null);
     const inputContainerRef = useRef<HTMLDivElement>(null);
     const hintsContainerRef = useRef<HTMLDivElement>(null);
     const [options, setOptions] = React.useState<{ value: string }[]>([]);
+    const [errorMessage, setErrorMessage] = useState<string>('');
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -22,6 +23,7 @@ function HomePage() {
     const onSelect = (data: string) => {
         setValue(data);
     };
+
     useEffect(() => {
         let lastScrollY = 0;
         const handleScroll = () => {
@@ -57,7 +59,12 @@ function HomePage() {
 
     const handleSearch = async (value: string) => {
         setValue(value);
-        if (value) {
+        if (!value || !russianLettersRegex.test(value)) {
+            setOptions([]);
+            setErrorMessage('Только русские буквы!');
+            return;
+        }
+        setErrorMessage('');
             try {
                 const responseData = await GetCity(value);
                 const newOptions = responseData.suggestions.map(suggestion=>({
@@ -67,9 +74,6 @@ function HomePage() {
             } catch (error) {
                 console.error(error);
             }
-        } else {
-            setOptions([]);
-        }
     };
     return (
         <div className='homepage' ref={homepageRef}>
@@ -86,14 +90,18 @@ function HomePage() {
                             option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                         }
                     />
-
                     <Button type="primary" onClick={handleClick}>Поехали!</Button>
                 </Space.Compact>
+                {errorMessage && (
+                    <div style={{ color: 'red', marginTop: '5px' }}>
+                        {errorMessage}
+                    </div>
+                )}
             </div>
             <div className="hints-container" ref={hintsContainerRef}>
-                <HintCard type={"friends"}/>
-                <HintCard type={"Popular"}/>
-                <HintCard type={"Continue"}/>
+                <HintCard type={"Друзья"}/>
+                <HintCard type={"Популярное"}/>
+                <HintCard type={"Продолжить"}/>
             </div>
         </div>
     );

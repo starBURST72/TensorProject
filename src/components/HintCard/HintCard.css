@@ -1,0 +1,28 @@
+.container {
+    padding: 20px;
+    border-radius: 30px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: rgba(9, 9, 9, 0.8);
+    /*border: 2px solid;*/
+    border-image-slice: 1;
+    border-image-source: linear-gradient(90deg, red, green, blue);
+}
+
+.hint-card {
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(90deg, red, green, blue);
+}
+
+.hint-card img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.hint-card h2 {
+    margin-top: 10px;
+}

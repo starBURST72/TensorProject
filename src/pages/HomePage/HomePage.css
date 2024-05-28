@@ -55,7 +55,7 @@ html {
     justify-content: center;
 }
 .hints-container div {
-    background-color: #5c62ec;
+    /*background-color: #5c62ec;*/
     height: 90%;
     width: 30%;
     margin-right: 10px;

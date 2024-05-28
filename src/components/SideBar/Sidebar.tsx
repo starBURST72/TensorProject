@@ -12,8 +12,7 @@ import { ContextTravel } from '../Context/AppContext';
 // }
 
 
-
-const Sidebar: React.FC = () => {
+const Sidebar: React.FC= () => {
   const [open, setOpen] = useState(true);
   const [placement] = useState<DrawerProps['placement']>('right');
   const { selectedTravel } = useContext(ContextTravel);
@@ -29,7 +28,6 @@ const Sidebar: React.FC = () => {
 
   return (
     // <div style={{position:'relative'}}>
-
     <div className='draw'>
       <Button onClick={showDrawer} className='drawButton' icon={<MenuOutlined />}>
       </Button>
