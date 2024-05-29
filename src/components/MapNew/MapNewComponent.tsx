@@ -116,7 +116,7 @@ export default function MapNewComponent() {
                         <button onClick={() => handleSearch()}>Показать</button>
                     </div>
                 </div>
-                <Sidebar  />
+                {/* <Sidebar  /> */}
             </div>
             <div className="map-container2">
                 <YMapComponentsProvider apiKey={apiKey} lang="en_EN">

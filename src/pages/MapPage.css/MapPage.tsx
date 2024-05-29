@@ -3,6 +3,7 @@ import MapNewComponent2 from '../../components/MapNew2/MapNewComponent2';
 import './MapPage.css';
 import React, { useEffect } from "react";
 import Sidebar from "../../components/SideBar/Sidebar";
+import MapNewComponent3 from '../../components/MapNew3/MapNewComponent3';
 
 export default function MapPage() {
     useEffect(() => {
@@ -14,8 +15,9 @@ export default function MapPage() {
     return (
         
         <div className='mapPage' id='mapPage'>
-            <MapNewComponent2 />
-            <Sidebar  />
+            
+            <MapNewComponent3 />
+            {/* <Sidebar  /> */}
         </div>
 
 
