@@ -17,7 +17,7 @@ function HomePage() {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/createTravel', { state: { message: {value} } });
+        navigate('/createTravel', { state: {  value } });
     };
 
     const onSelect = (data: string) => {

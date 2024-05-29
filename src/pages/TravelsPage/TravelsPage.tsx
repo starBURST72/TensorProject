@@ -40,13 +40,9 @@ function TravelsPage() {
     const { travels, setTravels } = useContext(ContextTravel);
 
     useEffect(() => {
-
         const onFinish = async () => {
             const respone = await getAllTravels();
           };
-
-
-
         setTravels(travelsData);
         onFinish()
       }, []);

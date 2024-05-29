@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import "./CreateTravel.css";
-import { Input, Button, List, Rate, Switch, Modal } from 'antd';
-import { useLocation } from 'react-router-dom';
+import {Input, List, Rate, Switch} from 'antd';
 import MapNewComponent2 from "../../components/MapNew2/MapNewComponent2";
+import SideBarTravel from "../../components/SidebarTravel/SideBarTravel";
+import {useLocation} from "react-router-dom";
 
 interface LocationState {
-    message: string;
+    message: {
+        value: string;
+    };
 }
 
 const initialData = [
@@ -17,29 +20,12 @@ const initialData = [
 
 function CreateTravel() {
     const location = useLocation();
-    const state = location.state as LocationState;
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [cityName, setCityName] = useState('');
+    const state = location.state.message.value as LocationState;
     const [checked, setChecked] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredData, setFilteredData] = useState(initialData);
 
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
 
-    const handleOk = () => {
-        console.log("City Name:", cityName); // Обработка введенного названия города
-        setIsModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-
-    const handleInputChange = (e: any) => {
-        setCityName(e.target.value);
-    };
 
     const handleSearchChange = (e: any) => {
         const value = e.target.value.toLowerCase();
@@ -79,47 +65,31 @@ function CreateTravel() {
                                 value={searchTerm}
                                 onChange={handleSearchChange}
                             />
-                                <List
-                                    itemLayout="horizontal"
-                                    className="ListItems"
-                                    dataSource={filteredData}
-                                    renderItem={item => (
-                                        <List.Item
-                                            className="ListItem"
-                                        >
-                                            <List.Item.Meta
-                                                className="Meta"
-                                                title={item.title}
-                                                description={item.description}
-                                            />
-                                            <div className="Rate">
-                                                {item.rating} <Rate disabled defaultValue={5} count={1} />
-                                            </div>
-                                        </List.Item>
-                                    )}
-                                />
+                            <List
+                                itemLayout="horizontal"
+                                className="ListItems"
+                                dataSource={filteredData}
+                                renderItem={item => (
+                                    <List.Item
+                                        className="ListItem"
+                                    >
+                                        <List.Item.Meta
+                                            className="Meta"
+                                            title={item.title}
+                                            description={item.description}
+                                        />
+                                        <div className="Rate">
+                                            {item.rating} <Rate disabled defaultValue={5} count={1}/>
+                                        </div>
+                                    </List.Item>
+                                )}
+                            />
                         </>
                     ) : (
                         <MapNewComponent2 />
                     )}
                 </div>
-                <div className="sidebar">
-                    <Button className="add-place">добавленное место</Button>
-                    <Button className="add-place">добавленное место</Button>
-                    <Button className="add-city" onClick={showModal}>+ город</Button>
-                    <Modal
-                        title="Добавить город"
-
-                        onOk={handleOk}
-                        onCancel={handleCancel}
-                    >
-                        <Input
-                            placeholder="Введите название города"
-                            value={cityName}
-                            onChange={handleInputChange}
-                        />
-                    </Modal>
-                </div>
+                <SideBarTravel message={state}/>
             </div>
         </>
     );

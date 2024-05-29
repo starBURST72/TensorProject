@@ -1,0 +1,20 @@
+.add-place label{
+    margin-left: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.add-place text{
+    margin-left: 5px;
+    font-size:11px;
+}
+.add-place {
+    height: 100px;
+    display: inline-grid;
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: #7d7d7d;
+    color: white;
+}
+.TimeLine{
+    width: 98%;
+}
