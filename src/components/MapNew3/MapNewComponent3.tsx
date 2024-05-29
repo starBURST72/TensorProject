@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useCallback, useLayoutEffect } from 'react';
-
 import "./MapNewComponent3.css";
 import axios from 'axios';
 import Sidebar from '../SideBar/Sidebar';
@@ -7,16 +6,10 @@ import { AutoComplete, Button, Space, Typography } from 'antd';
 import { GetCity } from '../../services/SearchCityService';
 import { getPLacesInCity } from '../../services/TravelService';
 
-
-
-// import { getPLacesInCity } from '../../services/TravelService';
-
-type MarkerFields =
-    {
-        coordinates: [number, number],
-        hint: string;
-    }
-
+type MarkerFields = {
+    coordinates: [number, number],
+    hint: string;
+}
 
 type PlacesInCityFields = {
     location: {
@@ -26,112 +19,51 @@ type PlacesInCityFields = {
     markerProps: MarkerFields[]
 };
 
-const MyReactComponent = () => {
-    return (
-        <div>
-            <h1>Hello, World!</h1>
-            <p>This is my React component.</p>
-        </div>
-    );
-};
 export default function MapNewComponent3() {
     const [location, setLocation] = useState({ center: [65.541227, 57.152985], zoom: 17 });
     const mapRef = useRef<ymaps.Map | null>(null);
     const [loading, setLoading] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const [options, setOptions] = useState<{ value: string }[]>([]);
-    const [placesInCuty, setPlacesInCuty] = useState<PlacesInCityFields>({
-        location: {
-            center: [61.541227, 57.152985],
-            zoom: 10
-        },
-        markerProps: [
-            {
-                coordinates: [1, 1],
-                hint: 'Hello, World!',
-            }
-        ]
-    });
+    const [placesInCuty, setPlacesInCuty] = useState<PlacesInCityFields | null>(null);
     const [sidebarVisible, setSidebarVisible] = useState(false);
-    const [selectedPlace, setSelectedPlace] = useState<MarkerFields|null>(null);
-    // const [map, setMap] = useState<YMap | null>(null);
+    const [selectedPlace, setSelectedPlace] = useState<MarkerFields | null>(null);
 
-
-    // useLayoutEffect(() => {
-    //     if(!map){
-    //         initMap();
-    //     }
-
-    // }, []);
-    useLayoutEffect(() => {
-
+    useEffect(() => {
         const onFinishRequests = async () => {
             try {
                 const responsePlacesInCuty = await getPLacesInCity({ city: 'Тюмень', type: 'Все' });
                 setPlacesInCuty(responsePlacesInCuty);
-                // setPlacesInCuty(responsePlacesInCuty)
-                // initMap(placesInCuty);
-
                 console.log(responsePlacesInCuty);
             } catch (error) {
                 console.error('Error:', error);
             }
         };
         onFinishRequests();
-
     }, []);
 
-
-
-
     useEffect(() => {
-
         const ymaps = window.ymaps;
-        const init = () => {
-
-            if (mapRef.current === null) {
+        ymaps.ready(() => {
+            if (!mapRef.current && placesInCuty) {
                 mapRef.current = new ymaps.Map("map", placesInCuty.location);
                 mapRef.current.controls.remove('geolocationControl'); // удаляем геолокацию
                 mapRef.current.controls.remove('searchControl'); // удаляем поиск
                 mapRef.current.controls.remove('trafficControl'); // удаляем контроль трафика
                 mapRef.current.controls.remove('typeSelector'); // удаляем тип
                 mapRef.current.controls.remove('fullscreenControl'); // удаляем кнопку перехода в полноэкранный режим
-
                 mapRef.current.controls.remove('rulerControl'); // удаляем контрол правил
-                
-            } else {
-                mapRef.current.setCenter(placesInCuty.location.center, placesInCuty.location.zoom);
-                mapRef.current.geoObjects.removeAll();
-
-                // Добавляем проверку на null
-                if (mapRef.current) {
-                    placesInCuty.markerProps.forEach((marker) => {
-                        const newPlacemark = new ymaps.Placemark(marker.coordinates, {
-                            hintContent: marker.hint,
-
-                        });
-                        newPlacemark.events.add(['click'], (event: ymaps.MapEvent) => {
-                            // event.get('target').options.set({iconColor:'red'});
-                            // console.log('Маркер был нажат');
-                            // console.log('Координаты маркера:', event.get('target').geometry.getCoordinates());
-                            setSelectedPlace(marker)
-                            setSidebarVisible(true);
-                        });
-                        mapRef.current?.geoObjects.add(newPlacemark);
+                placesInCuty.markerProps.forEach((marker) => {
+                    const newPlacemark = new ymaps.Placemark(marker.coordinates, { hintContent: marker.hint });
+                    newPlacemark.events.add(['click'], (event: ymaps.MapEvent) => {
+                        setSelectedPlace(marker)
+                        setSidebarVisible(true);
                     });
-                }
+                    mapRef.current?.geoObjects.add(newPlacemark);
+                });
             }
-
-        }
-
-        init();
-
-
-
+        });
     }, [placesInCuty]);
-
-
-
     const handleSearch = async () => {
         try {
             setLoading(true);
@@ -167,9 +99,9 @@ export default function MapNewComponent3() {
             setOptions([]);
         }
     };
-
+    // Обработчики и остальная часть компонента остаются без изменений
     return (
-        <div className="map-container" >
+        <div className="map-container">
             <div className="overlay-container">
                 {loading && <div className="loader">Loading...</div>}
                 <div className='searchConteiner'>
