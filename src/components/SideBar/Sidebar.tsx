@@ -11,8 +11,18 @@ import { ContextTravel } from '../Context/AppContext';
 //   description: string;
 // }
 
+type MarkerFields =
+  {
+    coordinates: [number, number],
+    hint: string;
+  }
 
-const Sidebar: React.FC= () => {
+interface SidebarProps {
+  visible: boolean;
+  onClose: () => void;
+  place: MarkerFields|null
+}
+const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, place }) => {
   const [open, setOpen] = useState(true);
   const [placement] = useState<DrawerProps['placement']>('right');
   const { selectedTravel } = useContext(ContextTravel);
@@ -21,22 +31,22 @@ const Sidebar: React.FC= () => {
     setOpen(true);
   };
 
-  const onClose = () => {
-    setOpen(false);
-  };
+  // const onClose = () => {
+  //   setOpen(false);
+  // };
 
 
   return (
     // <div style={{position:'relative'}}>
     <div className='draw'>
-      <Button onClick={showDrawer} className='drawButton' icon={<MenuOutlined />}>
-      </Button>
+      {/* <Button onClick={showDrawer} className='drawButton' icon={<MenuOutlined />}>
+      </Button> */}
       <Drawer
-        title={selectedTravel?.title}
+        title={`Инфа${place?.hint}`}
         placement={'right'}
-        closable={true}
+        closable={visible}
         onClose={onClose}
-        open={open}
+        open={visible}
         key={placement}
         // style={{maxHeight:'100%'}}
         mask={false}
@@ -45,7 +55,7 @@ const Sidebar: React.FC= () => {
       //width={'25%'}
       >
         {
-          selectedTravel?.description
+          place?.hint
         }
 
       </Drawer>

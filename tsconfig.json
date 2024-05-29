@@ -19,7 +19,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+
   },
   "include": [
     "src",
@@ -28,6 +29,7 @@
   "typeRoots": [
     "node_modules/@types",
     "src/types",
-    "node_modules/@yandex/ymaps3-types"
+    "node_modules/@yandex/ymaps3-types",
+    "node_modules/ymaps"
   ]
 }

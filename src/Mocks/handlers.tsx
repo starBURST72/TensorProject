@@ -3,7 +3,7 @@ import { OUR_API_ADDRESS, OUR_API_ENDPOINTS } from '../http/constants';
 import ava from '../img/ava.jpg'
 import duner from '../img/Duner на углях.png'
 import shaurma from '../img/Шаурма.png'
-import {LngLat} from "@yandex/ymaps3-types";
+import { LngLat } from "@yandex/ymaps3-types";
 
 export const handlers = [
     // Обработчик для POST запроса аутентификации
@@ -282,21 +282,21 @@ export const handlers = [
         return HttpResponse.json(
             {
                 location: {
-                    center: [65.541227, 57.152985], // starting position [lng, lat]
+                    center: [57.152985, 65.541227], // starting position [lng, lat]
                     zoom: 14 // starting zoom
                 },
                 markerProps: [
                     {
-                        coordinates: [65.5600105653111, 57.14883932510754] as LngLat,
-
+                        coordinates: [57.14883932510754, 65.5600105653111] as LngLat,
+                        hint: '1'
                     },
                     {
-                        coordinates: [65.55036168655934, 57.1485671873132] as LngLat,
-
+                        coordinates: [57.1485671873132, 65.55036168655934] as LngLat,
+                        hint: '2'
                     },
                     {
-                        coordinates: [65.5340378278529, 57.15222291358625] as LngLat,
-
+                        coordinates: [57.15222291358625, 65.5340378278529] as LngLat,
+                        hint: '3'
                     }
                 ]
             }

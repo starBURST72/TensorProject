@@ -1,0 +1,104 @@
+.map-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    z-index: 1;
+    height: 100%;
+}
+.ymaps-2-1-79-controls__control{
+    margin-top: 10%;
+}
+.searchConteiner {
+    top:5%;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    position: relative;
+    
+}
+
+.SearchLineAndButton {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.SearchLine {
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+
+}
+
+.SearcgLineAndButton button {
+    margin-left: 10px;
+    border: 2px solid green;
+    border-radius: 10px;
+    padding: 10px;
+    color: green;
+}
+
+
+
+
+.ant-btn.ant-btn-icon-only {
+    margin: 5px;
+}
+
+.searchConteiner {
+    pointer-events: all;
+}
+
+.map {
+    position: relative;
+    height: 100%;
+
+}
+
+.icon-marker {
+    cursor: pointer;
+
+    width: 1005px;
+    height: 1005px;
+    border-radius: 50%;
+
+    position: relative;
+    transform: translate(-50%, -50%);
+    background-color: red;
+}
+
+.my-marker {
+    position: relative;
+    box-sizing: border-box;
+    transform: translate(-50%,calc(-50% - 24px));
+    cursor: pointer;
+  }
+
+  .marker-title {
+    position: absolute;
+    top: calc(-50% - 6px);
+    left: calc(+50% - 5px);
+    max-width: 180px;
+    padding: 3px 5px 4px;
+    margin-left: 3px;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 100%;
+    color: #000;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
