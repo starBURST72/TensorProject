@@ -11,11 +11,11 @@ import { ContextTravel } from '../Context/AppContext';
 //   description: string;
 // }
 
-type MarkerFields =
-  {
-    coordinates: [number, number],
-    hint: string;
-  }
+type MarkerFields = {
+  id:number
+  coordinates: [number, number]
+  title: string
+}
 
 interface SidebarProps {
   visible: boolean;
@@ -42,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, place }) => {
       {/* <Button onClick={showDrawer} className='drawButton' icon={<MenuOutlined />}>
       </Button> */}
       <Drawer
-        title={`Инфа${place?.hint}`}
+        title={`Инфа${place?.title}`}
         placement={'right'}
         closable={visible}
         onClose={onClose}
@@ -55,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, place }) => {
       //width={'25%'}
       >
         {
-          place?.hint
+          place?.id
         }
 
       </Drawer>

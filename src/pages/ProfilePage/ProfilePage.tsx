@@ -151,7 +151,7 @@ function ProfilePage() {
                 </div>
             </div>
 
-            <Divider>Маршруты</Divider>
+            <Divider>Пройденные маршруты</Divider>
 
 
             <div className="travelsList">

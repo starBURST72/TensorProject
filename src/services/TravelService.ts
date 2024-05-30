@@ -65,4 +65,17 @@ export const getPLacesInCity = async (params: { city: string, type: string }) =>
 };
 
 
-
+// export const getOnePLaceInCity = async (id: number) => {
+//     try {
+//         // Выполнение GET запроса для получения одного места
+//         const response = await $api.post(`${OUR_API_ENDPOINTS.places}/${id}`);
+//         return response.data;
+//     } catch (error: any) {
+//         // Обработка ошибок получения одного места
+//         if (error.response && error.response.data && error.response.data.message) {
+//             throw new Error('Get travels failed: ' + error.response.data.message);
+//         } else {
+//             throw new Error('Get travels failed: ' + error.message);
+//         }
+//     }
+// };
