@@ -7,8 +7,9 @@ import { GetCity } from '../../services/SearchCityService';
 import { getPLacesInCity } from '../../services/TravelService';
 
 type MarkerFields = {
-    coordinates: [number, number],
-    hint: string;
+    id:number
+    coordinates: [number, number]
+    title: string
 }
 
 type PlacesInCityFields = {
@@ -54,7 +55,7 @@ export default function MapNewComponent3() {
                 mapRef.current.controls.remove('fullscreenControl'); // удаляем кнопку перехода в полноэкранный режим
                 mapRef.current.controls.remove('rulerControl'); // удаляем контрол правил
                 placesInCuty.markerProps.forEach((marker) => {
-                    const newPlacemark = new ymaps.Placemark(marker.coordinates, { hintContent: marker.hint });
+                    const newPlacemark = new ymaps.Placemark(marker.coordinates, { hintContent: marker.title });
                     newPlacemark.events.add(['click'], (event: ymaps.MapEvent) => {
                         setSelectedPlace(marker)
                         setSidebarVisible(true);

@@ -293,16 +293,19 @@ export const handlers = [
                 },
                 markerProps: [
                     {
-                        coordinates: [57.14883932510754, 65.5600105653111] as LngLat,
-                        hint: '1'
+                        id: 1,
+                        coordinates: [57.152985, 65.541227 ] as LngLat,
+                        title: 'Название 1'
                     },
                     {
+                        id: 2,
                         coordinates: [57.1485671873132, 65.55036168655934] as LngLat,
-                        hint: '2'
+                        title: 'Название 2'
                     },
                     {
+                        id: 3,
                         coordinates: [57.15222291358625, 65.5340378278529] as LngLat,
-                        hint: '3'
+                        title: 'Название 3'
                     }
                 ]
             }
