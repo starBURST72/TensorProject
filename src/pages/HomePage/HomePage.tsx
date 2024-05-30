@@ -36,7 +36,7 @@ function HomePage() {
         const updatePositions = () => {
             if (inputContainerRef.current && homepageRef.current) {
                 const homepageHeight = homepageRef.current.clientHeight;
-                const targetTop = 40 + (lastScrollY / homepageHeight) * 40;
+                const targetTop = 40 + (lastScrollY / homepageHeight) * 45;
 
                 inputContainerRef.current.style.top = `${targetTop}%`;
             }
@@ -45,7 +45,7 @@ function HomePage() {
                 const targetBottom = (lastScrollY / homepageHeight) * 80;
 
                 hintsContainerRef.current.style.bottom = `${targetBottom}%`;
-                hintsContainerRef.current.style.transform = `translateY(${(targetBottom + 180)}%)`;
+                hintsContainerRef.current.style.transform = `translateY(${(targetBottom + 160)}%)`;
             }
         };
 
@@ -99,9 +99,9 @@ function HomePage() {
                 )}
             </div>
             <div className="hints-container" ref={hintsContainerRef}>
-                <HintCard type={"Друзья"}/>
-                <HintCard type={"Популярное"}/>
-                <HintCard type={"Продолжить"}/>
+                <HintCard type={"friends"}/>
+                <HintCard type={"popular"}/>
+                <HintCard type={"continue"}/>
             </div>
         </div>
     );

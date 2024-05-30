@@ -4,6 +4,12 @@ import ava from '../img/ava.jpg'
 import duner from '../img/Duner на углях.png'
 import shaurma from '../img/Шаурма.png'
 import { LngLat } from "@yandex/ymaps3-types";
+import {
+    mockHintCardsContinue,
+    mockHintCardsFriends,
+    mockHintCardsPopular
+} from "./MockedData/MockedData";
+
 
 export const handlers = [
     // Обработчик для POST запроса аутентификации
@@ -35,7 +41,7 @@ export const handlers = [
             { message: 'logout successful' }
         );
     }),
-    http.get(`${OUR_API_ADDRESS}/refresh-token`, (req) => {
+    http.get(`${OUR_API_ADDRESS}/refresh_token`, (req) => {
         // Возвращаем мокованные данные для успешной регистрации
         return HttpResponse.json(
             {
@@ -300,6 +306,38 @@ export const handlers = [
                     }
                 ]
             }
+        );
+    }),
+    http.post(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.HintCards}`, async ({request}) => {
+        const requestBody = await request.json();
+        let query: string = '';
+        if (requestBody && typeof requestBody === 'object' && 'query' in requestBody) {
+            query = requestBody.query;
+        }
+        console.log('Received params:', query);
+        let data:({
+            img: string;
+            description: string;
+            id: string;
+            title: string;
+            mean_score: number;
+            count_users: number
+        })[];
+        switch (query) {
+            case 'friends':
+                data = mockHintCardsFriends;
+                break;
+            case 'popular':
+                data = mockHintCardsPopular;
+                break;
+            case 'continue':
+                data = mockHintCardsContinue;
+                break;
+            default:
+                data = []; // or some default data
+        }
+        return HttpResponse.json(
+            {data}
         );
     }),
 ]

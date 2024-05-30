@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./CreateTravel.css";
 import {Input, List, Rate, Switch} from 'antd';
-import MapNewComponent2 from "../../components/MapNew2/MapNewComponent2";
 import SideBarTravel from "../../components/SidebarTravel/SideBarTravel";
 import {useLocation} from "react-router-dom";
+import MapNewComponent3 from "../../components/MapNew3/MapNewComponent3";
 
 interface LocationState {
     message: {
@@ -20,7 +20,8 @@ const initialData = [
 
 function CreateTravel() {
     const location = useLocation();
-    const state = location.state.message.value as LocationState;
+    const state = location.state.value as LocationState;
+    console.log(state)
     const [checked, setChecked] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredData, setFilteredData] = useState(initialData);
@@ -86,7 +87,7 @@ function CreateTravel() {
                             />
                         </>
                     ) : (
-                        <MapNewComponent2 />
+                        <MapNewComponent3/>
                     )}
                 </div>
                 <SideBarTravel message={state}/>

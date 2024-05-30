@@ -1,13 +1,16 @@
 .add-place label{
-    margin-left: 5px;
+    margin-left: 15px;
     margin-top: 5px;
     margin-bottom: 5px;
+    font-size:20px;
+
 }
-.add-place text{
-    margin-left: 5px;
+.add-place p{
+    margin-left: 15px;
     font-size:11px;
 }
 .add-place {
+    border-radius: 10px;
     height: 100px;
     display: inline-grid;
     width: 100%;

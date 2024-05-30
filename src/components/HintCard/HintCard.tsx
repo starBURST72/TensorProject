@@ -6,7 +6,7 @@ interface Hint {
     type: string;
 }
 
-interface HintCardData {
+export interface HintCardData {
     id: string;
     title: string;
     description: string;
@@ -16,7 +16,7 @@ interface HintCardData {
 }
 
 interface HintsResponse {
-    HintsCard: HintCardData[];
+    data: HintCardData[];
 }
 
 function HintCard(props: Hint) {
@@ -28,7 +28,7 @@ function HintCard(props: Hint) {
             try {
                 setLoading(true);
                 const responseData: HintsResponse = await GetHintCards(value);
-                setHintData(responseData.HintsCard);
+                setHintData(responseData.data);
             } catch (error) {
                 console.error(error);
             } finally {
@@ -39,26 +39,32 @@ function HintCard(props: Hint) {
 
     useEffect(() => {
         getHint(props.type);
-    }, [props.type]);
+    }, []);
 
     return (
-        <div className= {"container"}>
+        <div className="container">
             <h1>{props.type}</h1>
             {loading ? (
                 <p>Loading...</p>
             ) : (
-                hintData.map((hint) => (
-                    <div key={hint.id} className="hint-card">
-                        <img src={hint.img} alt={hint.title} />
-                        <h2>{hint.title}</h2>
-                        <p>{hint.description}</p>
-                        <p>Score: {hint.mean_score}</p>
-                        <p>Users: {hint.count_users}</p>
-                    </div>
-                ))
+                hintData ? (
+                   // Check if hintData exists before mapping over it
+                    hintData.map((hint) => (
+                        <div key={hint.id} className="hint-card">
+                            <img src={hint.img} alt={hint.title} />
+                            <h2>{hint.title}</h2>
+                            <p>{hint.description}</p>
+                            <p>Score: {hint.mean_score}</p>
+                            <p>Прошли: {hint.count_users}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p>No data available</p>
+                )
             )}
         </div>
     );
+
 }
 
 export default HintCard;

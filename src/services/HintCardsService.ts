@@ -9,13 +9,8 @@ export const GetHintCards = async (
     try {
         const response: AxiosResponse<HintsResponse> = await $api.post<HintsResponse>(
             `${OUR_API_ENDPOINTS.HintCards}`,
-            { query: query},
-            {
-                headers: {
-                }
-            }
+            { query: query}
         );
-        console.log(response.data)
         return response.data;
     } catch (error: any) {
         // Обработка ошибок

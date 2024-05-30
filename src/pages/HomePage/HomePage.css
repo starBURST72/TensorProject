@@ -47,26 +47,23 @@ html {
     position: absolute;
     bottom: -100%; /* Изначально скрыт снизу */
     text-align: center;
-    width: 70%;
+    width: 90%;
     height: 450px;
     transition: bottom 0.1s ease;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.hints-container div {
-    /*background-color: #5c62ec;*/
-    height: 90%;
-    width: 30%;
-    margin-right: 10px;
-    margin-bottom: 300px;
-}
+/*.hints-container div {*/
+/*    !*background-color: #5c62ec;*!*/
+/*    height: 90%;*/
+/*    width: 30%;*/
+/*    margin-right: 10px;*/
+/*    margin-bottom: 300px;*/
+/*}*/
 
 .hidden-scroll {
     overflow: hidden;
 }
 
-.hints-card h1{
-    font-family: 'Poppins', sans-serif ;
-    margin-top: 10px;
-}
+
