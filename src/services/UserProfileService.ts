@@ -86,3 +86,18 @@ export const getUserHistoryTravelsInfo = async (id: number) => {
         }
     }
 };
+
+export const getAllTypesOfPlaces = async () => {
+    try {
+        // Выполнение POST запроса для регистрации
+        const response = await $api.get(`/${OUR_API_ENDPOINTS.userProfile}/${OUR_API_ENDPOINTS.settings}`);
+        return response.data;
+    } catch (error: any) {
+        // Обработка ошибок регистрации
+        if (error.response && error.response.data && error.response.data.message) {
+            throw new Error('Get settings failed: ' + error.response.data.message);
+        } else {
+            throw new Error('Get settings failed: ' + error.message);
+        }
+    }
+};

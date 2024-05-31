@@ -9,8 +9,8 @@ import { GetCity } from '../../services/SearchCityService';
 import MapMarker from '../MapMarker/MapMarker';
 import { LOCATION, markerProps } from './common';
 
-import { getPLacesInCity } from '../../services/TravelService';
 import { YMap } from '@yandex/ymaps3-types';
+import { getPlacesInCity } from '../../services/TravelService';
 
 type PlacesInCityFields = {
     location: {
@@ -56,14 +56,14 @@ export default function MapNewComponent2() {
             } = ymaps3;
 
             const { YMapZoomControl, YMapGeolocationControl } = await ymaps3.import('@yandex/ymaps3-controls@0.0.1');
-            
+
 
 
 
             const mapInstance = new YMap(
                 mapRef.current,
                 { location: placesInCuty.location, showScaleInCopyrights: true },
-                
+
             );
 
             mapInstance.addChild(new YMapDefaultSchemeLayer({}));
@@ -78,10 +78,10 @@ export default function MapNewComponent2() {
                     .addChild(new YMapGeolocationControl({}))
             );
 
-            
+
             setMap(mapInstance);
             console.log(map)
-            
+
         } else {
             console.log("Ref на элемент карты не установлен");
         }
@@ -103,7 +103,7 @@ export default function MapNewComponent2() {
         if (map) {
             // Remove all existing markers from the map
 
-            
+
             // Add the default features layer and controls back to the map
             map.addChild(new YMapDefaultFeaturesLayer({}));
             map.addChild(new YMapDefaultSchemeLayer({}));
@@ -114,7 +114,7 @@ export default function MapNewComponent2() {
             // Add the new set of markers to the map
             placesInCuty.markerProps.forEach((markerSource) => {
                 const marker = new YMapDefaultMarker(markerSource);
-                
+
                 map.addChild(marker);
 
                 console.log(markerSource)
@@ -126,13 +126,13 @@ export default function MapNewComponent2() {
     //     if(!map){
     //         initMap();
     //     }
-        
+
     // }, []);
     useEffect(() => {
         const onFinishRequests = async () => {
             try {
-                const responsePlacesInCuty = await getPLacesInCity({ city: 'Тюмень', type: 'Все' });
-                setPlacesInCuty(responsePlacesInCuty);
+                const responsePlacesInCuty = await getPlacesInCity('Тюмень', 'Все');
+                // setPlacesInCuty(responsePlacesInCuty);
                 // setPlacesInCuty(responsePlacesInCuty)
                 // initMap(placesInCuty);
                 initMap();
@@ -144,11 +144,11 @@ export default function MapNewComponent2() {
         onFinishRequests();
     }, []);
 
-    
+
 
     useEffect(() => {
         updateMap();
-    }, [ updateMap]);
+    }, [updateMap]);
 
     const handleSearch = async () => {
         try {
