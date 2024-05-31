@@ -1,18 +1,21 @@
 import "./PlaceCard.css"
 import React from "react";
+import {Button} from "antd";
+import { DeleteOutlined } from '@ant-design/icons';
 interface PlaceCardProps {
     Title: string;
     type: string;
-    placeid: number;
+    place_id: number;
     coordinates: string;
+    onDelete: () => void;
 }
 
-function PlaceCard({ Title, type, placeid, coordinates }:PlaceCardProps){
+function PlaceCard({ Title, type, place_id, coordinates,onDelete }:PlaceCardProps){
 
     const place={
         title: Title,
         type: type,
-        placeid: placeid,
+        place_id: place_id,
         coordinates: coordinates,
     }
 
@@ -24,6 +27,7 @@ function PlaceCard({ Title, type, placeid, coordinates }:PlaceCardProps){
         <div className="add-place">
             <label>{place.title}</label>
             <p>{place.type}</p>
+            <Button className="DeleteButton" onClick={onDelete} type="primary" icon={<DeleteOutlined />}/>
             <button onClick={handleButtonClick}>Показать</button>
         </div>
     );

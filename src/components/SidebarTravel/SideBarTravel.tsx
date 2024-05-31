@@ -1,35 +1,23 @@
-import { Button, Input, Modal, Timeline, Dropdown, Menu, Upload } from "antd";
+import {Button, Input, Modal, Timeline, Upload, Flex} from "antd";
 import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
 import PlaceCard from "../PlaceCard/PlaceCard";
 import React, { useState } from "react";
 import "./SideBarTravel.css";
+import {TimelineItem} from "../../pages/CreateTravel/CreateTravel";
 
 interface SideBarTravelProps {
     message: string|any;
+    timelineItems: TimelineItem[];
+    setTimelineItems: React.Dispatch<React.SetStateAction<TimelineItem[]>>;
 }
 
-function SideBarTravel({ message }: SideBarTravelProps) {
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [cityName, setCityName] = useState('');
+function SideBarTravel({ message,timelineItems,setTimelineItems }: SideBarTravelProps) {
     const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');
-
-    const handleOk = () => {
-        console.log("City Name:", cityName);
-        setIsModalVisible(false);
+    const [imageUrl, setImageUrl] = useState('');const handleDelete = (id: number) => {
+        setTimelineItems((timelineItems: TimelineItem[]) => timelineItems.filter(item => item.id !== id));
     };
 
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCityName(e.target.value);
-    };
-
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
 
     const handleSettingsClick = () => {
         setIsSettingsModalVisible(true);
@@ -73,41 +61,22 @@ function SideBarTravel({ message }: SideBarTravelProps) {
         <div className="sidebar">
             <h1 className="sidebar-travel">
                 {message}
-                <Dropdown overlay={<Menu><Menu.Item key="1" onClick={handleSettingsClick}>Settings</Menu.Item></Menu>} trigger={['click']}>
-                    <SettingOutlined />
-                </Dropdown>
+                <SettingOutlined style={{ cursor: 'pointer',marginLeft:"20px" }} onClick={handleSettingsClick}/>
             </h1>
             <Timeline className="TimeLine">
-                <Timeline.Item>
-                    <PlaceCard
-                        Title="Макдоналдс"
-                        type="ул. Мориса Тореза 1"
-                        placeid={123}
-                        coordinates="12312313132131312"
-                    />
-                </Timeline.Item>
-                <Timeline.Item>
-                    <PlaceCard
-                        Title="Кальянная"
-                        type="Республики"
-                        placeid={123}
-                        coordinates="9999999999"
-                    />
-                </Timeline.Item>
+                {timelineItems.map(item => (
+                    <Timeline.Item key={item.id}>
+                        <PlaceCard
+                            Title={item.title}
+                            type={item.type}
+                            place_id={item.place_id}
+                            coordinates={item.coordinates}
+                            onDelete={() => handleDelete(item.id)}
+                        />
+
+                    </Timeline.Item>
+                ))}
             </Timeline>
-            <Button className="add-city" onClick={showModal}>+ город</Button>
-            <Modal
-                title="Добавить город"
-                open={isModalVisible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-            >
-                <Input
-                    placeholder="Введите название города"
-                    value={cityName}
-                    onChange={handleInputChange}
-                />
-            </Modal>
             <Modal
                 title="Настройки"
                 open={isSettingsModalVisible}
@@ -128,6 +97,9 @@ function SideBarTravel({ message }: SideBarTravelProps) {
                     {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : <UploadOutlined />}
                 </Upload>
             </Modal>
+            <Flex className="confirm-container"><Button type="primary">В путешествие!</Button>
+                <Button>Сохранить</Button></Flex>
+
         </div>
     );
 }

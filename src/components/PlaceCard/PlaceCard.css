@@ -21,3 +21,8 @@
 .TimeLine{
     width: 98%;
 }
+.DeleteButton{
+    position: absolute;
+    top: 0;
+    right: 0;
+}

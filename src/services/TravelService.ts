@@ -33,10 +33,38 @@ export const getAllTravels = async () => {
     }
 };
 
-export const CreateTravel = async (data: { name: string, description: string, places: Object }) => {
+export const CreateTravel = async () => {
     try {
         // Выполнение POST запроса для регистрации
-        const response = await $api.post(`${OUR_API_ENDPOINTS.travels}`, data);
+        const response = await $api.post(`${OUR_API_ENDPOINTS.travels}`);
+        return response.data;
+    } catch (error: any) {
+        // Обработка ошибок регистрации
+        if (error.response && error.response.data && error.response.data.message) {
+            throw new Error('Get travel by ID failed ' + error.response.data.message);
+        } else {
+            throw new Error('Get travel by ID failed: ' + error.message);
+        }
+    }
+};
+export const UserTravelCreate = async () => {
+    try {
+        // Выполнение POST запроса для регистрации
+        const response = await $api.post(`${OUR_API_ENDPOINTS.userTravel}/create`);
+        return response.data;
+    } catch (error: any) {
+        // Обработка ошибок регистрации
+        if (error.response && error.response.data && error.response.data.message) {
+            throw new Error('Get travel by ID failed ' + error.response.data.message);
+        } else {
+            throw new Error('Get travel by ID failed: ' + error.message);
+        }
+    }
+};
+export const CopyTravel = async (id:number) => {
+    try {
+        // Выполнение POST запроса для регистрации
+        const response = await $api.post(`${OUR_API_ENDPOINTS.travels}/${id}/copy`);
         return response.data;
     } catch (error: any) {
         // Обработка ошибок регистрации

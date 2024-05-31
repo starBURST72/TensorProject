@@ -4,3 +4,11 @@
     text-shadow:
              1px 1px 1px #085db0
 }
+.confirm-container{
+    width: 100%;
+    align-items: end;
+    align-self: start;
+    justify-content: space-between;
+    flex: 1;
+}
+

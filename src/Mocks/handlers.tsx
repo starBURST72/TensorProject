@@ -10,6 +10,14 @@ import {
     mockHintCardsPopular
 } from "./MockedData/MockedData";
 
+function getMockDataForId(id: string): string {
+    const mockDataMap: Record<string, { id: string }> = {
+        '1': { id: 'mockId1' },
+        '2': { id: 'mockId2' },
+        '3': { id: 'mockId3' },
+    };
+    return mockDataMap[id]?.id || '';
+    }
 
 export const handlers = [
     // Обработчик для POST запроса аутентификации
@@ -314,7 +322,6 @@ export const handlers = [
         if (requestBody && typeof requestBody === 'object' && 'query' in requestBody) {
             query = requestBody.query;
         }
-        console.log('Received params:', query);
         let data:({
             img: string;
             description: string;
@@ -334,10 +341,22 @@ export const handlers = [
                 data = mockHintCardsContinue;
                 break;
             default:
-                data = []; // or some default data
+                data = [];
         }
         return HttpResponse.json(
             {data}
         );
     }),
+    http.post(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.travels}/:id/copy`, async ({ params }) => {
+        let id: string;
+        const { id: paramId } = params;
+        if (typeof paramId === 'string') {
+            id = getMockDataForId(paramId);
+        } else {
+            return HttpResponse.json({ error: 'Invalid ID' }, { status: 400 });
+        }
+
+        return HttpResponse.json({ id });
+    }),
+
 ]
