@@ -17,16 +17,18 @@
     z-index: 1;
     height: 100%;
 }
-.ymaps-2-1-79-controls__control{
+
+.ymaps-2-1-79-controls__control {
     margin-top: 10%;
 }
+
 .searchConteiner {
-    top:5%;
+    top: 5%;
     display: flex;
     flex-direction: column;
     margin: 10px;
     position: relative;
-    
+    align-items: start;
 }
 
 .SearchLineAndButton {
@@ -82,11 +84,11 @@
 .my-marker {
     position: relative;
     box-sizing: border-box;
-    transform: translate(-50%,calc(-50% - 24px));
+    transform: translate(-50%, calc(-50% - 24px));
     cursor: pointer;
-  }
+}
 
-  .marker-title {
+.marker-title {
     position: absolute;
     top: calc(-50% - 6px);
     left: calc(+50% - 5px);
@@ -101,4 +103,5 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
+}
+

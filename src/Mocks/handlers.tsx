@@ -283,42 +283,157 @@ export const handlers = [
         );
     }),
 
-    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.places}`, ({ params }) => {
+    // http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.places}`, ({ params }) => {
 
-        return HttpResponse.json(
-            {
-                location: {
-                    center: [57.152985, 65.541227], // starting position [lng, lat]
-                    zoom: 14 // starting zoom
-                },
+    //     return HttpResponse.json(
+    //         {
+    //             location: {
+    //                 center: [57.152985, 65.541227], // starting position [lng, lat]
+    //                 zoom: 14 // starting zoom
+    //             },
+    //             markerProps: [
+    //                 {
+    //                     id: 1,
+    //                     coordinates: [57.152985, 65.541227 ] as LngLat,
+    //                     title: 'Название 1'
+    //                 },
+    //                 {
+    //                     id: 2,
+    //                     coordinates: [57.1485671873132, 65.55036168655934] as LngLat,
+    //                     title: 'Название 2'
+    //                 },
+    //                 {
+    //                     id: 3,
+    //                     coordinates: [57.15222291358625, 65.5340378278529] as LngLat,
+    //                     title: 'Название 3'
+    //                 }
+    //             ]
+    //         }
+    //     );
+    // }),
+
+    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.places}`, ({ request }) => {
+
+        const url = new URL(request.url)
+        const city = url.searchParams.get('city')
+        const type = url.searchParams.get('type')
+        if (city === 'Тюмень' && type === 'Все') {
+            return HttpResponse.json({
                 markerProps: [
                     {
                         id: 1,
-                        coordinates: [57.152985, 65.541227 ] as LngLat,
-                        title: 'Название 1'
+                        title: 'Название 1',
+                        description: 'Описание',
+                        score: 4.2,
+                        coordinates: [57.14883932510754, 65.5600105653111],
                     },
                     {
                         id: 2,
-                        coordinates: [57.1485671873132, 65.55036168655934] as LngLat,
-                        title: 'Название 2'
+                        title: 'Название 2',
+                        description: 'Описание',
+                        score: 4.2,
+                        coordinates: [57.1485671873132, 65.55036168655934],
                     },
                     {
                         id: 3,
-                        coordinates: [57.15222291358625, 65.5340378278529] as LngLat,
-                        title: 'Название 3'
-                    }
-                ]
-            }
-        );
+                        title: 'Название 3',
+                        description: 'Описание',
+                        score: 4.2,
+                        coordinates: [57.15222291358625, 65.5340378278529],
+                    },
+                ],
+            });
+        } else if (city === 'Тюмень' && type === 'Еда') {
+            return HttpResponse.json({
+                markerProps: [
+                    {
+                        id: 4,
+                        title: 'Название 4',
+                        description: 'Описание',
+                        score: 4.2,
+                        coordinates: [57.11785179582525, 65.54868508203124],
+                    },
+                    {
+                        id: 5,
+                        title: 'Название 5',
+                        description: 'Описание',
+                        score: 4.2,
+                        coordinates: [57.111839820618066, 65.54690409524531],
+                    },
+                    {
+                        id: 6,
+                        title: 'Название 6',
+                        description: 'Описание',
+                        score: 4.2,
+                        coordinates: [57.12033801574096, 65.52634764535519],
+                    },
+                    {
+                        id: 7,
+                        title: 'Название 7',
+                        description: 'Описание',
+                        score: 4.2,
+                        coordinates: [57.12648934490567, 65.52321847405013],
+                    },
+                ],
+            });
+        } else {
+            return HttpResponse.json({});
+        }
     }),
-    http.post(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.HintCards}`, async ({request}) => {
+
+    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.places}/:id`, ({ request }) => {
+
+        const url = new URL(request.url)
+        const id = url.searchParams.get('id')
+        switch (id) {
+            case '1':
+                return HttpResponse.json(
+                    {
+                        id: 1,
+                        title: 'Название 1',
+                        description: 'Описание 1',
+                        score: 4.2,
+                        coordinates: [57.14883932510754, 65.5600105653111],
+                        address: 'Адрес 1',
+                        type: 'Еда',
+                    }
+                );
+            case '2':
+                return HttpResponse.json({
+                    id: 2,
+                    title: 'Название 2',
+                    description: 'Описание 2',
+                    score: 4.2,
+                    coordinates: [57.1485671873132, 65.55036168655934],
+                    address: 'Адрес 2',
+                    type: 'Красота',
+                });
+            case '3':
+                return HttpResponse.json({
+                    id: 3,
+                        title: 'Название 3',
+                        description: 'Описание',
+                        score: 4.2,
+                        coordinates: [57.15222291358625, 65.5340378278529],
+                        address: 'Адрес 3',
+                        type: 'Спорт',
+                });
+            default:
+                return HttpResponse.json({c:id});
+        }
+
+
+    }),
+
+
+    http.post(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.HintCards}`, async ({ request }) => {
         const requestBody = await request.json();
         let query: string = '';
         if (requestBody && typeof requestBody === 'object' && 'query' in requestBody) {
             query = requestBody.query;
         }
         console.log('Received params:', query);
-        let data:({
+        let data: ({
             img: string;
             description: string;
             id: string;
@@ -340,7 +455,9 @@ export const handlers = [
                 data = []; // or some default data
         }
         return HttpResponse.json(
-            {data}
+            { data }
         );
     }),
+
+
 ]
