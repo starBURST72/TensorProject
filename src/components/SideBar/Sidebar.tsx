@@ -11,16 +11,21 @@ import { ContextTravel } from '../Context/AppContext';
 //   description: string;
 // }
 
-type MarkerFields =
-  {
-    coordinates: [number, number],
-    hint: string;
-  }
+type FullMarkerFields = {
+  id: number;
+  title: string;
+  description: string;
+  score: number;
+  coordinates: [number, number];
+  address: string,
+  type: string,
+  photo: string
+}
 
 interface SidebarProps {
   visible: boolean;
   onClose: () => void;
-  place: MarkerFields|null
+  place: FullMarkerFields | null
 }
 const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, place }) => {
   const [open, setOpen] = useState(true);
@@ -42,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, place }) => {
       {/* <Button onClick={showDrawer} className='drawButton' icon={<MenuOutlined />}>
       </Button> */}
       <Drawer
-        title={`Инфа${place?.hint}`}
+        title={`Инфа${place?.title}`}
         placement={'right'}
         closable={visible}
         onClose={onClose}
@@ -55,9 +60,10 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, place }) => {
       //width={'25%'}
       >
         {
-          place?.hint
+          place?.address
         }
-
+        <img src={`data:image/jpeg;base64,${place?.photo}`} alt="place" />
+        
       </Drawer>
     </div>
     // </div>

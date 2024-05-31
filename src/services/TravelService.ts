@@ -1,3 +1,5 @@
+import { AxiosResponse } from "axios";
+import { PlaceFullResponse, PlacePreviewResponse } from "../Models/Travels";
 import $api from "../http";
 import { OUR_API_ENDPOINTS } from "../http/constants";
 
@@ -77,10 +79,13 @@ export const CopyTravel = async (id:number) => {
 };
 
 
-export const getPLacesInCity = async (params: { city: string, type: string }) => {
+export const getPlacesInCity = async (city: string, type: string): Promise<PlacePreviewResponse> => {
     try {
         // Выполнение GET запроса для получения всех путешествий
-        const response = await $api.get(`/${OUR_API_ENDPOINTS.places}`, { params: params });
+        const response: AxiosResponse<PlacePreviewResponse> = await $api.get<PlacePreviewResponse>(
+            `/${OUR_API_ENDPOINTS.places}`,
+            { params: { city, type } }
+        );
         return response.data;
     } catch (error: any) {
         // Обработка ошибок получения всех путешествий
@@ -93,4 +98,19 @@ export const getPLacesInCity = async (params: { city: string, type: string }) =>
 };
 
 
-
+export const getOnePLaceInCity = async (id: number): Promise<PlaceFullResponse> => {
+    try {
+        // Выполнение GET запроса для получения одного места
+        const response: AxiosResponse<PlaceFullResponse> = await $api.get<PlaceFullResponse>(
+            `${OUR_API_ENDPOINTS.places}/${id}`,
+            {params:{id}})
+        return response.data;
+    } catch (error: any) {
+        // Обработка ошибок получения одного места
+        if (error.response && error.response.data && error.response.data.message) {
+            throw new Error('Get travels failed: ' + error.response.data.message);
+        } else {
+            throw new Error('Get travels failed: ' + error.message);
+        }
+    }
+};

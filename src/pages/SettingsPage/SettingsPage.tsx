@@ -267,7 +267,7 @@ function SettingsPage() {
                                 mode="multiple"
                                 allowClear
                                 style={{ width: '100%' }}
-                                placeholder="Выберите интерес"
+                                placeholder="Выберите интересующие места"
                                 // defaultValue={userSettingsInfoRes.interests}
                                 onChange={handleChange}
                                 options={options}
