@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./CreateTravel.css";
 import {Button, Input, List, Rate, Switch} from 'antd';
 import SideBarTravel from "../../components/SidebarTravel/SideBarTravel";
 import {useLocation} from "react-router-dom";
 import MapNewComponent3 from "../../components/MapNew3/MapNewComponent3";
+import {GetUserTravel} from "../../services/TravelService";
 
 interface LocationState {
     message: {
@@ -26,21 +27,34 @@ const initialData = [
     { id: 4, title: "Title4", description: "Очень хорошее место", rating: 4.2,address:"Тюмень, ул. Республики 92" },
 ];
 
+
+
 function CreateTravel() {
     const location = useLocation();
-    let state:any = "";
-    if(location.state.value){
-        state = location.state.value as LocationState;
-        console.log(state)
-    }else if(location.state.TravelId){
-        const userTravelId = location.state.TravelId as LocationState;
-        console.log(userTravelId)
-    }
     const [checked, setChecked] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredData, setFilteredData] = useState(initialData);
     const [timelineItems, setTimelineItems] = useState<TimelineItem[]>([]);
+    const prevTimelineItemsRef = useRef<TimelineItem[]>();
+    const [state, setState] = useState<any>("");
 
+    useEffect(() => {
+        const fetchData = async () => {
+            if (location.state.value) {
+                setState(location.state.value as LocationState);
+                console.log(location.state.value);
+            } else if (location.state.TravelId) {
+                const userTravelId = location.state.TravelId as string;
+                const userTravel: TimelineItem|any = await GetUserTravel(userTravelId);
+                console.log(userTravel)
+                // console.log(TravelId)
+                // setTimelineItems(userTravel);
+                console.log(userTravelId);
+            }
+        };
+
+        fetchData();
+    }, [location.state]);
 
     useEffect(() => {
         const savedTimelineItems = localStorage.getItem("timelineItems");
@@ -50,7 +64,10 @@ function CreateTravel() {
     }, []);
 
     useEffect(() => {
-        localStorage.setItem("timelineItems", JSON.stringify(timelineItems));
+        if (prevTimelineItemsRef.current !== timelineItems) {
+            localStorage.setItem("timelineItems", JSON.stringify(timelineItems));
+            prevTimelineItemsRef.current = timelineItems;
+        }
     }, [timelineItems]);
 
     const createTimelineItem = (item: any) => {

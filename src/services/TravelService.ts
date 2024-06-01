@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import { PlaceFullResponse, PlacePreviewResponse } from "../Models/Travels";
 import $api from "../http";
 import { OUR_API_ENDPOINTS } from "../http/constants";
+import {TimelineItem} from "../pages/CreateTravel/CreateTravel";
 
 export const getOneTravel = async (id: number) => {
     try {
@@ -112,5 +113,21 @@ export const getOnePLaceInCity = async (id: number): Promise<PlaceFullResponse> 
         } else {
             throw new Error('Get travels failed: ' + error.message);
         }
+    }
+};
+
+export const GetUserTravel = async (id:string):Promise<TimelineItem | null> => {
+    try {
+        // Выполнение POST запроса для регистрации
+        const response:AxiosResponse<TimelineItem> = await $api.get(`${OUR_API_ENDPOINTS.userTravel}/${id}`);
+        return response.data;
+    } catch (error: any) {
+        // Обработка ошибок регистрации
+        if (error.response && error.response.data && error.response.data.message) {
+            console.error('Get travel by ID failed: ' + error.response.data.message);
+        } else {
+            console.error('Get travel by ID failed: ' + error.message);
+        }
+        return null;
     }
 };
