@@ -6,7 +6,7 @@ import type { GetProp, UploadFile, UploadProps } from 'antd';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 type SettingsInputProps = {
-    ava: string
+    ava: string|null|undefined
     key: string
     name: string
     id: string

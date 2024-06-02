@@ -26,6 +26,7 @@ let serverReady: Promise<void>;
 // } else {
 //     serverReady = Promise.resolve();
 // }
+
 serverReady = import('./Mocks/Manager').then(({startWorker})  => {
     return startWorker();
 })

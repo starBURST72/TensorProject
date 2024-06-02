@@ -57,7 +57,7 @@ export const getUserProfileInfo = async (id: number) => {
     }
 };
 
-export const getUserCreatedTravelsInfo = async (id: number) => {
+export const getUserCreatedTravelsInfo = async (id: number) => {//////////////Объединить
     try {
         // Выполнение POST запроса для регистрации
         const response = await $api.get(`/${OUR_API_ENDPOINTS.userProfile}/${OUR_API_ENDPOINTS.userCreatedTravelsInfo}/${id}`);
@@ -72,7 +72,7 @@ export const getUserCreatedTravelsInfo = async (id: number) => {
     }
 };
 
-export const getUserHistoryTravelsInfo = async (id: number) => {
+export const getUserHistoryTravelsInfo = async (id: number) => {//////////////Объединить
     try {
         // Выполнение POST запроса для регистрации
         const response = await $api.get(`/${OUR_API_ENDPOINTS.userProfile}/${OUR_API_ENDPOINTS.userHistoryTravelsInfo}/${id}`);

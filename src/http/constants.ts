@@ -18,5 +18,7 @@ export enum OUR_API_ENDPOINTS {
     userCreatedTravelsInfo = 'usercreatedtravelsinfo',//////
     userHistoryTravelsInfo = 'userhistorytravelsinfo',
     places = 'places',
-    typesOfPlaces = 'typesofplaces'
+    typesOfPlaces = 'typesofplaces',
+    friends = 'friends',
+    place='place'
 }

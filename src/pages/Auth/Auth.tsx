@@ -1,47 +1,47 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react';
 import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input } from 'antd';
 import './Auth.css';
-import {Context} from '../../index';
-import {observer} from "mobx-react-lite";
+import { Context } from '../../index';
+import { observer } from "mobx-react-lite";
+
 type LoginFields = {
   username: string;
   password: string;
   remember: boolean;
 };
+
 type RegisterFields = {
   email: string;
   username: string;
   password: string;
-  VerifyPass: string;
+  verifyPassword: string;
 };
 
 const onFinishFailed: FormProps<LoginFields>['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
 
-
- function Auth() {
+const Auth: React.FC = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const[email, setEmail] = useState<string>('');
-  const {store}=useContext(Context);
+  const [email, setEmail] = useState<string>('');
+  const { store } = useContext(Context);
 
   const [isAuthForm, setIsAuthForm] = useState(false);
+
   const onFinish = async (values: LoginFields | RegisterFields) => {
     try {
-      if ('email' in values) { // Проверяем наличие свойства email
-        // Если email есть, значит это форма регистрации
-        await store.reg(email,username,password)
-
+      if ('email' in values) {
+        await store.reg(values.email, values.username, values.password);
       } else {
-         // Если email отсутствует, значит это форма входа
-        await store.login(username,password);
+        await store.login(values.username, values.password);
       }
     } catch (error) {
       console.error('Error:', error);
     }
   };
+
   return (
     <div className='form_conteiner'>
       <Form
@@ -54,15 +54,11 @@ const onFinishFailed: FormProps<LoginFields>['onFinishFailed'] = (errorInfo) => 
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-
-
-
-        {isAuthForm ?
+        {isAuthForm ? (
           <>
             <Form.Item<LoginFields>
               label="Логин"
-
-              key={'username'}
+              key="username"
               name="username"
               id='login'
               rules={[{ required: true, message: 'Введите логин' }]}
@@ -71,20 +67,23 @@ const onFinishFailed: FormProps<LoginFields>['onFinishFailed'] = (errorInfo) => 
                 onChange={e => setUsername(e.target.value)}
                 value={username}
                 placeholder='Логин'
-            />
+              />
             </Form.Item>
             <Form.Item<LoginFields>
-
               label="Пароль"
-              name={'password'}
-              key={'password'}
+              name="password"
+              key="password"
               id='password'
-              rules={[{ required: true, message: 'Введите пароль' }]}
+              rules={[
+                { required: true, message: 'Введите пароль' },
+                { min: 5, message: 'Пароль должен быть не менее 5 символов' },
+              ]}
             >
               <Input.Password
-                  onChange={e => setPassword(e.target.value)}
-                  value={password}
-                  placeholder='Пароль'/>
+                onChange={e => setPassword(e.target.value)}
+                value={password}
+                placeholder='Пароль'
+              />
             </Form.Item>
             <Form.Item<LoginFields>
               name="remember"
@@ -99,11 +98,11 @@ const onFinishFailed: FormProps<LoginFields>['onFinishFailed'] = (errorInfo) => 
               </Button>
             </Form.Item>
           </>
-          :
+        ) : (
           <>
-            <Form.Item
+            <Form.Item<RegisterFields>
               label="Почта"
-              key={'email'}
+              key="email"
               name="email"
               id='email'
               rules={[
@@ -118,66 +117,83 @@ const onFinishFailed: FormProps<LoginFields>['onFinishFailed'] = (errorInfo) => 
               ]}
             >
               <Input
-                  onChange={e => setEmail(e.target.value)}
-                  value={email}
-                  placeholder="Почта"
+                onChange={e => setEmail(e.target.value)}
+                value={email}
+                placeholder="Почта"
               />
             </Form.Item>
-
             <Form.Item<RegisterFields>
               label="Логин"
-              key={'username'}
+              key="username"
               name="username"
               id='login'
               rules={[{ required: true, message: 'Введите логин' }]}
             >
-              <Input placeholder='Логин'/>
+              <Input
+                onChange={e => setUsername(e.target.value)}
+                value={username}
+                placeholder='Логин'
+              />
             </Form.Item>
             <Form.Item<RegisterFields>
-
               label="Пароль"
               name="password"
-              key={'password'}
+              key="password"
               id='password'
-              rules={[{ required: true, message: 'Введите пароль' }]}
+              rules={[
+                { required: true, message: 'Введите пароль' },
+                { min: 5, message: 'Пароль должен быть не менее 5 символов' },
+              ]}
             >
-              <Input.Password placeholder='Пароль'/>
+              <Input.Password
+                onChange={e => setPassword(e.target.value)}
+                value={password}
+                placeholder='Пароль'
+              />
             </Form.Item>
             <Form.Item<RegisterFields>
-              className="form-item-label"
               label="Повторите пароль"
-              id='VerifyPass'
-              key={'VerifyPass'}
-              rules={[{ required: true, message: 'Введите пароль' }]}
-
+              name="verifyPassword"
+              key="verifyPassword"
+              id='verifyPassword'
+              dependencies={['password']}
+              rules={[
+                { required: true, message: 'Пожалуйста, введите пароль еще раз!' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('Пароли не совпадают!'));
+                  },
+                }),
+              ]}
             >
-              <Input.Password placeholder='Повторите пароль'/>
+              <Input.Password
+                placeholder='Повторите пароль'
+              />
             </Form.Item>
             <Form.Item style={{ alignSelf: 'center' }}>
               <Button type="primary" htmlType="submit">
-                 Регистрация
+                Регистрация
               </Button>
             </Form.Item>
           </>
-        }
-
-
-
-        {/* пока такие онклики, потом мб по ссылке менять не состояние, а перекидывать на другой роут чела*/}
+        )}
         <Form.Item style={{ alignSelf: 'center' }}>
-          {isAuthForm ?
-            <div >
+          {isAuthForm ? (
+            <div>
               Нет аккаунта? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => setIsAuthForm(!isAuthForm)}>Зарегистрироваться</span>
             </div>
-            :
+          ) : (
             <div>
               Есть аккаунт? <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => setIsAuthForm(!isAuthForm)}>Войти</span>
             </div>
-          }
+          )}
         </Form.Item>
-
       </Form>
     </div>
-  )
-}
+  );
+};
+
 export default observer(Auth);

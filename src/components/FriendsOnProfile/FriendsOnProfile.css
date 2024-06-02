@@ -1,0 +1,43 @@
+.friends-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    width: 400px;
+    border: solid 2px rgb(164, 160, 160);
+    height: 100%;
+}
+
+.friends-header {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.friends-list {
+    display: flex;
+    justify-content: center;
+    gap:10px;
+    width: 100%;
+}
+
+.friend {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.friend-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: red;
+    margin-bottom: 10px;
+}
+
+.friend-name {
+    font-size: 16px;
+    text-align: center;
+}

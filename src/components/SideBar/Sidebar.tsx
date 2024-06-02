@@ -16,18 +16,21 @@ type FullMarkerFields = {
   title: string;
   description: string;
   score: number;
-  coordinates: [number, number];
+  coordinates: string;
   address: string,
   type: string,
-  photo: string
+  photos: {
+    file:string
+  }[]
 }
 
 interface SidebarProps {
   visible: boolean;
   onClose: () => void;
   place: FullMarkerFields | null
+  parseCoordinates: (value:string) => [number, number]
 }
-const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, place }) => {
+const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, place, parseCoordinates }) => {
   const [open, setOpen] = useState(true);
   const [placement] = useState<DrawerProps['placement']>('right');
   const { selectedTravel } = useContext(ContextTravel);
@@ -62,8 +65,8 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, place }) => {
         {
           place?.address
         }
-        <img src={`data:image/jpeg;base64,${place?.photo}`} alt="place" />
-        
+        <img src={`data:image/jpeg;base64,${place?.photos[0]?.file}`} alt="place" />
+
       </Drawer>
     </div>
     // </div>

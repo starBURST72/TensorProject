@@ -22,18 +22,41 @@ import { Context } from '../..';
 //     // },
 //     markerProps: MarkerFields[]
 // };
+
+const parseCoordinates = (coordString: string): [number, number] => {
+    // Разделяем строку по запятой
+    const [latStr, lngStr] = coordString.split(',');
+
+    // Проверяем, что обе части существуют
+    if (latStr === undefined || lngStr === undefined) {
+        throw new Error('Invalid coordinate string format');
+    }
+
+    // Преобразуем строки в числа
+    const lat = parseFloat(latStr);
+    const lng = parseFloat(lngStr);
+
+    // Проверяем, что оба значения являются числами
+    if (isNaN(lat) || isNaN(lng)) {
+        throw new Error('Invalid coordinate values');
+    }
+
+    // Возвращаем массив из двух чисел
+    return [lat, lng];
+};
+
 const interestsStatic = [
     'Все',
     'Еда',
-    'концерты',
-    'кино',
-    'выставки',
-    'кафе',
-    'рестораны',
+    'Кафе',
+    'Ресторан',
     'театр',
     'парк',
     'музей',
     'спорт',
+    'концерты',
+    'кино',
+    'выставки',
 ];
 
 const interests: SelectProps['options'] = interestsStatic.map(interest => ({
@@ -46,8 +69,10 @@ type FullMarkerFields = {
     title: string;
     description: string;
     score: number;
-    coordinates: [number, number]
-    photo:string
+    coordinates: string
+    photos: {
+        file: string
+    }[]
     address: string,
     type: string,
 }
@@ -57,13 +82,15 @@ type PreviewMarkerFields = {
     title: string;
     description: string;
     score: number;
-    coordinates: [number, number];
-    photo: string
+    coordinates: string;
+    photos: {
+        file: string
+    }[]
 }
 
-interface PreviewPlacesInCityFields {
-    markerProps: PreviewMarkerFields[];
-}
+// interface PreviewPlacesInCityFields {
+//     markerProps: PreviewMarkerFields[];
+// }
 
 const MapNewComponent3 = observer(() => {
     const [location, setLocation] = useState({ center: [65.541227, 57.152985], zoom: 17 });
@@ -71,7 +98,7 @@ const MapNewComponent3 = observer(() => {
     const [loading, setLoading] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const [options, setOptions] = useState<{ value: string }[]>([]);
-    const [placesInCuty, setPlacesInCuty] = useState<PreviewPlacesInCityFields | null>(null);
+    const [placesInCuty, setPlacesInCuty] = useState<PreviewMarkerFields[] | null>(null);
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [selectedPlace, setSelectedPlace] = useState<FullMarkerFields | null>(null);
     const [cityValue, setCityValue] = useState('');
@@ -80,14 +107,19 @@ const MapNewComponent3 = observer(() => {
     useEffect(() => {
         const onFinishRequests = async () => {
             try {
-                const responsePlacesInCuty = await getPlacesInCity(store.city.nameCity, 'Все');
+
+                const responsePlacesInCuty = await getPlacesInCity(store.city.nameCity, store.typeOfPlaces);
                 setPlacesInCuty(responsePlacesInCuty);
                 console.log(responsePlacesInCuty);
+
+
             } catch (error) {
                 console.error('Error:', error);
             }
         };
+
         onFinishRequests();
+
     }, []);
 
     useEffect(() => {
@@ -105,8 +137,8 @@ const MapNewComponent3 = observer(() => {
                 mapRef.current.controls.remove('typeSelector'); // удаляем тип
                 mapRef.current.controls.remove('fullscreenControl'); // удаляем кнопку перехода в полноэкранный режим
                 mapRef.current.controls.remove('rulerControl'); // удаляем контрол правил
-                placesInCuty.markerProps?.forEach((marker) => {
-                    const newPlacemark = new ymaps.Placemark(marker.coordinates, { hintContent: marker.title });
+                placesInCuty?.forEach((marker) => {
+                    const newPlacemark = new ymaps.Placemark(parseCoordinates(marker.coordinates), { hintContent: marker.title });
                     newPlacemark.events.add(['click'], async (event: ymaps.MapEvent) => {
                         const fullPlaceInfo = await getOnePLaceInCity(marker.id)
                         setSelectedPlace(fullPlaceInfo)
@@ -140,8 +172,8 @@ const MapNewComponent3 = observer(() => {
                 mapRef.current.geoObjects.removeAll();
 
                 // Добавление новых маркеров
-                placesInCuty.markerProps?.forEach((marker) => {
-                    const newPlacemark = new ymaps.Placemark(marker.coordinates, { hintContent: marker.title });
+                placesInCuty?.forEach((marker) => {
+                    const newPlacemark = new ymaps.Placemark(parseCoordinates(marker.coordinates), { hintContent: marker.title });
                     newPlacemark.events.add(['click'], async (event: ymaps.MapEvent) => {
                         const fullPlaceInfo = await getOnePLaceInCity(marker.id)
                         setSelectedPlace(fullPlaceInfo);
@@ -171,9 +203,10 @@ const MapNewComponent3 = observer(() => {
     //         setLoading(false);
     //     }
     // };
-    const handleChangeTypeOfPlaces = (value: string) => {
+    const handleChangeTypeOfPlaces = async (value: string) => {
         const onFinishRequests = async () => {
             try {
+                await store.changeTypeOfPlace(value)
                 const responsePlacesInCuty = await getPlacesInCity(store.city.nameCity, value);
                 setPlacesInCuty(responsePlacesInCuty);
                 console.log(responsePlacesInCuty);
@@ -187,7 +220,7 @@ const MapNewComponent3 = observer(() => {
     const handleClickButtonCity = async () => {
 
         await store.infoAboutCity(cityValue)
-        const responsePlacesInCuty = await getPlacesInCity(store.city.nameCity, 'Все');
+        const responsePlacesInCuty = await getPlacesInCity(store.city.nameCity, store.typeOfPlaces);
         setPlacesInCuty(responsePlacesInCuty);
         console.log(store.city.nameCity)
     };
@@ -196,8 +229,8 @@ const MapNewComponent3 = observer(() => {
         setCityValue(data);
     };
 
-    const onSelectType = (data: string) => {
-        setTypeValue(data);
+    const onSelectType = async (data: string) => {
+        await store.changeTypeOfPlace(data)
     };
 
 
@@ -226,6 +259,7 @@ const MapNewComponent3 = observer(() => {
                     <Space.Compact size='middle'>
                         <AutoComplete
                             style={{ width: 200 }}
+                            defaultValue={store.city.nameCity}
                             options={options}
                             onSearch={handleSearchCity}
                             // onSelect={onSelectCity}
@@ -239,16 +273,16 @@ const MapNewComponent3 = observer(() => {
                         <Button type="primary" style={{ backgroundColor: '#5c62ec' }} onClick={handleClickButtonCity}>Поехали!</Button>
                     </Space.Compact>
                     <Select
-                        value={typeValue}
+                        value={store.typeOfPlaces}
                         style={{ width: 200, marginTop: 20 }}
                         onChange={handleChangeTypeOfPlaces}
                         options={interests}
                         onSelect={onSelectType}
                     />
-                    <Button style={{marginLeft:0, marginTop:20}}>Добавить новое место</Button>
+                    <Button style={{ marginLeft: 0, marginTop: 20 }}>Добавить новое место</Button>
                 </div>
-                
-                <Sidebar visible={sidebarVisible} onClose={() => setSidebarVisible(false)} place={selectedPlace} />
+
+                <Sidebar visible={sidebarVisible} onClose={() => setSidebarVisible(false)} place={selectedPlace} parseCoordinates={parseCoordinates} />
             </div>
             <div className="map" id='map'></div>
 

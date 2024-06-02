@@ -5,11 +5,15 @@ import axios from "axios";
 import { AuthResponse } from "../Models/responses/AuthResponse";
 import { OUR_API_ADDRESS } from "../http/constants";
 import { ICity } from "../Models/ICity";
+
+const CITY_STORAGE_KEY = "selectedCity";
+const TYPE_OF_PLACES_STORAGE_KEY = "typeOfPlaces";
+
 export default class Store {
     user = {} as IUser;
     isAuth = false;
     city = {} as ICity;
-
+    typeOfPlaces = 'Все'
     constructor() {
         makeAutoObservable(this);
         this.city = {
@@ -17,6 +21,8 @@ export default class Store {
             center: [55.755814, 37.617635], // Координаты Москвы
             zoom: 12 // Зум по умолчанию
         };
+        this.loadCityFromLocalStorage();
+        this.loadTypeOfPlacesFromLocalStorage();
     }
 
 
@@ -30,6 +36,12 @@ export default class Store {
 
     setCity(city: ICity): void {
         this.city = city;
+        this.saveCityToLocalStorage();
+    }
+
+    setTypeOfPlaces(type: string): void {
+        this.typeOfPlaces = type;
+        this.saveTypeOfPlacesToLocalStorage();
     }
 
     async login(username: string, password: string): Promise<void> {
@@ -60,6 +72,8 @@ export default class Store {
         try {
             const response = await AuthService.logout();
             localStorage.removeItem("token");
+            // localStorage.removeItem("selectedCity");
+            // localStorage.removeItem("typeOfPlaces");
             console.log(response.data);
             this.setAuth(false);
             this.setUser({} as IUser);
@@ -107,27 +121,37 @@ export default class Store {
         }
     }
 
-    // const handleSearch = async () => {
-    //     try {
-    //         setLoading(true); // Устанавливаем состояние загрузки в true
-    //         const response = await axios.get('https://geocode-maps.yandex.ru/1.x/', {
-    //             params: {
-    //                 apikey: '8dd7f097-6399-475c-bb7f-1139673cf402',
-    //                 geocode: inputValue,
-    //                 format: 'json',
-    //             },
-    //         });
+    async changeTypeOfPlace(type: string) {
+        try {
+            this.setTypeOfPlaces(type);
+        } catch (err: any) {
+            console.log(err.response?.data?.message);
+        }
+    }
 
-    //         const coords = response.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ');
-    //         // setGeoCodecCoordinates([parseFloat(coords[1]), parseFloat(coords[0])]);
-    //         setPoint({center: [ parseFloat(coords[0]), parseFloat(coords[1])], zoom: 17})
-    //         setLocation({center: [ parseFloat(coords[0]), parseFloat(coords[1])], zoom: 17})
-    //     } catch (error) {
-    //         console.error('Ошибка при запросе геокодирования:', error);
-    //     } finally {
-    //         setLoading(false); // Устанавливаем состояние загрузки обратно в false после завершения запроса
-    //     }
-    // };
+    saveCityToLocalStorage(): void {
+        localStorage.setItem(CITY_STORAGE_KEY, JSON.stringify(this.city));
+    }
+
+    loadCityFromLocalStorage(): void {
+        const storedCity = localStorage.getItem(CITY_STORAGE_KEY);
+        if (storedCity) {
+            this.city = JSON.parse(storedCity);
+        }
+    }
+
+    saveTypeOfPlacesToLocalStorage(): void {
+        localStorage.setItem(TYPE_OF_PLACES_STORAGE_KEY, this.typeOfPlaces);
+    }
+
+    loadTypeOfPlacesFromLocalStorage(): void {
+        const storedType = localStorage.getItem(TYPE_OF_PLACES_STORAGE_KEY);
+        if (storedType) {
+            this.typeOfPlaces = storedType;
+        }
+    }
+
+
 
 
 }
