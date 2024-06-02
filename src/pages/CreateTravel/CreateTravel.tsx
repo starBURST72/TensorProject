@@ -1,23 +1,20 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import "./CreateTravel.css";
-import {Button, Input, List, Rate, Switch} from 'antd';
+import {Button, Input, List, Rate, Select, SelectProps, Switch} from 'antd';
 import SideBarTravel from "../../components/SidebarTravel/SideBarTravel";
 import {useLocation} from "react-router-dom";
 import MapNewComponent3 from "../../components/MapNew3/MapNewComponent3";
-import {GetUserTravel} from "../../services/TravelService";
+import {getPlacesInCity, GetUserTravel, UpdateUserTravel} from "../../services/TravelService";
+import {interestsStatic, PreviewPlacesInCityFields} from "../../storage/storage";
+import {Context} from "../../index";
+import {TimelineItem, UserTravel} from "../../Models/IUserTravel";
 
 interface LocationState {
     message: {
         value: string;
     };
 }
-export interface TimelineItem {
-    id: number;
-    title: string;
-    type: string;
-    place_id: number;
-    coordinates: string;
-}
+
 
 
 const initialData = [
@@ -29,7 +26,14 @@ const initialData = [
 
 
 
+const interests: SelectProps['options'] = interestsStatic.map(interest => ({
+    label: interest,
+    value: interest
+}));
+
+
 function CreateTravel() {
+    const { store } = useContext(Context);
     const location = useLocation();
     const [checked, setChecked] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -37,25 +41,57 @@ function CreateTravel() {
     const [timelineItems, setTimelineItems] = useState<TimelineItem[]>([]);
     const prevTimelineItemsRef = useRef<TimelineItem[]>();
     const [state, setState] = useState<any>("");
+    const [typeValue, setTypeValue] = useState('Все');
+    const [placesInCity, setPlacesInCity] = useState<PreviewPlacesInCityFields | null>(null);
+    const [travel,setTravel]=useState<UserTravel |null>(null);
+    useEffect(() => {
+        if (prevTimelineItemsRef.current !== timelineItems) {
+            localStorage.setItem('timelineItems', JSON.stringify(timelineItems));
+            prevTimelineItemsRef.current = timelineItems;
+        }
+    }, [timelineItems]);
+
+
 
     useEffect(() => {
         const fetchData = async () => {
-            if (location.state.value) {
-                setState(location.state.value as LocationState);
-                console.log(location.state.value);
-            } else if (location.state.TravelId) {
-                const userTravelId = location.state.TravelId as string;
-                const userTravel: TimelineItem|any = await GetUserTravel(userTravelId);
-                console.log(userTravel)
-                // console.log(TravelId)
-                // setTimelineItems(userTravel);
-                console.log(userTravelId);
+            if (timelineItems.length === 0) {
+                // Only make the request if timelineItems is empty
+                if (location.state.value) {
+                    setState(location.state.value as LocationState);
+                    console.log(location.state);
+                } else if (location.state.TravelId) {
+                    const userTravelId = location.state.TravelId as string;
+                    const userTravel: UserTravel | null = await GetUserTravel(userTravelId);
+                    setTravel(userTravel);
+                    if (userTravel) {
+                        console.log(userTravel);
+                    }
+                    if (
+                        userTravel !== null &&
+                        userTravel !== undefined &&
+                        userTravel.places !== null &&
+                        userTravel.places !== undefined
+                    ) {
+                        setTimelineItems(userTravel.places);
+                    }
+                }
             }
         };
 
         fetchData();
-    }, [location.state]);
-
+    }, [location.state, timelineItems]);
+    const handleUpdate = async () => {
+        console.log("сработало")
+        if (travel && travel.id !== undefined && travel.id !== null) {
+            const result = await UpdateUserTravel(travel.id, timelineItems);
+            if (result) {
+                console.log('Update successful:', result);
+            } else {
+                console.log('Update failed');
+            }
+        }
+    };
     useEffect(() => {
         const savedTimelineItems = localStorage.getItem("timelineItems");
         if (savedTimelineItems) {
@@ -63,6 +99,23 @@ function CreateTravel() {
         }
     }, []);
 
+    //КОД ОЛЕГА НАДО ИСПРАВИТЬ, все тайпы перевернул как попало
+    const onSelectType = (data: string) => {
+        setTypeValue(data);
+    };
+    const handleChangeTypeOfPlaces = (value: string) => {
+        const onFinishRequests = async () => {
+            try {
+                const responsePlacesInCity = await getPlacesInCity(store.city.nameCity, value);
+                setPlacesInCity(responsePlacesInCity);
+                console.log(responsePlacesInCity);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+        onFinishRequests();
+    };
+  //
     useEffect(() => {
         if (prevTimelineItemsRef.current !== timelineItems) {
             localStorage.setItem("timelineItems", JSON.stringify(timelineItems));
@@ -77,10 +130,13 @@ function CreateTravel() {
             type: item.address,
             place_id: item.id,
             coordinates: item.coordinates,
+            img:item.img,
         };
 
         setTimelineItems(prevTimelineItems => [...prevTimelineItems, newTimelineItem]);
     };
+
+
 
 
     const handleSearchChange = (e: any) => {
@@ -115,12 +171,22 @@ function CreateTravel() {
                 <div className="mainFrame">
                     {!checked ? (
                         <>
-                            <Input
-                                className="search-bar"
-                                placeholder="текстовое поле"
-                                value={searchTerm}
-                                onChange={handleSearchChange}
-                            />
+                            <div>
+                                <Select
+                                    value={typeValue}
+                                    className="type-select"
+                                    style={{ width: 200, marginTop: 20 }}
+                                    onChange={handleChangeTypeOfPlaces}
+                                    options={interests}
+                                    onSelect={onSelectType}
+                                />
+                                <Input
+                                    className="search-bar"
+                                    placeholder="текстовое поле"
+                                    value={searchTerm}
+                                    onChange={handleSearchChange}
+                                />
+                            </div>
                             <List
                                 itemLayout="horizontal"
                                 className="ListItems"
@@ -146,7 +212,7 @@ function CreateTravel() {
                         <MapNewComponent3/>
                     )}
                 </div>
-                <SideBarTravel message={state} timelineItems={timelineItems} setTimelineItems={setTimelineItems} />
+                <SideBarTravel  timelineItems={timelineItems} setTimelineItems={setTimelineItems} handleUpdate={handleUpdate} Travel={travel} />
             </div>
         </>
     );

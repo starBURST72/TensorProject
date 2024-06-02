@@ -9,6 +9,7 @@ import { PlacePreviewResponse } from '../../Models/Travels';
 import { observer } from 'mobx-react-lite';
 import Store from '../../store/store';
 import { Context } from '../..';
+import {FullMarkerFields, interestsStatic, PreviewPlacesInCityFields} from "../../storage/storage";
 // type MarkerFields = {
 //     id: number
 //     coordinates: [number, number]
@@ -22,48 +23,14 @@ import { Context } from '../..';
 //     // },
 //     markerProps: MarkerFields[]
 // };
-const interestsStatic = [
-    'Все',
-    'Еда',
-    'концерты',
-    'кино',
-    'выставки',
-    'кафе',
-    'рестораны',
-    'театр',
-    'парк',
-    'музей',
-    'спорт',
-];
+
 
 const interests: SelectProps['options'] = interestsStatic.map(interest => ({
     label: interest,
     value: interest
 }));
 
-type FullMarkerFields = {
-    id: number;
-    title: string;
-    description: string;
-    score: number;
-    coordinates: [number, number]
-    photo:string
-    address: string,
-    type: string,
-}
 
-type PreviewMarkerFields = {
-    id: number;
-    title: string;
-    description: string;
-    score: number;
-    coordinates: [number, number];
-    photo: string
-}
-
-interface PreviewPlacesInCityFields {
-    markerProps: PreviewMarkerFields[];
-}
 
 const MapNewComponent3 = observer(() => {
     const [location, setLocation] = useState({ center: [65.541227, 57.152985], zoom: 17 });

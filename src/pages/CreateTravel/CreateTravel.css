@@ -33,12 +33,17 @@
     height: 100%;
     /*display: inline-grid;*/
 }
-
+.type-select{
+    margin-left: 100px;
+    width: 20%;
+    height: 50px;
+    align-self: flex-start;
+}
 .search-bar {
     align-items: flex-end;
     margin-top: 15px;
-    margin-left: 100px;
-    width: 80%;
+    margin-left: 20px;
+    width:60%;
     height: 50px;
 }
 
