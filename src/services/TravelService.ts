@@ -2,7 +2,8 @@ import { AxiosResponse } from "axios";
 import { PlaceFullResponse, PlacePreviewResponse } from "../Models/Travels";
 import $api from "../http";
 import { OUR_API_ENDPOINTS } from "../http/constants";
-import {TimelineItem} from "../pages/CreateTravel/CreateTravel";
+import {TimelineItem, UserTravel} from "../Models/IUserTravel";
+
 
 export const getOneTravel = async (id: number) => {
     try {
@@ -115,10 +116,27 @@ export const getOnePLaceInCity = async (id: number): Promise<PlaceFullResponse> 
     }
 };
 
-export const GetUserTravel = async (id:string):Promise<TimelineItem | null> => {
+export const GetUserTravel = async (id:string):Promise<UserTravel | null> => {
     try {
         // Выполнение POST запроса для регистрации
-        const response:AxiosResponse<TimelineItem> = await $api.get(`${OUR_API_ENDPOINTS.userTravel}/${id}`);
+        const response:AxiosResponse<UserTravel> = await $api.get(`${OUR_API_ENDPOINTS.userTravel}/${id}`);
+        console.log(response.data)
+        return response.data;
+    } catch (error: any) {
+        // Обработка ошибок регистрации
+        if (error.response && error.response.data && error.response.data.message) {
+            console.error('Get travel by ID failed: ' + error.response.data.message);
+        } else {
+            console.error('Get travel by ID failed: ' + error.message);
+        }
+        return null;
+    }
+};
+
+export const UpdateUserTravel = async (id:string,Places:TimelineItem[]):Promise<string | null> => {
+    try {
+        // Выполнение POST запроса для регистрации
+        const response:AxiosResponse<string> = await $api.put(`${OUR_API_ENDPOINTS.userTravel}/${id}`,{Places});
         return response.data;
     } catch (error: any) {
         // Обработка ошибок регистрации

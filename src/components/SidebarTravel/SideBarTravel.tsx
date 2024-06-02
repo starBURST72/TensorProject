@@ -1,17 +1,19 @@
-import {Button, Input, Modal, Timeline, Upload, Flex} from "antd";
+import {Button, Input, Modal, Timeline, Upload, Flex, message} from "antd";
 import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
 import PlaceCard from "../PlaceCard/PlaceCard";
 import React, { useState } from "react";
 import "./SideBarTravel.css";
-import {TimelineItem} from "../../pages/CreateTravel/CreateTravel";
+import {TimelineItem, UserTravel} from "../../Models/IUserTravel";
+
 
 interface SideBarTravelProps {
-    message: string|any;
     timelineItems: TimelineItem[];
+    Travel:UserTravel|null;
     setTimelineItems: React.Dispatch<React.SetStateAction<TimelineItem[]>>;
+    handleUpdate: () => Promise<void>;
 }
 
-function SideBarTravel({ message,timelineItems,setTimelineItems }: SideBarTravelProps) {
+function SideBarTravel({ timelineItems,setTimelineItems, handleUpdate,Travel}: SideBarTravelProps) {
     const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
     const [imageUrl, setImageUrl] = useState('');const handleDelete = (id: number) => {
         setTimelineItems((timelineItems: TimelineItem[]) => timelineItems.filter(item => item.id !== id));
@@ -60,7 +62,7 @@ function SideBarTravel({ message,timelineItems,setTimelineItems }: SideBarTravel
     return (
         <div className="sidebar">
             <h1 className="sidebar-travel">
-                {message}
+                {Travel?.title}
                 <SettingOutlined style={{ cursor: 'pointer',marginLeft:"20px" }} onClick={handleSettingsClick}/>
             </h1>
             <Timeline className="TimeLine">
@@ -68,6 +70,7 @@ function SideBarTravel({ message,timelineItems,setTimelineItems }: SideBarTravel
                     <Timeline.Item key={item.id}>
                         <PlaceCard
                             Title={item.title}
+                            img={item.img}
                             type={item.type}
                             place_id={item.place_id}
                             coordinates={item.coordinates}
@@ -97,8 +100,9 @@ function SideBarTravel({ message,timelineItems,setTimelineItems }: SideBarTravel
                     {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : <UploadOutlined />}
                 </Upload>
             </Modal>
-            <Flex className="confirm-container"><Button type="primary">В путешествие!</Button>
-                <Button>Сохранить</Button></Flex>
+            <Flex className="confirm-container">
+                <Button type="primary" onClick={()=>handleUpdate()}>Сохранить</Button>
+            </Flex>
 
         </div>
     );

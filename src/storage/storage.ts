@@ -151,3 +151,41 @@ export const userInfo =
         'кафе'
     ]
 }
+
+export const interestsStatic = [
+    'Все',
+    'Еда',
+    'концерты',
+    'кино',
+    'выставки',
+    'кафе',
+    'рестораны',
+    'театр',
+    'парк',
+    'музей',
+    'спорт',
+];
+
+export type FullMarkerFields = {
+    id: number;
+    title: string;
+    description: string;
+    score: number;
+    coordinates: [number, number]
+    photo:string
+    address: string,
+    type: string,
+}
+
+type PreviewMarkerFields = {
+    id: number;
+    title: string;
+    description: string;
+    score: number;
+    coordinates: [number, number];
+    photo: string
+}
+
+export interface PreviewPlacesInCityFields {
+    markerProps: PreviewMarkerFields[];
+}

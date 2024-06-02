@@ -9,6 +9,7 @@ import { PlacePreviewResponse } from '../../Models/Travels';
 import { observer } from 'mobx-react-lite';
 import Store from '../../store/store';
 import { Context } from '../..';
+import {FullMarkerFields, interestsStatic, PreviewPlacesInCityFields} from "../../storage/storage";
 // type MarkerFields = {
 //     id: number
 //     coordinates: [number, number]
@@ -22,6 +23,7 @@ import { Context } from '../..';
 //     // },
 //     markerProps: MarkerFields[]
 // };
+
 
 const parseCoordinates = (coordString: string): [number, number] => {
     // Разделяем строку по запятой
@@ -59,6 +61,7 @@ const interestsStatic = [
     'выставки',
 ];
 
+
 const interests: SelectProps['options'] = interestsStatic.map(interest => ({
     label: interest,
     value: interest
@@ -91,6 +94,7 @@ type PreviewMarkerFields = {
 // interface PreviewPlacesInCityFields {
 //     markerProps: PreviewMarkerFields[];
 // }
+
 
 const MapNewComponent3 = observer(() => {
     const [location, setLocation] = useState({ center: [65.541227, 57.152985], zoom: 17 });

@@ -7,17 +7,22 @@ import { LngLat } from "@yandex/ymaps3-types";
 import {
     mockHintCardsContinue,
     mockHintCardsFriends,
-    mockHintCardsPopular
+    mockHintCardsPopular, travelData
 } from "./MockedData/MockedData";
 import { mockPlacesAll, mockPlacesFood } from './MockedData/MockedPlaces';
+import {UserTravel} from "../Models/IUserTravel";
 
 function getMockDataForId(id: string): string {
     const mockDataMap: Record<string, { id: string }> = {
-        '1': { id: 'mockId1' },
-        '2': { id: 'mockId2' },
-        '3': { id: 'mockId3' },
+        '1': { id: '1' },
+        '2': { id: '2' },
+        '3': { id: '3' },
     };
     return mockDataMap[id]?.id || '';
+}
+
+function getTravelById(id: string, travelData: UserTravel[]): UserTravel | undefined {
+    return travelData.find(travel => travel.id === id);
 }
 
 export const handlers = [
@@ -86,7 +91,11 @@ export const handlers = [
     http.post(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.travels}`, (req) => {
 
         return HttpResponse.json(
-            [{ message: 'Create new travel successful' }]
+            [{
+                id: '123',
+                title: 'Test Travel',
+                description: 'This is a test travel object',
+            }]
         );
     }),
 
@@ -402,6 +411,7 @@ export const handlers = [
         return HttpResponse.json({ id });
     }),
 
+
     http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.friends}`, ({ request }) => {
 
         const url = new URL(request.url)
@@ -472,6 +482,17 @@ export const handlers = [
             ]
         });
 
+    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.userTravel}/:id`, async ({params}) => {
+        let id: string;
+        const { id: paramId } = params;
+        let data: UserTravel|undefined;
+        console.log(paramId)
+        if (typeof paramId === 'string') {
+            data = getTravelById(paramId,travelData);
+        } else {
+            return HttpResponse.json({ error: 'Invalid ID' }, { status: 400 });
+        }
+        return HttpResponse.json(data);
     }),
 
 ]

@@ -26,3 +26,13 @@
     top: 0;
     right: 0;
 }
+.place-img{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-right: 5px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    height: 50px;
+    width: 50px;
+}

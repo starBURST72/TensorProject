@@ -5,6 +5,7 @@ import './HomePage.css';
 import { observer } from 'mobx-react-lite';
 import {GetCity} from "../../services/SearchCityService";
 import HintCard from "../../components/HintCard/HintCard";
+import {CreateTravel} from "../../services/TravelService";
 
 const russianLettersRegex = /^[а-яА-ЯёЁ\s]+$/;
 function HomePage() {
@@ -16,8 +17,10 @@ function HomePage() {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const navigate = useNavigate();
 
-    const handleClick = () => {
-        navigate('/createTravel', {state:{value}});
+    const handleClick = async () => {
+        const createdTravel = await CreateTravel()
+
+        navigate('/createTravel', {state:{value,createdTravel}});
     };
 
     const onSelect = (data: string) => {
