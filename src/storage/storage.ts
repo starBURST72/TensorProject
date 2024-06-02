@@ -171,8 +171,10 @@ export type FullMarkerFields = {
     title: string;
     description: string;
     score: number;
-    coordinates: [number, number]
-    photo:string
+    coordinates: string
+    photos: {
+        file: string
+    }[]
     address: string,
     type: string,
 }

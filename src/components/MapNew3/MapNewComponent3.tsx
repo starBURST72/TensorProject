@@ -47,38 +47,12 @@ const parseCoordinates = (coordString: string): [number, number] => {
     return [lat, lng];
 };
 
-const interestsStatic = [
-    'Все',
-    'Еда',
-    'Кафе',
-    'Ресторан',
-    'театр',
-    'парк',
-    'музей',
-    'спорт',
-    'концерты',
-    'кино',
-    'выставки',
-];
 
 
 const interests: SelectProps['options'] = interestsStatic.map(interest => ({
     label: interest,
     value: interest
 }));
-
-type FullMarkerFields = {
-    id: number;
-    title: string;
-    description: string;
-    score: number;
-    coordinates: string
-    photos: {
-        file: string
-    }[]
-    address: string,
-    type: string,
-}
 
 type PreviewMarkerFields = {
     id: number;
@@ -111,12 +85,9 @@ const MapNewComponent3 = observer(() => {
     useEffect(() => {
         const onFinishRequests = async () => {
             try {
-
                 const responsePlacesInCuty = await getPlacesInCity(store.city.nameCity, store.typeOfPlaces);
                 setPlacesInCuty(responsePlacesInCuty);
                 console.log(responsePlacesInCuty);
-
-
             } catch (error) {
                 console.error('Error:', error);
             }
