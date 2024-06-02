@@ -8,6 +8,7 @@ import {getPlacesInCity, GetUserTravel, UpdateUserTravel} from "../../services/T
 import {interestsStatic, PreviewPlacesInCityFields} from "../../storage/storage";
 import {Context} from "../../index";
 import {TimelineItem, UserTravel} from "../../Models/IUserTravel";
+import {PlacePreviewResponse} from "../../Models/Travels";
 
 interface LocationState {
     message: {
@@ -42,7 +43,7 @@ function CreateTravel() {
     const prevTimelineItemsRef = useRef<TimelineItem[]>();
     const [state, setState] = useState<any>("");
     const [typeValue, setTypeValue] = useState('Все');
-    const [placesInCity, setPlacesInCity] = useState<PreviewPlacesInCityFields | null>(null);
+    const [placesInCity, setPlacesInCity] = useState<PlacePreviewResponse[] | null>(null);
     const [travel,setTravel]=useState<UserTravel |null>(null);
     useEffect(() => {
         if (prevTimelineItemsRef.current !== timelineItems) {

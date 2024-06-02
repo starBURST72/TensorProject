@@ -481,18 +481,19 @@ export const handlers = [
                 },
             ]
         });
+        }),
 
-    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.userTravel}/:id`, async ({params}) => {
-        let id: string;
-        const { id: paramId } = params;
-        let data: UserTravel|undefined;
-        console.log(paramId)
-        if (typeof paramId === 'string') {
-            data = getTravelById(paramId,travelData);
-        } else {
-            return HttpResponse.json({ error: 'Invalid ID' }, { status: 400 });
-        }
-        return HttpResponse.json(data);
-    }),
+        http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.userTravel}/:id`, async ({params}) => {
+            let id: string;
+            const {id: paramId} = params;
+            let data: UserTravel | undefined;
+            console.log(paramId)
+            if (typeof paramId === 'string') {
+                data = getTravelById(paramId, travelData);
+            } else {
+                return HttpResponse.json({error: 'Invalid ID'}, {status: 400});
+            }
+            return HttpResponse.json(data);
+        })
 
 ]
