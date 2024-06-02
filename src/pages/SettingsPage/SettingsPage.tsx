@@ -48,20 +48,7 @@ type UserInfoFields = {
 
 function SettingsPage() {
     const [avatarLoaded, setAvatarLoaded] = useState(false);
-    const [userSettingsInfoRes, setUserSettingsInfoRes] = useState<UserInfoFields>({
-        // message: '',
-        // data: {
-        ava: '',
-        name: 'a',
-        surname: 'a',
-        gender: '',
-        birthdate: '',
-        email: '',
-        username: '',
-        city: '',
-        interests: ['']
-        // }
-    })
+    const [userSettingsInfoRes, setUserSettingsInfoRes] = useState<UserInfoFields|null>(null)
     const handleChange = (value: string[]) => {
         console.log(`selected ${value}`);
         console.log(userSettingsInfoRes)
@@ -86,15 +73,15 @@ function SettingsPage() {
 
     useEffect(() => {
         form.setFieldsValue({
-            ava: userSettingsInfoRes.ava,
-            name: userSettingsInfoRes.name,
-            surname: userSettingsInfoRes.surname,
-            gender: userSettingsInfoRes.gender,
-            birthdate: dayjs(userSettingsInfoRes.birthdate, 'DD.MM.YYYY'),
-            email: userSettingsInfoRes.email,
-            username: userSettingsInfoRes.username,
-            city: userSettingsInfoRes.city,
-            interests: userSettingsInfoRes.interests,
+            ava: userSettingsInfoRes?.ava,
+            name: userSettingsInfoRes?.name,
+            surname: userSettingsInfoRes?.surname,
+            gender: userSettingsInfoRes?.gender,
+            birthdate: dayjs(userSettingsInfoRes?.birthdate, 'DD.MM.YYYY'),
+            email: userSettingsInfoRes?.email,
+            username: userSettingsInfoRes?.username,
+            city: userSettingsInfoRes?.city,
+            interests: userSettingsInfoRes?.interests,
         });
     }, [userSettingsInfoRes]);
 
@@ -152,7 +139,7 @@ function SettingsPage() {
                         key='ava'
                         name='ava'
                         id='ava'
-                        ava={userSettingsInfoRes.ava}
+                        ava={userSettingsInfoRes?.ava}
                         onAvatarLoad={() => setAvatarLoaded(true)} />
                     <Space.Compact style={{ width: '100%' }} size='middle' direction='horizontal' className="topform">
                         <Space.Compact style={{ width: '49%' }} size='middle' direction='vertical'>
@@ -272,6 +259,7 @@ function SettingsPage() {
                                 onChange={handleChange}
                                 options={options}
                                 listHeight={150}
+                                maxCount={3}
                             />
                         </Form.Item>
 

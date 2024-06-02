@@ -23,6 +23,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 70px;
+    justify-content: space-between;
 }
 
 .avatar {
@@ -30,7 +31,7 @@
     height: 170px;
 
     border-radius: 50%;
-    margin-right: 3%;
+
 }
 
 .user-info {
@@ -83,3 +84,15 @@
     width: 100%;
 }
 
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.topConteiner{
+    display: flex;
+    align-items: center;
+    gap:20px;
+    height: 100%;
+}

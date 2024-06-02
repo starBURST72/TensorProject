@@ -11,22 +11,24 @@ export default class Travels {
 }
 
 export interface PlacePreviewResponse {
-    markerProps: {
-      id: number;
-      title: string;
-      description: string;
-      score: number;
-      coordinates: [number, number];
-      photo: string
-    }[];
-  }
+    id: number;
+    title: string;
+    description: string;
+    score: number;
+    coordinates: string;
+    photos: {
+        file: string
+    }[]
+}
 export interface PlaceFullResponse {
     id: number,
     title: string,
     description: string,
     score: number,
-    coordinates: [number, number],
+    coordinates: string,
     address: string,
     type: string,
-    photo: string
+    photos: {
+        file: string
+    }[]
 }

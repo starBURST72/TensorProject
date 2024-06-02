@@ -81,10 +81,10 @@ export const CopyTravel = async (id:number) => {
 };
 
 
-export const getPlacesInCity = async (city: string, type: string): Promise<PlacePreviewResponse> => {
+export const getPlacesInCity = async (city: string, type: string): Promise<PlacePreviewResponse[]> => {
     try {
         // Выполнение GET запроса для получения всех путешествий
-        const response: AxiosResponse<PlacePreviewResponse> = await $api.get<PlacePreviewResponse>(
+        const response: AxiosResponse<PlacePreviewResponse[]> = await $api.get<PlacePreviewResponse[]>(
             `/${OUR_API_ENDPOINTS.places}`,
             { params: { city, type } }
         );
@@ -104,8 +104,7 @@ export const getOnePLaceInCity = async (id: number): Promise<PlaceFullResponse> 
     try {
         // Выполнение GET запроса для получения одного места
         const response: AxiosResponse<PlaceFullResponse> = await $api.get<PlaceFullResponse>(
-            `${OUR_API_ENDPOINTS.places}/${id}`,
-            {params:{id}})
+            `${OUR_API_ENDPOINTS.place}/${id}`)
         return response.data;
     } catch (error: any) {
         // Обработка ошибок получения одного места
