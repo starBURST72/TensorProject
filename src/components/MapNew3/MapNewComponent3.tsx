@@ -10,19 +10,6 @@ import { observer } from 'mobx-react-lite';
 import Store from '../../store/store';
 import { Context } from '../..';
 import { FullMarkerFields, interestsStatic, PreviewMarkerFields, PreviewPlacesInCityFields } from "../../storage/storage";
-// type MarkerFields = {
-//     id: number
-//     coordinates: [number, number]
-//     title: string
-// }
-
-// type PlacesInCityFields = {
-//     // location: {
-//     //     center: [number, number], // starting position [lng, lat]
-//     //     zoom: number // starting zoom
-//     // },
-//     markerProps: MarkerFields[]
-// };
 
 
 const parseCoordinates = (coordString: string): [number, number] => {
@@ -54,33 +41,14 @@ const interests: SelectProps['options'] = interestsStatic.map(interest => ({
     value: interest
 }));
 
-// type PreviewMarkerFields = {
-//     id: number;
-//     title: string;
-//     description: string;
-//     score: number;
-//     coordinates: string;
-//     photos: {
-//         file: string
-//     }[]
-// }
-
-// interface PreviewPlacesInCityFields {
-//     markerProps: PreviewMarkerFields[];
-// }
-// PreviewMarkerFields FullMarkerFields
 
 const MapNewComponent3 = observer(() => {
-    const [location, setLocation] = useState({ center: [65.541227, 57.152985], zoom: 17 });
     const mapRef = useRef<ymaps.Map | null>(null);
-
-    const [inputValue, setInputValue] = useState('');
     const [options, setOptions] = useState<{ value: string }[]>([]);
     const [placesInCuty, setPlacesInCuty] = useState<PreviewMarkerFields[] | null>(null);
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [selectedPlace, setSelectedPlace] = useState<FullMarkerFields | null>(null);
     const [cityValue, setCityValue] = useState('');
-    const [typeValue, setTypeValue] = useState('Все');
     const [isLoading, setIsLoading] = useState(true);
     const { store } = useContext(Context);
     useEffect(() => {
@@ -105,8 +73,8 @@ const MapNewComponent3 = observer(() => {
             ymaps.ready(() => {
                 if (!mapRef.current && placesInCuty) {
                     mapRef.current = new ymaps.Map("map", {
-                        center: store.city.center, // starting position [lng, lat]
-                        zoom: store.city.zoom // starting zoom
+                        center: store.city.center, 
+                        zoom: store.city.zoom 
                     },);
                     mapRef.current.controls.remove('geolocationControl'); // удаляем геолокацию
                     mapRef.current.controls.remove('searchControl'); // удаляем поиск
@@ -168,25 +136,7 @@ const MapNewComponent3 = observer(() => {
             }
         });
     }, [placesInCuty]);
-    // const handleSearch = async () => {
-    //     try {
-    //         setLoading(true);
-    //         const response = await axios.get('https://geocode-maps.yandex.ru/1.x/', {
-    //             params: {
-    //                 apikey: '',
-    //                 geocode: inputValue,
-    //                 format: 'json',
-    //             },
-    //         });
 
-    //         const coords = response.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ');
-    //         setLocation({ center: [parseFloat(coords[0]), parseFloat(coords[1])], zoom: 17 });
-    //     } catch (error) {
-    //         console.error('Ошибка при запросе геокодирования:', error);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
     const handleChangeTypeOfPlaces = async (value: string) => {
         const onFinishRequests = async () => {
             try {
