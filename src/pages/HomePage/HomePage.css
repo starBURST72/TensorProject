@@ -21,7 +21,7 @@ html {
 
 .input-container {
     position: absolute;
-    top: 50%;
+    top: 30%;
     display: inline;
     align-items: center;
     padding: 10px;
@@ -64,6 +64,9 @@ html {
 
 .hidden-scroll {
     overflow: hidden;
+}
+.drawer-button{
+    align-items: end;
 }
 
 

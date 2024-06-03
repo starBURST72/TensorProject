@@ -1,11 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {AutoComplete, Button, Space, Typography} from 'antd';
+import {AutoComplete, Button, Drawer, Space, Typography} from 'antd';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 import { observer } from 'mobx-react-lite';
 import {GetCity} from "../../services/SearchCityService";
 import HintCard from "../../components/HintCard/HintCard";
 import {CreateTravel} from "../../services/TravelService";
+import { UpOutlined } from '@ant-design/icons';
 
 const russianLettersRegex = /^[а-яА-ЯёЁ\s]+$/;
 function HomePage() {
@@ -78,13 +79,23 @@ function HomePage() {
                 console.error(error);
             }
     };
+    const [visible, setVisible] = useState(false);
+
+    const showDrawer = () => {
+        setVisible(true);
+    };
+
+    const onClose = () => {
+        setVisible(false);
+    };
+
     return (
         <div className='homepage' ref={homepageRef}>
             <div className="input-container" ref={inputContainerRef}>
                 <Typography.Title level={4}>Куда поедем?</Typography.Title>
                 <Space.Compact size='large'>
                     <AutoComplete
-                        style={{ width: 200 }}
+                        style={{width: 200}}
                         options={options}
                         onSearch={handleSearch}
                         onSelect={onSelect}
@@ -96,16 +107,38 @@ function HomePage() {
                     <Button type="primary" onClick={handleClick}>Поехали!</Button>
                 </Space.Compact>
                 {errorMessage && (
-                    <div style={{ color: 'red', marginTop: '5px' }}>
+                    <div style={{color: 'red', marginTop: '5px'}}>
                         {errorMessage}
                     </div>
                 )}
             </div>
-            <div className="hints-container" ref={hintsContainerRef}>
-                <HintCard type={"friends"}/>
-                <HintCard type={"popular"}/>
-                <HintCard type={"continue"}/>
+            <div style={{ position: 'fixed', bottom: 0, width: '100%', textAlign: 'center' }}>
+                <div>Подсказать?</div>
+                <Button type="primary" shape="circle" icon={<UpOutlined/>} onClick={showDrawer}/>
             </div>
+
+            <Drawer
+                title="Предложения"
+                placement="bottom"
+                closable={false}
+                height={700}
+                onClose={onClose}
+                visible={visible}
+                key="bottom"
+            >
+                <div style={{display: 'flex', height: '100%',width:"100%"}}>
+                    <div style={{flex: 1}}>
+                        <HintCard type={"friends"}/>
+                    </div>
+                    <div style={{flex: 1}}>
+                        <HintCard type={"popular"}/>
+                    </div>
+                    <div style={{flex: 1}}>
+                        <HintCard type={"continue"}/>
+                    </div>
+                </div>
+            </Drawer>
+
         </div>
     );
 }
