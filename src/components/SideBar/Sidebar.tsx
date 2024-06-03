@@ -1,75 +1,93 @@
 import React, { useContext, useState } from 'react';
 import type { DrawerProps } from 'antd';
-import { Button, Drawer } from 'antd';
-import { MenuOutlined } from '@ant-design/icons';
+import { Button, Carousel, Drawer, Modal } from 'antd';
+import { MenuOutlined, StarFilled } from '@ant-design/icons';
 import './Sidebar.css';
 import { ContextTravel } from '../Context/AppContext';
-
-// interface Travel {
-//   id: number;
-//   title: string;
-//   description: string;
-// }
-
-type FullMarkerFields = {
-  id: number;
-  title: string;
-  description: string;
-  score: number;
-  coordinates: string;
-  address: string,
-  type: string,
-  photos: {
-    file:string
-  }[]
-}
+import { FullMarkerFields } from '../../storage/storage';
+import ReviewsModal from '../ReviewsModal/ReviewsModal';
+import ReviewsModalCreate from '../ReviewsModalCreate/ReviewsModalCreate';
+import { CreateReviewAboutPlace } from '../../services/TravelService';
 
 interface SidebarProps {
   visible: boolean;
   onClose: () => void;
-  place: FullMarkerFields | null
-  parseCoordinates: (value:string) => [number, number]
+  place: FullMarkerFields | null;
+  parseCoordinates: (value: string) => [number, number];
 }
+
 const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, place, parseCoordinates }) => {
   const [open, setOpen] = useState(true);
   const [placement] = useState<DrawerProps['placement']>('right');
   const { selectedTravel } = useContext(ContextTravel);
+  const [modalState, setModalState] = useState<{ checkReviews: boolean; createReview: boolean }>({
+    checkReviews: false,
+    createReview: false,
+  });
 
-  const showDrawer = () => {
-    setOpen(true);
+  
+  const handleAddReview = async (review: { description: string; score: number }) => {
+    try {
+        await CreateReviewAboutPlace(place?.id ?? 1, review);
+        console.log('Отзыв успешно добавлен');
+    } catch (error) {
+        console.error('Ошибка при добавлении отзыва:');
+    }
+};
+  const toggleModal = (type: 'checkReviews' | 'createReview', isOpen: boolean) => {
+    setModalState((prevState) => ({
+      ...prevState,
+      [type]: isOpen,
+    }));
   };
 
-  // const onClose = () => {
-  //   setOpen(false);
-  // };
-
-
   return (
-    // <div style={{position:'relative'}}>
     <div className='draw'>
-      {/* <Button onClick={showDrawer} className='drawButton' icon={<MenuOutlined />}>
-      </Button> */}
       <Drawer
-        title={`Инфа${place?.title}`}
+        title={`${place?.title}`}
         placement={'right'}
         closable={visible}
         onClose={onClose}
         open={visible}
         key={placement}
-        // style={{maxHeight:'100%'}}
         mask={false}
         getContainer={false}
         className='sidebar'
-      //width={'25%'}
       >
-        {
-          place?.address
-        }
-        <img src={`data:image/jpeg;base64,${place?.photos[0]?.file}`} alt="place" />
-
+        <div className='sidebarContainer'>
+          <div className='typeAndScore'>
+            <div>{place?.type}</div>
+            <div className="sidebarRating">
+              <div className="sidebarRatingValue">{place?.mean_score}</div>
+              <StarFilled className='sidebarStar' />
+            </div>
+          </div>
+          <Carousel arrows infinite={false} style={{ width: 200 }}>
+            {place?.photos.map((photo, index) => (
+              <div key={index}>
+                <img src={photo.file} alt={`place-${index}`} />
+              </div>
+            ))}
+          </Carousel>
+          <div>{'Адрес: ' + place?.address.split(',').slice(2).join(',').trim()}</div>
+          <div>{'Описание: ' + place?.description}</div>
+          <div className="buttonsContainer">
+            <Button onClick={() => toggleModal('checkReviews', true)} className="reviewButton">Посмотреть отзывы</Button>
+            <Button onClick={() => toggleModal('createReview', true)} className="reviewButton">Оставить отзыв</Button>
+          </div>
+        </div>
       </Drawer>
+      <ReviewsModal
+        visible={modalState.checkReviews}
+        onClose={() => toggleModal('checkReviews', false)}
+        feedbacks={place?.feedbacks || null}
+      />
+      <ReviewsModalCreate
+        visible={modalState.createReview}
+        onClose={() => toggleModal('createReview', false)}
+        onSubmit={handleAddReview}
+      />
     </div>
-    // </div>
   );
 };
 

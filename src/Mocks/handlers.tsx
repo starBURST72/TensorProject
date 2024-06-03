@@ -10,7 +10,7 @@ import {
     mockHintCardsPopular, travelData
 } from "./MockedData/MockedData";
 import { mockPlacesAll, mockPlacesFood } from './MockedData/MockedPlaces';
-import {UserTravel} from "../Models/IUserTravel";
+import { UserTravel } from "../Models/IUserTravel";
 
 function getMockDataForId(id: string): string {
     const mockDataMap: Record<string, { id: string }> = {
@@ -134,7 +134,7 @@ export const handlers = [
     }),
 
     // Обработчик для GET запроса получения информации о пользователе в профиле
-    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.userProfile}/${OUR_API_ENDPOINTS.userInfo}/:id`, ({ params }) => {
+    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.userProfile}/:id`, ({ params }) => {
 
         return HttpResponse.json(
             {
@@ -323,32 +323,73 @@ export const handlers = [
         }
     }),
 
-    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.place}/:id`, ({ request }) => {
+    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.place}/:id`, ({ params }) => {
 
-        const url = new URL(request.url)
-        const id = url.searchParams.get('id')
-        switch (id) {
+        // let id: string;
+        const { id: paramId } = params;
+        // let data: UserTravel | undefined;
+        console.log(paramId)
+        switch (paramId) {
             case '1':
-                return HttpResponse.json(
-                    {
-                        id: 1,
-                        title: 'Название 1',
-                        description: 'Описание 1',
-                        score: 4.2,
-                        coordinates: [57.14883932510754, 65.5600105653111],
-                        address: 'Адрес 1',
-                        type: 'Еда',
-                    }
-                );
+                return HttpResponse.json({
+                    id: 1,
+                    creator_user_id: 1,
+                    title: 'Название 1',
+                    description: 'Описание 1',
+                    address: 'Россия, Тюмень, Центральная площадь',
+                    type: 'Еда',
+                    coordinates: '57.14883932510754,65.5600105653111',
+                    mean_score: 4.2,
+                    photos: [{ file: ava }, { file: ava }],
+                    feedbacks: [
+                        {
+                            "user_id": 1,
+                            "username": "example",
+                            "score": 4.5,
+                            "description": "вообще не понравилось("
+                        },
+                        {
+                            "user_id": 1,
+                            "username": "example",
+                            "score": 5.0,
+                            "description": "Идеально"
+                        },
+                        {
+                            "user_id": 1,
+                            "username": "example",
+                            "score": 4.5,
+                            "description": "вообще не понравилось("
+                        },
+                        {
+                            "user_id": 1,
+                            "username": "example",
+                            "score": 4.5,
+                            "description": "вообще не понравилось("
+                        },
+                        {
+                            "user_id": 1,
+                            "username": "example",
+                            "score": 4.5,
+                            "description": "вообще не понравилось("
+                        },
+                        {
+                            "user_id": 1,
+                            "username": "example",
+                            "score": 4.5,
+                            "description": "вообще не понравилось("
+                        },
+                    ]
+                });
             case '2':
                 return HttpResponse.json({
                     id: 2,
                     title: 'Название 2',
                     description: 'Описание 2',
                     score: 4.2,
-                    coordinates: [57.1485671873132, 65.55036168655934],
-                    address: 'Адрес 2',
+                    coordinates: '57.1485671873132,65.55036168655934',
+                    address: 'Россия, Тюмень, Центральная площадь',
                     type: 'Красота',
+                    photos: [{ file: ava }, { file: ava }]
                 });
             case '3':
                 return HttpResponse.json({
@@ -356,12 +397,13 @@ export const handlers = [
                     title: 'Название 3',
                     description: 'Описание',
                     score: 4.2,
-                    coordinates: [57.15222291358625, 65.5340378278529],
-                    address: 'Адрес 3',
+                    coordinates: '57.15222291358625,65.5340378278529',
+                    address: 'Россия, Тюмень, Центральная площадь',
                     type: 'Спорт',
+                    photos: [{ file: ava }, { file: ava }]
                 });
             default:
-                return HttpResponse.json({ c: id });
+                return HttpResponse.json({ c: paramId });
         }
 
 
@@ -412,88 +454,101 @@ export const handlers = [
     }),
 
 
-    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.friends}`, ({ request }) => {
+    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.friends}/:id`, ({ params }) => {
 
-        const url = new URL(request.url)
-        const id = url.searchParams.get('id')
+        const { id: paramId } = params;
+        // let data: UserTravel | undefined;
+        console.log(paramId)
         // const type = url.searchParams.get('type')
+        switch (paramId) {
+            case '1':
+                return HttpResponse.json({
+                    pending_sent: [],
+                    pending_received: [],
+                    friends: [
+                        {
+                            id: 2,
+                            name: 'name2',
+                            surname: 'surname2',
+                            img: shaurma,
+                            username: 'username2',
+                            status: 1
 
-        return HttpResponse.json({
-            pending_sent: [],
-            pending_received: [],
-            friends: [
-                {
-                    id: 2,
-                    name: 'name2',
-                    surname: 'surname2',
-                    img: shaurma,
-                    username: 'username2',
-                    status: 1
+                        },
+                        {
+                            id: 3,
+                            name: 'name3',
+                            surname: 'surname3',
+                            img: shaurma,
+                            username: 'username3',
+                            status: 1
+                        },
+                        {
+                            id: 4,
+                            name: 'name4',
+                            surname: 'surname4',
+                            img: shaurma,
+                            username: 'username4',
+                            status: 1
+                        },
+                        {
+                            id: 5,
+                            name: 'name5',
+                            surname: 'surname5',
+                            img: shaurma,
+                            username: 'username5',
+                            status: 1
+                        },
+                        {
+                            id: 6,
+                            name: 'name6',
+                            surname: 'surname6',
+                            img: shaurma,
+                            username: 'username6',
+                            status: 1
+                        },
+                        {
+                            id: 7,
+                            name: 'name7',
+                            surname: 'surname7',
+                            img: shaurma,
+                            username: 'username7',
+                            status: 1
+                        },
+                        {
+                            id: 8,
+                            name: 'name8',
+                            surname: 'surname8',
+                            img: shaurma,
+                            username: 'username8',
+                            status: 1
+                        },
+                    ]
+                });
 
-                },
-                {
-                    id: 3,
-                    name: 'name3',
-                    surname: 'surname3',
-                    img: shaurma,
-                    username: 'username3',
-                    status: 1
-                },
-                {
-                    id: 4,
-                    name: 'name4',
-                    surname: 'surname4',
-                    img: shaurma,
-                    username: 'username4',
-                    status: 1
-                },
-                {
-                    id: 5,
-                    name: 'name5',
-                    surname: 'surname5',
-                    img: shaurma,
-                    username: 'username5',
-                    status: 1
-                },
-                {
-                    id: 6,
-                    name: 'name6',
-                    surname: 'surname6',
-                    img: shaurma,
-                    username: 'username6',
-                    status: 1
-                },
-                {
-                    id: 7,
-                    name: 'name7',
-                    surname: 'surname7',
-                    img: shaurma,
-                    username: 'username7',
-                    status: 1
-                },
-                {
-                    id: 8,
-                    name: 'name8',
-                    surname: 'surname8',
-                    img: shaurma,
-                    username: 'username8',
-                    status: 1
-                },
-            ]
-        });
-        }),
+            default:
+                return HttpResponse.json({
+                    pending_sent: [],
+                    pending_received: [],
+                    friends: [
 
-        http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.userTravel}/:id`, async ({params}) => {
-            let id: string;
-            const {id: paramId} = params;
-            let data: UserTravel | undefined;
-            console.log(paramId)
-            if (typeof paramId === 'string') {
-                data = getTravelById(paramId, travelData);
-            } else {
-                return HttpResponse.json({error: 'Invalid ID'}, {status: 400});
-            }
-            return HttpResponse.json(data);
-        })
+                    ]
+                });
+        }
+
+    }),
+
+    http.get(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.userTravel}/:id`, async ({ params }) => {
+        let id: string;
+        const { id: paramId } = params;
+        let data: UserTravel | undefined;
+        console.log(paramId)
+        if (typeof paramId === 'string') {
+            data = getTravelById(paramId, travelData);
+        } else {
+            return HttpResponse.json({ error: 'Invalid ID' }, { status: 400 });
+        }
+        return HttpResponse.json(data);
+    })
 
 ]

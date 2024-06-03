@@ -4,7 +4,7 @@
     align-items: center;
     padding: 20px;
     background-color: #ffffff;
-    height: calc(100vh - var(--nav-height));
+
     margin: 0 auto;
     border-radius: 8px;
     font-family: Arial, sans-serif;

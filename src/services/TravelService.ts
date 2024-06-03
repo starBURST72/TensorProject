@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import { PlaceFullResponse, PlacePreviewResponse } from "../Models/Travels";
 import $api from "../http";
 import { OUR_API_ENDPOINTS } from "../http/constants";
-import {TimelineItem, UserTravel} from "../Models/IUserTravel";
+import { TimelineItem, UserTravel } from "../Models/IUserTravel";
 
 
 export const getOneTravel = async (id: number) => {
@@ -65,7 +65,7 @@ export const UserTravelCreate = async () => {
         }
     }
 };
-export const CopyTravel = async (id:number) => {
+export const CopyTravel = async (id: number) => {
     try {
         // Выполнение POST запроса для регистрации
         const response = await $api.post(`${OUR_API_ENDPOINTS.travels}/${id}/copy`);
@@ -116,10 +116,10 @@ export const getOnePLaceInCity = async (id: number): Promise<PlaceFullResponse> 
     }
 };
 
-export const GetUserTravel = async (id:string):Promise<UserTravel | null> => {
+export const GetUserTravel = async (id: string): Promise<UserTravel | null> => {
     try {
         // Выполнение POST запроса для регистрации
-        const response:AxiosResponse<UserTravel> = await $api.get(`${OUR_API_ENDPOINTS.userTravel}/${id}`);
+        const response: AxiosResponse<UserTravel> = await $api.get(`${OUR_API_ENDPOINTS.userTravel}/${id}`);
         console.log(response.data)
         return response.data;
     } catch (error: any) {
@@ -133,10 +133,10 @@ export const GetUserTravel = async (id:string):Promise<UserTravel | null> => {
     }
 };
 
-export const UpdateUserTravel = async (id:string,Places:TimelineItem[]):Promise<string | null> => {
+export const UpdateUserTravel = async (id: string, Places: TimelineItem[]): Promise<string | null> => {
     try {
         // Выполнение POST запроса для регистрации
-        const response:AxiosResponse<string> = await $api.put(`${OUR_API_ENDPOINTS.userTravel}/${id}`,{Places});
+        const response: AxiosResponse<string> = await $api.put(`${OUR_API_ENDPOINTS.userTravel}/${id}`, { Places });
         return response.data;
     } catch (error: any) {
         // Обработка ошибок регистрации
@@ -146,5 +146,21 @@ export const UpdateUserTravel = async (id:string,Places:TimelineItem[]):Promise<
             console.error('Get travel by ID failed: ' + error.message);
         }
         return null;
+    }
+};
+
+
+export const CreateReviewAboutPlace = async (id: number, reviewData: { score: number, description: string }) => {
+    try {
+        // Выполнение POST запроса для отправки отзыва
+        const response = await $api.post(`${OUR_API_ENDPOINTS.places}/${id}/feedback`, reviewData);
+        return response.data;
+    } catch (error: any) {
+        // Обработка ошибок
+        if (error.response && error.response.data && error.response.data.message) {
+            throw new Error('Failed to create review: ' + error.response.data.message);
+        } else {
+            throw new Error('Failed to create review: ' + error.message);
+        }
     }
 };

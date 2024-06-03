@@ -45,7 +45,7 @@ export const putProfileSettings = async (id: number, data: {
 export const getUserProfileInfo = async (id: number) => {
     try {
         // Выполнение POST запроса для регистрации
-        const response = await $api.get(`/${OUR_API_ENDPOINTS.userProfile}/${OUR_API_ENDPOINTS.userInfo}/${id}`);
+        const response = await $api.get(`/${OUR_API_ENDPOINTS.userProfile}/${id}`);
         return response.data;
     } catch (error: any) {
         // Обработка ошибок регистрации
