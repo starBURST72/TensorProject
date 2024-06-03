@@ -90,7 +90,9 @@ function HomePage() {
     };
 
     return (
+
         <div className='homepage' ref={homepageRef}>
+            <div className="airplane"></div>
             <div className="input-container" ref={inputContainerRef}>
                 <Typography.Title level={4}>Куда поедем?</Typography.Title>
                 <Space.Compact size='large'>
@@ -112,7 +114,8 @@ function HomePage() {
                     </div>
                 )}
             </div>
-            <div style={{ position: 'fixed', bottom: 0, width: '100%', textAlign: 'center' }}>
+
+            <div style={{position: 'fixed', bottom: 0, width: '100%', textAlign: 'center'}}>
                 <div>Подсказать?</div>
                 <Button type="primary" shape="circle" icon={<UpOutlined/>} onClick={showDrawer}/>
             </div>
@@ -126,7 +129,7 @@ function HomePage() {
                 visible={visible}
                 key="bottom"
             >
-                <div style={{display: 'flex', height: '100%',width:"100%"}}>
+                <div style={{display: 'flex', height: '100%', width: "100%"}}>
                     <div style={{flex: 1}}>
                         <HintCard type={"friends"}/>
                     </div>

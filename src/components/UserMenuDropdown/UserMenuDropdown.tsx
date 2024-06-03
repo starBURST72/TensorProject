@@ -5,7 +5,6 @@ import ava from '../../img/ava.jpg';
 import './UserMenuDropdown.css';
 import { Link } from 'react-router-dom';
 import {Context} from '../../index'
-import {observer} from "mobx-react-lite";
 
 
 function UserMenuDropdown() {
