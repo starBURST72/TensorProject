@@ -1,0 +1,54 @@
+.reviewsModal .ant-modal-content {
+    max-height: 80vh; /* Ограничение максимальной высоты модального окна */
+}
+
+.reviewCard {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0; /* Добавлена нижняя граница для разделения отзывов */
+}
+
+.reviewScoreContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.reviewsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.feedbackList {
+    max-height: 50vh; /* Ограничение максимальной высоты контейнера с отзывами */
+    overflow-y: auto; /* Прокрутка по вертикали */
+}
+
+.reviewStar {
+    color: gold;
+    font-size: 18px; /* Увеличивает размер звезды */
+}
+
+.reviewScore {
+    font-size: 18px; /* Увеличивает размер оценки */
+}
+
+.reviewerName, .reviewerText {
+    font-weight: normal; /* Обычный шрифт для текста */
+}
+
+.reviewerName b, .reviewerText b {
+    font-weight: bold; /* Жирный шрифт для "Пользователь" и "Отзыв" */
+}
+
+.modalFooter {
+    display: flex;
+    justify-content: center; /* Центрирование кнопок */
+    gap: 10px;
+    margin-top: 10px;
+}

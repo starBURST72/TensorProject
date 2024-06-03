@@ -9,27 +9,26 @@ import {observer} from "mobx-react-lite";
 
 
 function UserMenuDropdown() {
+    
     const {store}=useContext(Context);
     function logout(){
         store.logout();
     }
     const items: MenuProps['items'] = [
-        {
-            label: 'Логин',
-            key: '0',
-            style:{fontWeight:"650"}
-        },
+        // {
+        //     label: `${store.user.username}`,
+        //     key: '0',
+        //     style:{fontWeight:"650"}
+        // },
         {
             type: 'divider',
         },
         {
             label: (
-                <Link to={'/profile'}>
+                <Link to={`/profile`}>
                     Профиль
                 </Link>
-                // <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                //   1st menu item
-                // </a>
+                //<Link to={`/profile/${store.user.id}`}>
             ),
 
             key: '1',
@@ -40,7 +39,10 @@ function UserMenuDropdown() {
         },
 
         {
-            label: 'Друзья',
+            label: (
+                <Link to={'/friends'}>
+                    Друзья
+                </Link>),
             key: '3',
         },
         // {
@@ -52,12 +54,8 @@ function UserMenuDropdown() {
             label: (
                 <Link to={'/settings'}>
                     Настройки
-                </Link>
-                // <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                //   1st menu item
-                // </a>
-              ),
-            key: 4,
+                </Link>),
+            key: '4',
         },
         {
 
