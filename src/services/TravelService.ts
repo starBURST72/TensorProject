@@ -148,3 +148,19 @@ export const UpdateUserTravel = async (Travel:UserTravel):Promise<string | null>
         return null;
     }
 };
+
+
+export const CreateReviewAboutPlace = async (id: number, reviewData: { score: number, description: string }) => {
+    try {
+        // Выполнение POST запроса для отправки отзыва
+        const response = await $api.post(`${OUR_API_ENDPOINTS.places}/${id}/feedback`, reviewData);
+        return response.data;
+    } catch (error: any) {
+        // Обработка ошибок
+        if (error.response && error.response.data && error.response.data.message) {
+            throw new Error('Failed to create review: ' + error.response.data.message);
+        } else {
+            throw new Error('Failed to create review: ' + error.message);
+        }
+    }
+};

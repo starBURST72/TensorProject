@@ -2,27 +2,14 @@ import React, { useEffect, useRef, useState, useCallback, useLayoutEffect, useCo
 import "./MapNewComponent3.css";
 import axios from 'axios';
 import Sidebar from '../SideBar/Sidebar';
-import { AutoComplete, Button, Select, SelectProps, Space, Typography } from 'antd';
+import { AutoComplete, Button, Select, SelectProps, Space, Spin, Typography } from 'antd';
 import { GetCity } from '../../services/SearchCityService';
 import { getOnePLaceInCity, getPlacesInCity } from '../../services/TravelService';
 import { PlacePreviewResponse } from '../../Models/Travels';
 import { observer } from 'mobx-react-lite';
 import Store from '../../store/store';
 import { Context } from '../..';
-import {FullMarkerFields, interestsStatic, PreviewMarkerFields, PreviewPlacesInCityFields} from "../../storage/storage";
-// type MarkerFields = {
-//     id: number
-//     coordinates: [number, number]
-//     title: string
-// }
-
-// type PlacesInCityFields = {
-//     // location: {
-//     //     center: [number, number], // starting position [lng, lat]
-//     //     zoom: number // starting zoom
-//     // },
-//     markerProps: MarkerFields[]
-// };
+import { FullMarkerFields, interestsStatic, PreviewMarkerFields, PreviewPlacesInCityFields } from "../../storage/storage";
 
 
 const parseCoordinates = (coordString: string): [number, number] => {
@@ -55,23 +42,14 @@ const interests: SelectProps['options'] = interestsStatic.map(interest => ({
 }));
 
 
-
-// interface PreviewPlacesInCityFields {
-//     markerProps: PreviewMarkerFields[];
-// }
-
-
 const MapNewComponent3 = observer(() => {
-    const [location, setLocation] = useState({ center: [65.541227, 57.152985], zoom: 17 });
     const mapRef = useRef<ymaps.Map | null>(null);
-    const [loading, setLoading] = useState(false);
-    const [inputValue, setInputValue] = useState('');
     const [options, setOptions] = useState<{ value: string }[]>([]);
     const [placesInCuty, setPlacesInCuty] = useState<PreviewMarkerFields[] | null>(null);
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [selectedPlace, setSelectedPlace] = useState<FullMarkerFields | null>(null);
     const [cityValue, setCityValue] = useState('');
-    const [typeValue, setTypeValue] = useState('Все');
+    const [isLoading, setIsLoading] = useState(true);
     const { store } = useContext(Context);
     useEffect(() => {
         const onFinishRequests = async () => {
@@ -91,31 +69,39 @@ const MapNewComponent3 = observer(() => {
     useEffect(() => {
         const ymaps = window.ymaps;
         console.log(store.city.nameCity)
-        ymaps.ready(() => {
-            if (!mapRef.current && placesInCuty) {
-                mapRef.current = new ymaps.Map("map", {
-                    center: store.city.center, // starting position [lng, lat]
-                    zoom: store.city.zoom // starting zoom
-                },);
-                mapRef.current.controls.remove('geolocationControl'); // удаляем геолокацию
-                mapRef.current.controls.remove('searchControl'); // удаляем поиск
-                mapRef.current.controls.remove('trafficControl'); // удаляем контроль трафика
-                mapRef.current.controls.remove('typeSelector'); // удаляем тип
-                mapRef.current.controls.remove('fullscreenControl'); // удаляем кнопку перехода в полноэкранный режим
-                mapRef.current.controls.remove('rulerControl'); // удаляем контрол правил
-                placesInCuty?.forEach((marker) => {
-                    const newPlacemark = new ymaps.Placemark(parseCoordinates(marker.coordinates), { hintContent: marker.title });
-                    newPlacemark.events.add(['click'], async (event: ymaps.MapEvent) => {
-                        const fullPlaceInfo = await getOnePLaceInCity(marker.id)
-                        setSelectedPlace(fullPlaceInfo)
-                        setSidebarVisible(true);
+        try {
+            ymaps.ready(() => {
+                if (!mapRef.current && placesInCuty) {
+                    mapRef.current = new ymaps.Map("map", {
+                        center: store.city.center,
+                        zoom: store.city.zoom
+                    },);
+                    mapRef.current.controls.remove('geolocationControl'); // удаляем геолокацию
+                    mapRef.current.controls.remove('searchControl'); // удаляем поиск
+                    mapRef.current.controls.remove('trafficControl'); // удаляем контроль трафика
+                    mapRef.current.controls.remove('typeSelector'); // удаляем тип
+                    mapRef.current.controls.remove('fullscreenControl'); // удаляем кнопку перехода в полноэкранный режим
+                    mapRef.current.controls.remove('rulerControl'); // удаляем контрол правил
+                    placesInCuty?.forEach((marker) => {
+                        const newPlacemark = new ymaps.Placemark(parseCoordinates(marker.coordinates), { hintContent: marker.title });
+                        newPlacemark.events.add(['click'], async (event: ymaps.MapEvent) => {
+                            const fullPlaceInfo = await getOnePLaceInCity(marker.id)
+                            setSelectedPlace(fullPlaceInfo)
+                            setSidebarVisible(true);
+                        });
+                        mapRef.current?.geoObjects.add(newPlacemark);
                     });
-                    mapRef.current?.geoObjects.add(newPlacemark);
-                });
-            }
+                }
 
 
-        });
+            });
+        }
+        catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setIsLoading(false)
+        }
+
     }, [placesInCuty]);
 
     useEffect(() => {
@@ -150,25 +136,7 @@ const MapNewComponent3 = observer(() => {
             }
         });
     }, [placesInCuty]);
-    // const handleSearch = async () => {
-    //     try {
-    //         setLoading(true);
-    //         const response = await axios.get('https://geocode-maps.yandex.ru/1.x/', {
-    //             params: {
-    //                 apikey: '',
-    //                 geocode: inputValue,
-    //                 format: 'json',
-    //             },
-    //         });
 
-    //         const coords = response.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ');
-    //         setLocation({ center: [parseFloat(coords[0]), parseFloat(coords[1])], zoom: 17 });
-    //     } catch (error) {
-    //         console.error('Ошибка при запросе геокодирования:', error);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
     const handleChangeTypeOfPlaces = async (value: string) => {
         const onFinishRequests = async () => {
             try {
@@ -215,11 +183,19 @@ const MapNewComponent3 = observer(() => {
             setOptions([]);
         }
     };
-    // Обработчики и остальная часть компонента остаются без изменений
+
+    if (isLoading) {
+        return (
+            <div className="loading-container">
+                <Spin tip="Загрузка..." />
+            </div>
+        );
+    }
+
     return (
         <div className="map-container">
             <div className="overlay-container">
-                {loading && <div className="loader">Loading...</div>}
+
                 <div className='searchConteiner'>
                     <Typography.Title level={4}>Выбранный город</Typography.Title>
                     <Space.Compact size='middle'>

@@ -14,6 +14,7 @@ import {Context} from "./index";
 import {observer} from "mobx-react-lite";
 import CreateTravel from "./pages/CreateTravel/CreateTravel";
 import CalendarPage from "./pages/Calendar /CalendarPage";
+import FriendsPage from './pages/FriendsPage/FriendsPage';
 
 
 interface Travel {
@@ -63,6 +64,7 @@ function App() {
         }
     }, [store.isAuth]);
     
+    //в profile жобавить id
     return (
         <div className="app">
             {/*<h1>{store.isAuth?"ЗАЛОГИНЕН":"НЕАВТОРИЗОВАН"}</h1>*/}
@@ -77,6 +79,7 @@ function App() {
                                 <Route path="calendar" element={<CalendarPage/>} />
                                 <Route path="travels" element={<TravelsPage />} />
                                 <Route path="editTravel/:id" element={<CreateTravel/>} />
+                                <Route path="friends" element={<FriendsPage/>} />
                             </Route>
                         </Routes>
                     </ContextTravel.Provider>

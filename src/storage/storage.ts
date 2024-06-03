@@ -155,50 +155,48 @@ export const userInfo =
 export const interestsStatic = [
     'Все',
     'Еда',
-    'концерты',
-    'кино',
-    'выставки',
-    'кафе',
-    'рестораны',
-    'театр',
-    'парк',
-    'музей',
-    'спорт',
+    'Концерты',
+    'Кино',
+    'Выставки',
+    'Кафе',
+    'Ресторан',
+    'Театр',
+    'Парк',
+    'Музей',
+    'Спорт',
 ];
+
+
 
 export type FullMarkerFields = {
     id: number;
+    creator_user_id: number,
     title: string;
     description: string;
-    score: number;
+    address: string,
+    type: string,
     coordinates: string
+    mean_score: number;
     photos: {
         file: string
     }[]
-    address: string,
-    type: string,
-}
-
-// type PreviewMarkerFields = {
-//     id: number;
-//     title: string;
-//     description: string;
-//     score: number;
-//     coordinates: [number, number];
-//     photo: string
-// }
-
-export interface PreviewPlacesInCityFields {
-    markerProps: PreviewMarkerFields[];
+    feedbacks:[]
 }
 
 export type PreviewMarkerFields = {
     id: number;
+    creator_user_id: number,
     title: string;
     description: string;
-    score: number;
-    coordinates: string;
+    address: string,
+    type: string,
+    coordinates: string
+    mean_score: number;
     photos: {
         file: string
     }[]
+}
+
+export interface PreviewPlacesInCityFields {
+    markerProps: PreviewMarkerFields[];
 }

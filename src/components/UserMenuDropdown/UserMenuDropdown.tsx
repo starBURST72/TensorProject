@@ -27,6 +27,7 @@ function UserMenuDropdown() {
                 <Link to={'/profile'}>
                     Профиль
                 </Link>
+                //<Link to={`/profile/${store.user.id}`}>
             ),
             key: 1,
         },
@@ -37,16 +38,29 @@ function UserMenuDropdown() {
                 </Link>),
             key: 2,
         },
+
+        {
+            label: (
+                <Link to={'/friends'}>
+                    Друзья
+                </Link>),
+            key: 3,
+        },
+        // {
+        //     label: 'Настройки',
+        //     key: '4',
+
+        // },
         {
             label: (
                 <Link to={'/settings'}>
                     Настройки
                 </Link>
               ),
-            key: 3,
+            key: 4,
         },
         {
-            key: 4,
+            key: 5,
             label: 'Exit',
             className:'exit-button',
             onClick:logout

@@ -5,7 +5,7 @@ interface FriendFields {
     id: number;
     name: string;
     surname: string;
-    img: any;
+    img: string;
     username: string;
 }
 

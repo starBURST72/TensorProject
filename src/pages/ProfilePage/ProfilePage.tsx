@@ -110,6 +110,7 @@ function ProfilePage() {
         };
         onFinishRequests()
     }, []);
+
     if (isLoading) {
         return (
             <div className="loading-container">
@@ -117,6 +118,7 @@ function ProfilePage() {
             </div>
         );
     }
+    
     return (
 
         <div className="profile-container">
@@ -152,7 +154,7 @@ function ProfilePage() {
                         },
                     }}
                 >
-                    <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ fontSize: '18px', width: '300px' }} />
+                    <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ fontSize: '18px', width: '300px', caretColor: 'transparent' }} />
                 </ConfigProvider>
 
                 {
