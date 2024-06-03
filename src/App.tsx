@@ -1,7 +1,6 @@
 import React, {useLayoutEffect, useState, useEffect, useContext} from 'react';
 import './styles/App.css';
 import { Routes, Route } from "react-router-dom";
-import MapPage from "./pages/MapPage.css/MapPage";
 import NotFound from "./pages/NotFoundPage/NotFound";
 import HomePage from "./pages/HomePage/HomePage";
 import Auth from "./pages/Auth/Auth";
@@ -14,6 +13,7 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import {Context} from "./index";
 import {observer} from "mobx-react-lite";
 import CreateTravel from "./pages/CreateTravel/CreateTravel";
+import CalendarPage from "./pages/Calendar /CalendarPage";
 
 
 interface Travel {
@@ -71,12 +71,12 @@ function App() {
                         <Routes>
                             <Route path='/' element={<Layout />}>
                                 <Route index element={<HomePage />} />
-                                <Route path="map" element={<MapPage />} />
                                 <Route path="settings" element={<SettingsPage />} />
                                 <Route path="profile" element={<ProfilePage />} />
                                 <Route path="*" element={<NotFound />} />
+                                <Route path="calendar" element={<CalendarPage/>} />
                                 <Route path="travels" element={<TravelsPage />} />
-                                <Route path="createTravel" element={<CreateTravel/>} />
+                                <Route path="editTravel/:id" element={<CreateTravel/>} />
                             </Route>
                         </Routes>
                     </ContextTravel.Provider>
@@ -87,7 +87,6 @@ function App() {
                             <Route path="*" element={<NotFound />} />
                             <Route path="Auth" element={<Auth />} />
                             <Route index element={<HomePage />} />
-                            <Route path="map" element={<MapPage />} />
                         </Route>
                     </Routes>
                 }

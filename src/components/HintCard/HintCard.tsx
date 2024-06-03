@@ -49,7 +49,7 @@ function HintCard(props: Hint) {
                 const responseData: CopyResponse = await CopyTravel(copy_id);
                 const TravelId= responseData.id;
                 console.log(TravelId)
-                navigate('/createTravel', { state: {TravelId} });
+                navigate(`/editTravel/${TravelId}`, { state: {TravelId} });
             } catch (error) {
                 console.error(error);
             } finally {

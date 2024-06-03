@@ -133,10 +133,10 @@ export const GetUserTravel = async (id:string):Promise<UserTravel | null> => {
     }
 };
 
-export const UpdateUserTravel = async (id:string,Places:TimelineItem[]):Promise<string | null> => {
+export const UpdateUserTravel = async (Travel:UserTravel):Promise<string | null> => {
     try {
         // Выполнение POST запроса для регистрации
-        const response:AxiosResponse<string> = await $api.put(`${OUR_API_ENDPOINTS.userTravel}/${id}`,{Places});
+        const response:AxiosResponse<string> = await $api.put(`${OUR_API_ENDPOINTS.userTravel}/${Travel.id}`,{Travel});
         return response.data;
     } catch (error: any) {
         // Обработка ошибок регистрации

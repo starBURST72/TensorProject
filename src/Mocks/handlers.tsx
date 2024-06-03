@@ -91,11 +91,11 @@ export const handlers = [
     http.post(`${OUR_API_ADDRESS}/${OUR_API_ENDPOINTS.travels}`, (req) => {
 
         return HttpResponse.json(
-            [{
+            {
                 id: '123',
                 title: 'Test Travel',
                 description: 'This is a test travel object',
-            }]
+            }
         );
     }),
 

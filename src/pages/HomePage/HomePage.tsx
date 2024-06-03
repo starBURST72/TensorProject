@@ -19,8 +19,8 @@ function HomePage() {
 
     const handleClick = async () => {
         const createdTravel = await CreateTravel()
-
-        navigate('/createTravel', {state:{value,createdTravel}});
+        console.log(createdTravel.id);
+        navigate(`/editTravel/${createdTravel.id}`);
     };
 
     const onSelect = (data: string) => {

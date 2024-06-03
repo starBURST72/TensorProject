@@ -9,7 +9,7 @@ import { PlacePreviewResponse } from '../../Models/Travels';
 import { observer } from 'mobx-react-lite';
 import Store from '../../store/store';
 import { Context } from '../..';
-import {FullMarkerFields, interestsStatic, PreviewPlacesInCityFields} from "../../storage/storage";
+import {FullMarkerFields, interestsStatic, PreviewMarkerFields, PreviewPlacesInCityFields} from "../../storage/storage";
 // type MarkerFields = {
 //     id: number
 //     coordinates: [number, number]
@@ -54,16 +54,7 @@ const interests: SelectProps['options'] = interestsStatic.map(interest => ({
     value: interest
 }));
 
-type PreviewMarkerFields = {
-    id: number;
-    title: string;
-    description: string;
-    score: number;
-    coordinates: string;
-    photos: {
-        file: string
-    }[]
-}
+
 
 // interface PreviewPlacesInCityFields {
 //     markerProps: PreviewMarkerFields[];

@@ -1,31 +1,52 @@
-import {Button, Input, Modal, Timeline, Upload, Flex, message} from "antd";
+import {Button, Input, Modal, Timeline, Upload, message} from "antd";
 import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
 import PlaceCard from "../PlaceCard/PlaceCard";
-import React, { useState } from "react";
+import React, {Dispatch, SetStateAction, useState, useEffect} from "react";
 import "./SideBarTravel.css";
 import {TimelineItem, UserTravel} from "../../Models/IUserTravel";
 
 
 interface SideBarTravelProps {
     timelineItems: TimelineItem[];
-    Travel:UserTravel|null;
+    travel: UserTravel | null;
     setTimelineItems: React.Dispatch<React.SetStateAction<TimelineItem[]>>;
     handleUpdate: () => Promise<void>;
+    setTravel: React.Dispatch<React.SetStateAction<UserTravel | null>>;
 }
 
-function SideBarTravel({ timelineItems,setTimelineItems, handleUpdate,Travel}: SideBarTravelProps) {
+function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, setTravel}: SideBarTravelProps) {
     const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');const handleDelete = (id: number) => {
+    const [title, setTitle] = useState(travel?.title);
+    const [description, setDescription] = useState(travel?.description);
+    const [imageUrl, setImageUrl] = useState(travel?.img || '');
+
+    useEffect(() => {
+        setTitle(travel?.title);
+        setDescription(travel?.description);
+        setImageUrl(travel?.img || '');
+    }, [travel]);
+
+    const handleDelete = (id: number) => {
         setTimelineItems((timelineItems: TimelineItem[]) => timelineItems.filter(item => item.id !== id));
     };
-
-
 
     const handleSettingsClick = () => {
         setIsSettingsModalVisible(true);
     };
 
     const handleSettingsOk = () => {
+        const updatedTravel: UserTravel | null = {
+            title: title ?? "",
+            description: description ?? "",
+            img: imageUrl,
+            id: travel?.id ?? '',
+            owner_user_id: travel?.owner_user_id ?? '',
+            Date_start: travel?.Date_start ?? '',
+            Date_end: travel?.Date_end ?? '',
+            status: travel?.status ?? '',
+            places: timelineItems
+        };
+        setTravel(updatedTravel);
         setIsSettingsModalVisible(false);
     };
 
@@ -62,8 +83,8 @@ function SideBarTravel({ timelineItems,setTimelineItems, handleUpdate,Travel}: S
     return (
         <div className="sidebar">
             <h1 className="sidebar-travel">
-                {Travel?.title}
-                <SettingOutlined style={{ cursor: 'pointer',marginLeft:"20px" }} onClick={handleSettingsClick}/>
+                {travel?.title}
+                <SettingOutlined style={{ cursor: 'pointer', marginLeft: "20px" }} onClick={handleSettingsClick} />
             </h1>
             <Timeline className="TimeLine">
                 {timelineItems.map(item => (
@@ -76,7 +97,6 @@ function SideBarTravel({ timelineItems,setTimelineItems, handleUpdate,Travel}: S
                             coordinates={item.coordinates}
                             onDelete={() => handleDelete(item.id)}
                         />
-
                     </Timeline.Item>
                 ))}
             </Timeline>
@@ -86,24 +106,22 @@ function SideBarTravel({ timelineItems,setTimelineItems, handleUpdate,Travel}: S
                 onOk={handleSettingsOk}
                 onCancel={handleSettingsCancel}
             >
-                <Input placeholder="Enter new title" />
-                <Input placeholder="Enter new description" />
+                <Input placeholder="Enter new title" value={title} onChange={e => setTitle(e.target.value)} />
+                <Input placeholder="Enter new description" value={description} onChange={e => setDescription(e.target.value)} />
                 <Upload
                     name="avatar"
                     listType="picture-card"
                     className="avatar-uploader"
                     showUploadList={false}
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     beforeUpload={beforeUpload}
                     onChange={handleImageChange}
                 >
                     {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : <UploadOutlined />}
                 </Upload>
             </Modal>
-            <Flex className="confirm-container">
-                <Button type="primary" onClick={()=>handleUpdate()}>Сохранить</Button>
-            </Flex>
-
+            <div className="confirm-container">
+                <Button type="primary" onClick={handleUpdate}>Сохранить</Button>
+            </div>
         </div>
     );
 }

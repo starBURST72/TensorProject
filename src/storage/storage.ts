@@ -179,15 +179,26 @@ export type FullMarkerFields = {
     type: string,
 }
 
-type PreviewMarkerFields = {
+// type PreviewMarkerFields = {
+//     id: number;
+//     title: string;
+//     description: string;
+//     score: number;
+//     coordinates: [number, number];
+//     photo: string
+// }
+
+export interface PreviewPlacesInCityFields {
+    markerProps: PreviewMarkerFields[];
+}
+
+export type PreviewMarkerFields = {
     id: number;
     title: string;
     description: string;
     score: number;
-    coordinates: [number, number];
-    photo: string
-}
-
-export interface PreviewPlacesInCityFields {
-    markerProps: PreviewMarkerFields[];
+    coordinates: string;
+    photos: {
+        file: string
+    }[]
 }

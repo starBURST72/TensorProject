@@ -27,48 +27,29 @@ function UserMenuDropdown() {
                 <Link to={'/profile'}>
                     Профиль
                 </Link>
-                // <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                //   1st menu item
-                // </a>
             ),
-
-            key: '1',
+            key: 1,
         },
         {
-            label: 'Календарь???',
-            key: '2',
+            label: (
+                <Link to={'/calendar'}>
+                Календарь
+                </Link>),
+            key: 2,
         },
-
-        {
-            label: 'Друзья',
-            key: '3',
-        },
-        // {
-        //     label: 'Настройки',
-        //     key: '4',
-            
-        // },
         {
             label: (
                 <Link to={'/settings'}>
                     Настройки
                 </Link>
-                // <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                //   1st menu item
-                // </a>
               ),
-            key: 4,
+            key: 3,
         },
         {
-
-            key: '5',
+            key: 4,
             label: 'Exit',
             className:'exit-button',
             onClick:logout
-            
-            
-
-
         },
     ];
     return (

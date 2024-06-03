@@ -1,122 +1,113 @@
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./CreateTravel.css";
-import {Button, Input, List, Rate, Select, SelectProps, Switch} from 'antd';
+import { AutoComplete, Button, Input, List, Rate, Select, SelectProps, Switch } from 'antd';
 import SideBarTravel from "../../components/SidebarTravel/SideBarTravel";
-import {useLocation} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MapNewComponent3 from "../../components/MapNew3/MapNewComponent3";
-import {getPlacesInCity, GetUserTravel, UpdateUserTravel} from "../../services/TravelService";
-import {interestsStatic, PreviewPlacesInCityFields} from "../../storage/storage";
-import {Context} from "../../index";
-import {TimelineItem, UserTravel} from "../../Models/IUserTravel";
-import {PlacePreviewResponse} from "../../Models/Travels";
-
-interface LocationState {
-    message: {
-        value: string;
-    };
-}
-
-
+import { getPlacesInCity, GetUserTravel, UpdateUserTravel } from "../../services/TravelService";
+import { interestsStatic, PreviewMarkerFields, PreviewPlacesInCityFields } from "../../storage/storage";
+import { Context } from "../../index";
+import { TimelineItem, UserTravel } from "../../Models/IUserTravel";
+import { PlacePreviewResponse } from "../../Models/Travels";
+import { GetCity } from "../../services/SearchCityService";
 
 const initialData = [
-    { id: 1, title: "Title1", description: "Очень хорошее место", rating: 4.2,address:"Тюмень, ул. Широтная 55" },
-    { id: 2, title: "Title2", description: "Очень хорошее место", rating: 4.2,address:"Тюмень, ул. Максима Горького 27" },
-    { id: 3, title: "Title3", description: "Очень хорошее место", rating: 4.2,address:"Тюмень, ул. Харькова 23" },
-    { id: 4, title: "Title4", description: "Очень хорошее место", rating: 4.2,address:"Тюмень, ул. Республики 92" },
+    { id: 1, title: "Title1", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Широтная 55", type: "Еда" },
+    { id: 2, title: "Title2", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Максима Горького 27", type: "кино" },
+    { id: 3, title: "Title3", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Харькова 23", type: "спорт" },
+    { id: 4, title: "Title4", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Республики 92", type: "музей" },
 ];
-
-
 
 const interests: SelectProps['options'] = interestsStatic.map(interest => ({
     label: interest,
     value: interest
 }));
 
-
 function CreateTravel() {
+    let { id } = useParams();
     const { store } = useContext(Context);
-    const location = useLocation();
     const [checked, setChecked] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredData, setFilteredData] = useState(initialData);
     const [timelineItems, setTimelineItems] = useState<TimelineItem[]>([]);
     const prevTimelineItemsRef = useRef<TimelineItem[]>();
-    const [state, setState] = useState<any>("");
     const [typeValue, setTypeValue] = useState('Все');
     const [placesInCity, setPlacesInCity] = useState<PlacePreviewResponse[] | null>(null);
-    const [travel,setTravel]=useState<UserTravel |null>(null);
+    const [travel, setTravel] = useState<UserTravel | null>(null);
+    const navigate = useNavigate();
+    const [cityValue, setCityValue] = useState('');
+    const [placesInCuty, setPlacesInCuty] = useState<PreviewMarkerFields[] | null>(null);
+    const [options, setOptions] = useState<{ value: string }[]>([]);
+
+    const onChangeCity = async (data: string) => {
+        setCityValue(data);
+        await store.infoAboutCity(cityValue);
+        const responsePlacesInCuty = await getPlacesInCity(store.city.nameCity, store.typeOfPlaces);
+        setPlacesInCuty(responsePlacesInCuty);
+        filterData();
+    };
     useEffect(() => {
-        if (prevTimelineItemsRef.current !== timelineItems) {
-            localStorage.setItem('timelineItems', JSON.stringify(timelineItems));
-            prevTimelineItemsRef.current = timelineItems;
+        filterData();
+    }, [typeValue, cityValue, searchTerm]);
+
+    const handleSearchCity = async (value: string) => {
+        if (value) {
+            try {
+                const responseData = await GetCity(value);
+                const newOptions = responseData.suggestions.map(suggestion => ({
+                    value: `${suggestion.data.city}`
+                }));
+                setOptions(newOptions);
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            setOptions([]);
         }
-    }, [timelineItems]);
-
-
+    };
 
     useEffect(() => {
         const fetchData = async () => {
-            if (timelineItems.length === 0) {
-                // Only make the request if timelineItems is empty
-                if (location.state.value) {
-                    setState(location.state.value as LocationState);
-                    console.log(location.state);
-                } else if (location.state.TravelId) {
-                    const userTravelId = location.state.TravelId as string;
-                    const userTravel: UserTravel | null = await GetUserTravel(userTravelId);
-                    setTravel(userTravel);
-                    if (userTravel) {
-                        console.log(userTravel);
-                    }
-                    if (
-                        userTravel !== null &&
-                        userTravel !== undefined &&
-                        userTravel.places !== null &&
-                        userTravel.places !== undefined
-                    ) {
-                        setTimelineItems(userTravel.places);
-                    }
+            if (id) {
+                const userTravel: UserTravel | null = await GetUserTravel(id);
+                setTravel(userTravel);
+                if (userTravel && userTravel.places) {
+                    setTimelineItems(userTravel.places);
                 }
             }
         };
 
         fetchData();
-    }, [location.state, timelineItems]);
+    }, []);
+
     const handleUpdate = async () => {
-        console.log("сработало")
         if (travel && travel.id !== undefined && travel.id !== null) {
-            const result = await UpdateUserTravel(travel.id, timelineItems);
+            const result = await UpdateUserTravel(travel);
             if (result) {
-                console.log('Update successful:', result);
+                navigate('/');
             } else {
                 console.log('Update failed');
             }
         }
     };
-    useEffect(() => {
-        const savedTimelineItems = localStorage.getItem("timelineItems");
-        if (savedTimelineItems) {
-            setTimelineItems(JSON.parse(savedTimelineItems));
-        }
-    }, []);
 
-    //КОД ОЛЕГА НАДО ИСПРАВИТЬ, все тайпы перевернул как попало
     const onSelectType = (data: string) => {
         setTypeValue(data);
+        filterData();
     };
+
     const handleChangeTypeOfPlaces = (value: string) => {
         const onFinishRequests = async () => {
             try {
                 const responsePlacesInCity = await getPlacesInCity(store.city.nameCity, value);
                 setPlacesInCity(responsePlacesInCity);
-                console.log(responsePlacesInCity);
             } catch (error) {
                 console.error('Error:', error);
             }
         };
         onFinishRequests();
     };
-  //
+
     useEffect(() => {
         if (prevTimelineItemsRef.current !== timelineItems) {
             localStorage.setItem("timelineItems", JSON.stringify(timelineItems));
@@ -131,22 +122,32 @@ function CreateTravel() {
             type: item.address,
             place_id: item.id,
             coordinates: item.coordinates,
-            img:item.img,
+            img: item.img,
         };
 
         setTimelineItems(prevTimelineItems => [...prevTimelineItems, newTimelineItem]);
     };
 
-
-
-
     const handleSearchChange = (e: any) => {
         const value = e.target.value.toLowerCase();
         setSearchTerm(value);
-        const filtered = initialData.filter(item =>
-            item.title.toLowerCase().includes(value) ||
-            item.description.toLowerCase().includes(value)
-        );
+        filterData();
+    };
+
+    const filterData = () => {
+        let filtered = initialData;
+        if (typeValue !== 'Все') {
+            filtered = filtered.filter(item => item.type === typeValue);
+        }
+        if (cityValue) {
+            filtered = filtered.filter(item => item.address.includes(cityValue));
+        }
+        if (searchTerm) {
+            filtered = filtered.filter(item =>
+                item.title.toLowerCase().includes(searchTerm) ||
+                item.description.toLowerCase().includes(searchTerm)
+            );
+        }
         setFilteredData(filtered);
     };
 
@@ -181,6 +182,18 @@ function CreateTravel() {
                                     options={interests}
                                     onSelect={onSelectType}
                                 />
+                                <AutoComplete
+                                    defaultValue={store.city.nameCity}
+                                    options={options}
+                                    className="city-autocomplete"
+                                    onSearch={handleSearchCity}
+                                    onSelect={onChangeCity}
+                                    onChange={onChangeCity}
+                                    placeholder="Введите город"
+                                    filterOption={(inputValue, option) =>
+                                        option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                                    }
+                                />
                                 <Input
                                     className="search-bar"
                                     placeholder="текстовое поле"
@@ -202,18 +215,18 @@ function CreateTravel() {
                                             description={item.description}
                                         />
                                         <div className="Rate">
-                                            {item.rating} <Rate disabled defaultValue={5} count={1}/>
-                                            <Button onClick={() => createTimelineItem(item)}>Add to Sidebar</Button>
+                                            {item.rating} <Rate disabled defaultValue={5} count={1} />
+                                            <Button onClick={() => createTimelineItem(item)}>Добавить</Button>
                                         </div>
                                     </List.Item>
                                 )}
                             />
                         </>
                     ) : (
-                        <MapNewComponent3/>
+                        <MapNewComponent3 />
                     )}
                 </div>
-                <SideBarTravel  timelineItems={timelineItems} setTimelineItems={setTimelineItems} handleUpdate={handleUpdate} Travel={travel} />
+                <SideBarTravel timelineItems={timelineItems} setTimelineItems={setTimelineItems} handleUpdate={handleUpdate} travel={travel} setTravel={setTravel} />
             </div>
         </>
     );
