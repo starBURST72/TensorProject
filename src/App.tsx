@@ -74,7 +74,7 @@ function App() {
                             <Route path='/' element={<Layout />}>
                                 <Route index element={<HomePage />} />
                                 <Route path="settings" element={<SettingsPage />} />
-                                <Route path="profile" element={<ProfilePage />} />
+                                <Route path="profile/:id" element={<ProfilePage />} />
                                 <Route path="*" element={<NotFound />} />
                                 <Route path="calendar" element={<CalendarPage/>} />
                                 <Route path="travels" element={<TravelsPage />} />

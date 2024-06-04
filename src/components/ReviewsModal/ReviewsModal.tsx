@@ -21,7 +21,7 @@ const ReviewsModal: React.FC<ReviewModalProps> = ({ visible, onClose, feedbacks 
             footer={null} 
         >
             <div className='reviewsContainer'>
-                {feedbacks?.length === 0 ? (
+                {!(feedbacks && feedbacks?.length>0) ? (
                     <Typography.Title level={3}>Отзывов нет</Typography.Title>
                 ) : (
                     <div className='feedbackList'>

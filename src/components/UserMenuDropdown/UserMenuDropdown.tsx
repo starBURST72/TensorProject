@@ -14,7 +14,7 @@ function UserMenuDropdown() {
     }
     const items: MenuProps['items'] = [
         {
-            label: 'Логин',
+            label: `${store.username}`,
             key: '0',
             style:{fontWeight:"650"}
         },
@@ -23,7 +23,8 @@ function UserMenuDropdown() {
         },
         {
             label: (
-                <Link to={'/profile'}>
+                <Link to={`/profile/${store.id}`}>
+
                     Профиль
                 </Link>
                 //<Link to={`/profile/${store.user.id}`}>

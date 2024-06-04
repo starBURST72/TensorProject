@@ -164,3 +164,41 @@ export const CreateReviewAboutPlace = async (id: number, reviewData: { score: nu
         }
     }
 };
+
+
+export const CreateNewPlace = async (placeData: {
+    title: string;
+    description: string;
+    address: string;
+    type: string;
+    coordinates: string;
+    file: File;
+}) => {
+    try {
+        // Создание объекта FormData и добавление полей
+        const formData = new FormData();
+        formData.append('title', placeData.title);
+        formData.append('description', placeData.description);
+        formData.append('address', placeData.address);
+        formData.append('type', placeData.type);
+        formData.append('coordinates', placeData.coordinates);
+        formData.append('file', placeData.file);
+
+        // Выполнение POST запроса для отправки места
+        const response = await $api.post(`${OUR_API_ENDPOINTS.places}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+
+        return response.data;
+    } catch (error: any) {
+        // Обработка ошибок
+        if (error.response && error.response.data && error.response.data.message) {
+            throw new Error('Failed to create place: ' + error.response.data.message);
+        } else {
+            throw new Error('Failed to create place: ' + error.message);
+        }
+    }
+};
+
