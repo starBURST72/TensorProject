@@ -48,8 +48,8 @@ function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, 
     }, [travel]);
 
     const handleDelete = (id: number) => {
-        setTimelineItems((timelineItems: TimelineItem[]) => timelineItems.filter(item => item.id !== id));
-        setIdCounter(prevIdCounter => Math.max(...timelineItems.map(item => item.id), 0)); // Update idCounter
+        setTimelineItems((timelineItems: TimelineItem[]) => timelineItems.filter(item => item.place_id !== id));
+        setIdCounter(prevIdCounter => Math.max(...timelineItems.map(item => item.place_id ?? 0), 0));
         handleSettingsOk();
     };
 

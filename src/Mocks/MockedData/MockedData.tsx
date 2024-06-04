@@ -77,7 +77,7 @@ export const travelData: UserTravel[] = [
                 type: 'Type',
                 place_id: 100, // Replace with the actual place ID
                 coordinates: '0,0', // Replace with the actual coordinates
-                date: '2022-01-01', // Replace with the actual date
+                travel_date: '2022-01-01', // Replace with the actual date
                 description: 'Description of the new place',
                 order: 5, // Replace with the actual order
                 photos: [], // Add photos if needed
@@ -90,7 +90,7 @@ export const travelData: UserTravel[] = [
                 type: 'Type',
                 place_id: 100, // Replace with the actual place ID
                 coordinates: '0,0', // Replace with the actual coordinates
-                date: '2022-01-01', // Replace with the actual date
+                travel_date: '2022-01-01', // Replace with the actual date
                 description: 'Description of the new place',
                 order: 5, // Replace with the actual order
                 photos: [], // Add photos if needed

@@ -5,7 +5,7 @@ export interface TimelineItem {
     type?: string;
     creator_user_id?: number;
     coordinates?: string;
-    date:string;
+    travel_date:string;
     mean_score?:number;
     description?:string;
     order:number;

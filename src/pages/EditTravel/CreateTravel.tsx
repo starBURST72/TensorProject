@@ -133,7 +133,7 @@ function CreateTravel() {
             title: currentItem?.title,
             type: currentItem?.type,
             place_id: currentItem?.id,
-            date: dayjs(date).format('YYYY-MM-DD'),
+            travel_date: dayjs(date).format('YYYY-MM-DD'),
             description: currentItem?.description,
             creator_user_id: currentItem?.creator_user_id,
             mean_score: currentItem?.mean_score,
@@ -144,7 +144,7 @@ function CreateTravel() {
         idCounter++;
         setTimelineItems(prevTimelineItems => {
             const updatedTimelineItems = [...prevTimelineItems, newTimelineItem];
-            updatedTimelineItems.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            updatedTimelineItems.sort((a, b) => new Date(a.travel_date).getTime() - new Date(b.travel_date).getTime());
             updatedTimelineItems.forEach((item, index) => item.order = index + 1);
             return updatedTimelineItems;
         });
@@ -241,7 +241,7 @@ function CreateTravel() {
                                             description={item.description}
                                         />
                                         <div className="Rate">
-                                            {item.mean_score} <Rate disabled defaultValue={5} count={1} />
+                                            {parseFloat(item.mean_score.toFixed(1))} <Rate disabled defaultValue={5} count={1} />
                                             <Button onClick={() => createTimelineItem(item)}>Добавить</Button>
                                         </div>
                                     </List.Item>

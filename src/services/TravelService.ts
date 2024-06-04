@@ -120,11 +120,11 @@ export const GetUserTravel = async (id:string):Promise<UserTravel | null> => {
     }
 };
 function transformUserTravelToUserPut(userTravel: UserTravel): {
-    Date_end: string;
+    end_date: string;
     img: string|null;
-    places: { date: string; description: string | undefined; place_id: number | undefined; order: number }[];
+    places: { travel_date: string; description: string | undefined; place_id: number | undefined; order: number }[];
     owner_user_id: string;
-    Date_start: string;
+    start_date: string;
     members: { user_id: number }[];
     description: string;
     title: string;
@@ -136,20 +136,21 @@ function transformUserTravelToUserPut(userTravel: UserTravel): {
         title: userTravel.title,
         description: userTravel.description,
         owner_user_id: userTravel.owner_user_id,
-        Date_start: dayjs(userTravel.Date_start).format('YYYY-MM-DD'),
-        Date_end: dayjs(userTravel.Date_end).format('YYYY-MM-DD'),
+        start_date: dayjs(userTravel.Date_start).format('YYYY-MM-DD'),
+        end_date: dayjs(userTravel.Date_end).format('YYYY-MM-DD'),
         img: userTravel.img ?? null,
         status: userTravel.status,
         places: userTravel.places.map(place => ({
             place_id: place.place_id ||undefined,
             order: place.order,
-            date: place.date,
+            travel_date: place.travel_date,
             description: place.description  ||undefined,
         })),
     };
 }
 export const UpdateUserTravel = async (Travel:UserTravel):Promise<string | null> => {
     const TravelPut = transformUserTravelToUserPut(Travel);
+    console.log(TravelPut);
     try {
         // Выполнение POST запроса для регистрации
         const response:AxiosResponse<string> = await $api.put(`${OUR_API_ENDPOINTS.userTravel}/${Travel.id}`,{TravelPut});
