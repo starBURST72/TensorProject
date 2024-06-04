@@ -67,6 +67,7 @@ export const travelData: UserTravel[] = [
         Date_end: '2022-06-14',
         img: 'https://example.com/european-adventure.jpg',
         status: 'Completed',
+        members:[],
         places: [
             {
                 id: 1,
@@ -74,7 +75,9 @@ export const travelData: UserTravel[] = [
                 type: 'Attraction',
                 place_id: 101,
                 coordinates: '48.8584° N, 2.2945° E',
-                img:"https://avatars.mds.yandex.net/get-altay/10812438/2a0000018a1925ffb27156ef6c710642cf34/L"
+                photos:[{
+                    file:"https://avatars.mds.yandex.net/get-altay/10812438/2a0000018a1925ffb27156ef6c710642cf34/L"}
+                ]
             },
             {
                 id: 2,
@@ -82,7 +85,7 @@ export const travelData: UserTravel[] = [
                 type: 'Historical Site',
                 place_id: 102,
                 coordinates: '41.8902° N, 12.4922° E',
-                img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIVj-enfMwlOJjdM7IAr2RwTIW3RxVsLmdrg&s",
+                photos: [{file:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIVj-enfMwlOJjdM7IAr2RwTIW3RxVsLmdrg&s"}],
             },
             // more places...
         ],
@@ -96,6 +99,7 @@ export const travelData: UserTravel[] = [
         Date_end: '2022-07-31',
         img: 'https://example.com/asian-exploration.jpg',
         status: 'Planned',
+        members:[],
         places: [], // No places planned yet
     },
     {
@@ -105,6 +109,7 @@ export const travelData: UserTravel[] = [
         owner_user_id: 'user456',
         Date_start: '2022-07-01',
         Date_end: '2022-07-31',
+        members:[],
         img: 'https://example.com/asian-exploration.jpg',
         status: 'Planned',
         places: [], // No places planned yet

@@ -4,7 +4,7 @@ import { OUR_API_ENDPOINTS } from "../http/constants";
 export const getProfileSettings = async (id: number) => {
     try {
         // Выполнение POST запроса для регистрации
-        const response = await $api.get(`/${OUR_API_ENDPOINTS.userProfile}/${OUR_API_ENDPOINTS.settings}/${id}`);
+        const response = await $api.get(`/${OUR_API_ENDPOINTS.userProfile}/${OUR_API_ENDPOINTS.settings}`);
         return response.data;
     } catch (error: any) {
         // Обработка ошибок регистрации
@@ -16,24 +16,20 @@ export const getProfileSettings = async (id: number) => {
     }
 };
 
-export const putProfileSettings = async (id: number, data: {
-    ava: string,
-    name: string;
-    surname: string;
-    gender: string;
-    birthDate: string;
-    email: string;
-    username: string;
-    city: string;
-    interests: string[];
-
-}) => {
+export const putProfileSettings = async (data: FormData) => {
     try {
-        // Выполнение POST запроса для регистрации
-        const response = await $api.put(`/${OUR_API_ENDPOINTS.userProfile}/${OUR_API_ENDPOINTS.settings}/${id}`, data);
+        // Set the content type to multipart/form-data
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        };
+
+        // Perform PUT request for updating profile settings
+        const response = await $api.put(`/${OUR_API_ENDPOINTS.userProfile}/${OUR_API_ENDPOINTS.settings}`, data, config);
         return response.data;
     } catch (error: any) {
-        // Обработка ошибок регистрации
+        // Handle errors
         if (error.response && error.response.data && error.response.data.message) {
             throw new Error('Put settings failed: ' + error.response.data.message);
         } else {

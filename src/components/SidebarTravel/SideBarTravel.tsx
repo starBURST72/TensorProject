@@ -1,10 +1,9 @@
-import {Button, Input, Modal, Timeline, Upload, message} from "antd";
+import { Button, Input, Modal, Timeline, Upload, message, Select } from "antd";
 import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
 import PlaceCard from "../PlaceCard/PlaceCard";
-import React, {Dispatch, SetStateAction, useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./SideBarTravel.css";
-import {TimelineItem, UserTravel} from "../../Models/IUserTravel";
-
+import { TimelineItem, UserTravel } from "../../Models/IUserTravel";
 
 interface SideBarTravelProps {
     timelineItems: TimelineItem[];
@@ -14,20 +13,35 @@ interface SideBarTravelProps {
     setTravel: React.Dispatch<React.SetStateAction<UserTravel | null>>;
 }
 
-function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, setTravel}: SideBarTravelProps) {
+function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, setTravel }: SideBarTravelProps) {
     const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
     const [title, setTitle] = useState(travel?.title);
     const [description, setDescription] = useState(travel?.description);
     const [imageUrl, setImageUrl] = useState(travel?.img || '');
+    const { Option } = Select;
+    const [updatedMembers, setUpdatedMembers] = useState<number[]>([]);
+
+    const fakeMembers = [
+        { user_id: 1, username: 'John Doe' },
+        { user_id: 2, username: 'Jane Smith' },
+        { user_id: 3, username: 'Bob Johnson' },
+        // add more fake members as needed
+    ];
 
     useEffect(() => {
         setTitle(travel?.title);
         setDescription(travel?.description);
         setImageUrl(travel?.img || '');
+        if (travel?.members) {
+            const selectedMemberIds = travel.members.map(member => member.user_id);
+            setUpdatedMembers(selectedMemberIds);
+        }
     }, [travel]);
+
 
     const handleDelete = (id: number) => {
         setTimelineItems((timelineItems: TimelineItem[]) => timelineItems.filter(item => item.id !== id));
+        handleSettingsOk()
     };
 
     const handleSettingsClick = () => {
@@ -39,6 +53,7 @@ function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, 
             title: title ?? "",
             description: description ?? "",
             img: imageUrl,
+            members: updatedMembers.map(id => fakeMembers.find(member => member.user_id === id)!),
             id: travel?.id ?? '',
             owner_user_id: travel?.owner_user_id ?? '',
             Date_start: travel?.Date_start ?? '',
@@ -80,6 +95,10 @@ function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, 
         return isJpgOrPng && isLt2M;
     };
 
+    const handleChange = (value: number[]) => {
+        setUpdatedMembers(value);
+    };
+
     return (
         <div className="sidebar">
             <h1 className="sidebar-travel">
@@ -91,7 +110,7 @@ function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, 
                     <Timeline.Item key={item.id}>
                         <PlaceCard
                             Title={item.title}
-                            img={item.img}
+                            img={item.photos || []}
                             type={item.type}
                             place_id={item.place_id}
                             coordinates={item.coordinates}
@@ -106,8 +125,21 @@ function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, 
                 onOk={handleSettingsOk}
                 onCancel={handleSettingsCancel}
             >
-                <Input placeholder="Enter new title" value={title} onChange={e => setTitle(e.target.value)} />
-                <Input placeholder="Enter new description" value={description} onChange={e => setDescription(e.target.value)} />
+                <Input placeholder="Название" value={title} onChange={e => setTitle(e.target.value)} />
+                <Input placeholder="Описание" value={description} onChange={e => setDescription(e.target.value)} />
+                <Select
+                    mode="tags"
+                    style={{ width: '100%' }}
+                    placeholder="Участники"
+                    onChange={handleChange}
+                    value={updatedMembers}
+                >
+                    {fakeMembers.map((member) =>
+                        <Option key={member.user_id} value={member.user_id}>
+                            {member.username}
+                        </Option>
+                    )}
+                </Select>
                 <Upload
                     name="avatar"
                     listType="picture-card"

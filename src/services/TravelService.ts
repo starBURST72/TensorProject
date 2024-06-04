@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import { PlaceFullResponse, PlacePreviewResponse } from "../Models/Travels";
 import $api from "../http";
 import { OUR_API_ENDPOINTS } from "../http/constants";
-import {TimelineItem, UserTravel} from "../Models/IUserTravel";
+import {TimelineItem, UserPut, UserTravel} from "../Models/IUserTravel";
 
 
 export const getOneTravel = async (id: number) => {
@@ -40,7 +40,7 @@ export const getAllTravels = async () => {
 export const CreateTravel = async () => {
     try {
         // Выполнение POST запроса для регистрации
-        const response = await $api.post(`${OUR_API_ENDPOINTS.travels}`);
+        const response = await $api.post(`${OUR_API_ENDPOINTS.userTravel}`);
         return response.data;
     } catch (error: any) {
         // Обработка ошибок регистрации
@@ -51,20 +51,7 @@ export const CreateTravel = async () => {
         }
     }
 };
-export const UserTravelCreate = async () => {
-    try {
-        // Выполнение POST запроса для регистрации
-        const response = await $api.post(`${OUR_API_ENDPOINTS.userTravel}/create`);
-        return response.data;
-    } catch (error: any) {
-        // Обработка ошибок регистрации
-        if (error.response && error.response.data && error.response.data.message) {
-            throw new Error('Get travel by ID failed ' + error.response.data.message);
-        } else {
-            throw new Error('Get travel by ID failed: ' + error.message);
-        }
-    }
-};
+
 export const CopyTravel = async (id:number) => {
     try {
         // Выполнение POST запроса для регистрации
@@ -120,7 +107,6 @@ export const GetUserTravel = async (id:string):Promise<UserTravel | null> => {
     try {
         // Выполнение POST запроса для регистрации
         const response:AxiosResponse<UserTravel> = await $api.get(`${OUR_API_ENDPOINTS.userTravel}/${id}`);
-        console.log(response.data)
         return response.data;
     } catch (error: any) {
         // Обработка ошибок регистрации
@@ -132,11 +118,25 @@ export const GetUserTravel = async (id:string):Promise<UserTravel | null> => {
         return null;
     }
 };
-
+function transformUserTravelToUserPut(userTravel: UserTravel): UserPut {
+    return {
+        members: userTravel.members.map(member => ({ user_id: member.user_id })),
+        id: userTravel.id,
+        title: userTravel.title,
+        description: userTravel.description,
+        owner_user_id: userTravel.owner_user_id,
+        Date_start: userTravel.Date_start,
+        Date_end: userTravel.Date_end,
+        img: userTravel.img,
+        status: userTravel.status,
+        places: userTravel.places,
+    };
+}
 export const UpdateUserTravel = async (Travel:UserTravel):Promise<string | null> => {
+    const TravelPut = transformUserTravelToUserPut(Travel);
     try {
         // Выполнение POST запроса для регистрации
-        const response:AxiosResponse<string> = await $api.put(`${OUR_API_ENDPOINTS.userTravel}/${Travel.id}`,{Travel});
+        const response:AxiosResponse<string> = await $api.put(`${OUR_API_ENDPOINTS.userTravel}/${Travel.id}`,{TravelPut});
         return response.data;
     } catch (error: any) {
         // Обработка ошибок регистрации

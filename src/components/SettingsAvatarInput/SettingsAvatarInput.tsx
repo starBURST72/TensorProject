@@ -6,10 +6,10 @@ import type { GetProp, UploadFile, UploadProps } from 'antd';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 type SettingsInputProps = {
-    ava: string|null|undefined
-    key: string
-    name: string
-    id: string
+    ava: string | null | undefined;
+    key: string;
+    name: string;
+    id: string;
     onAvatarLoad: () => void;
 };
 
@@ -24,20 +24,13 @@ const getBase64 = (file: FileType): Promise<string> =>
 const SettingsAvatarInput: React.FC<SettingsInputProps> = ({ ava, key, name, id, onAvatarLoad }) => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
-    const [file, setFile] = useState<UploadFile<any> | null>(() => {
-        const file = {
-            uid: '',
-            name: '',
-
-        };
-        return file;
-    });
+    const [fileList, setFileList] = useState<UploadFile<any>[]>([]);
 
     useEffect(() => {
         if (ava) {
-            setFile({ uid: '0', name: 'ava.jpg', status: 'done', url: ava });
+            setFileList([{ uid: '0', name: 'ava.jpg', status: 'done', url: ava }]);
         }
-      }, [ava]);
+    }, [ava]);
 
     const handlePreview = async (file: UploadFile) => {
         if (!file.url && !file.preview) {
@@ -48,16 +41,8 @@ const SettingsAvatarInput: React.FC<SettingsInputProps> = ({ ava, key, name, id,
         setPreviewOpen(true);
     };
 
-    const handleChange: UploadProps['onChange'] = ({ file }) => {
-        if (file.status === 'done') {
-            setFile(file);
-        } else if (file.status === 'removed') {
-            setFile(null);
-        } else if (file.status === 'uploading') {
-            // Add this condition to update the file state while uploading
-            setFile(() => file);
-        }
-        console.log(file)
+    const handleChange: UploadProps['onChange'] = ({ fileList }) => {
+        setFileList(fileList);
     };
 
     const uploadButton = (
@@ -68,31 +53,20 @@ const SettingsAvatarInput: React.FC<SettingsInputProps> = ({ ava, key, name, id,
     );
 
     return (
-
-        <Form.Item
-            key={key}
-            name={name}
-            id={id}
-
-
-        >
-
-
+        <Form.Item key={key} name={name} id={id}>
             <Upload
-                // action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                 listType="picture-circle"
-                fileList={file ? [file] : []}
+                fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
             >
-                {file ? null : uploadButton}
+                {fileList.length >= 1 ? null : uploadButton}
             </Upload>
             {previewImage && (
                 <Image
-
-                    width={'100%'} // Установите желаемую ширину изображения
-                    height={'100%'} // Установите желаемую высоту изображения
-                    style={{ objectFit: 'cover' }} // Добавьте этот стиль для предотвращения обрезания изображения
+                    width={'100%'}
+                    height={'100%'}
+                    style={{ objectFit: 'cover' }}
                     wrapperStyle={{ display: 'none' }}
                     preview={{
                         visible: previewOpen,

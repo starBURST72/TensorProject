@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { GetHintCards } from "../../services/HintCardsService";
-import './HintCard.css'
-import {Button} from "antd";
-import {CopyTravel} from "../../services/TravelService";
-import {useNavigate} from "react-router-dom";
-// Define the types for the HintCard and the response
-interface Hint {
-    type: string;
-}
+import React, { useState } from "react";
+import { Button } from "antd";
+import { CopyTravel } from "../../services/TravelService";
+import { useNavigate } from "react-router-dom";
+import './HintCard.css';
 
 export interface HintCardData {
     id: number;
@@ -18,38 +13,31 @@ export interface HintCardData {
     count_users: number;
 }
 
-interface HintsResponse {
-    data: HintCardData[];
-}
-interface CopyResponse{
-    id:string;
+interface CopyResponse {
+    users_travel_id: number;
 }
 
-function HintCard(props: Hint) {
-    const [hintData, setHintData] = useState<HintCardData[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+interface HintCardProps {
+    data: HintCardData[] | undefined;
+    title: string;
+}
+
+function HintCard({ data,title }: HintCardProps) {
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
-    const getHint = async (value: string) => {
-        if (value) {
-            try {
-                setLoading(true);
-                const responseData: HintsResponse = await GetHintCards(value);
-                setHintData(responseData.data);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        }
-    };
+
     const copyTravel1 = async (copy_id: number) => {
-        if (copy_id) {
+        if(title=="Продолжим?"){
+            const TravelId = copy_id;
+            navigate(`/editTravel/${TravelId}`);
+        }
+        else{
             try {
                 setLoading(true);
                 const responseData: CopyResponse = await CopyTravel(copy_id);
-                const TravelId= responseData.id;
-                console.log(TravelId)
-                navigate(`/editTravel/${TravelId}`, { state: {TravelId} });
+                const TravelId = responseData.users_travel_id;
+                console.log(TravelId);
+                navigate(`/editTravel/${TravelId}`);
             } catch (error) {
                 console.error(error);
             } finally {
@@ -58,37 +46,31 @@ function HintCard(props: Hint) {
         }
     };
 
-    useEffect(() => {
-        getHint(props.type);
-    }, []);
-
     return (
         <div className="container">
-            <h1>{props.type}</h1>
+            <h1>{title}</h1>
             {loading ? (
-                <p>Loading...</p>
-            ) : (
-                hintData ? (
-                   // Check if hintData exists before mapping over it
-                    hintData.map((hint) => (
+                    <p>Loading...</p>
+                ) :
+                data ? (
+                    data.map((hint) => (
                         <div key={hint.id} className="hint-card">
-                            <img src={hint.img} alt={hint.title} />
+                            <img src={`data:image/jpg;base64,${hint.img}`} alt={hint.title}/>
                             <h2>{hint.title}</h2>
                             <div className="paragraphs">
                                 <p>{hint.description}</p>
                                 <p>Рейтинг: {hint.mean_score}</p>
                                 <p>Прошли: {hint.count_users}</p>
                             </div>
-                            <Button className="CopyButton" onClick={() => copyTravel1(hint.id)}>копировать</Button>
+                            {title=="Продолжим?" ?(<Button className="CopyButton" onClick={() => copyTravel1(hint.id)}>Продолжить</Button>):(
+                            <Button className="CopyButton" onClick={() => copyTravel1(hint.id)}>копировать</Button>)}
                         </div>
                     ))
                 ) : (
-                    <p>No data available</p>
-                )
-            )}
+                    <p>Loading</p>
+                )}
         </div>
     );
-
 }
 
 export default HintCard;

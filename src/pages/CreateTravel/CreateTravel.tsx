@@ -11,12 +11,12 @@ import { TimelineItem, UserTravel } from "../../Models/IUserTravel";
 import { PlacePreviewResponse } from "../../Models/Travels";
 import { GetCity } from "../../services/SearchCityService";
 
-const initialData = [
-    { id: 1, title: "Title1", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Широтная 55", type: "Еда" },
-    { id: 2, title: "Title2", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Максима Горького 27", type: "кино" },
-    { id: 3, title: "Title3", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Харькова 23", type: "спорт" },
-    { id: 4, title: "Title4", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Республики 92", type: "музей" },
-];
+// const initialData = [
+//     { id: 1, title: "Title1", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Широтная 55", type: "Еда" },
+//     { id: 2, title: "Title2", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Максима Горького 27", type: "кино" },
+//     { id: 3, title: "Title3", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Харькова 23", type: "спорт" },
+//     { id: 4, title: "Title4", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Республики 92", type: "музей" },
+// ];
 
 const interests: SelectProps['options'] = interestsStatic.map(interest => ({
     label: interest,
@@ -24,6 +24,7 @@ const interests: SelectProps['options'] = interestsStatic.map(interest => ({
 }));
 
 function CreateTravel() {
+    const [initialData, setInitialData] = useState<PlacePreviewResponse[]>([]);
     let { id } = useParams();
     const { store } = useContext(Context);
     const [checked, setChecked] = useState(false);
@@ -39,11 +40,22 @@ function CreateTravel() {
     const [placesInCuty, setPlacesInCuty] = useState<PreviewMarkerFields[] | null>(null);
     const [options, setOptions] = useState<{ value: string }[]>([]);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const responsePlacesInCity = await getPlacesInCity(store.city.nameCity, store.typeOfPlaces);
+            setFilteredData(responsePlacesInCity);
+            setInitialData(responsePlacesInCity);
+        };
+
+        fetchData();
+    }, []);
+
     const onChangeCity = async (data: string) => {
         setCityValue(data);
         await store.infoAboutCity(cityValue);
         const responsePlacesInCuty = await getPlacesInCity(store.city.nameCity, store.typeOfPlaces);
         setPlacesInCuty(responsePlacesInCuty);
+        console.log(responsePlacesInCuty)
         filterData();
     };
     useEffect(() => {
@@ -82,6 +94,7 @@ function CreateTravel() {
 
     const handleUpdate = async () => {
         if (travel && travel.id !== undefined && travel.id !== null) {
+            travel.places=timelineItems;
             const result = await UpdateUserTravel(travel);
             if (result) {
                 navigate('/');
@@ -108,12 +121,6 @@ function CreateTravel() {
         onFinishRequests();
     };
 
-    useEffect(() => {
-        if (prevTimelineItemsRef.current !== timelineItems) {
-            localStorage.setItem("timelineItems", JSON.stringify(timelineItems));
-            prevTimelineItemsRef.current = timelineItems;
-        }
-    }, [timelineItems]);
 
     const createTimelineItem = (item: any) => {
         const newTimelineItem = {
@@ -122,7 +129,7 @@ function CreateTravel() {
             type: item.address,
             place_id: item.id,
             coordinates: item.coordinates,
-            img: item.img,
+            photos: item.photos && item.photos.length > 0 ? [{ file: item.photos[0].file }] : [],
         };
 
         setTimelineItems(prevTimelineItems => [...prevTimelineItems, newTimelineItem]);
@@ -215,7 +222,7 @@ function CreateTravel() {
                                             description={item.description}
                                         />
                                         <div className="Rate">
-                                            {item.rating} <Rate disabled defaultValue={5} count={1} />
+                                            {item.mean_score} <Rate disabled defaultValue={5} count={1} />
                                             <Button onClick={() => createTimelineItem(item)}>Добавить</Button>
                                         </div>
                                     </List.Item>

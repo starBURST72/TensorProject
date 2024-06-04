@@ -8,6 +8,7 @@
 .add-place p{
     margin-left: 15px;
     font-size:11px;
+    width: 200px;
 }
 .add-place {
     border-radius: 10px;

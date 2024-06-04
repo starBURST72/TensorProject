@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 import { observer } from 'mobx-react-lite';
 import {GetCity} from "../../services/SearchCityService";
-import HintCard from "../../components/HintCard/HintCard";
+import HintCard, {HintCardData} from "../../components/HintCard/HintCard";
 import {CreateTravel} from "../../services/TravelService";
 import { UpOutlined } from '@ant-design/icons';
+import {HintsResponse} from "../../Models/responses/HintsResponse";
+import {GetHintCards} from "../../services/HintCardsService";
 
 const russianLettersRegex = /^[а-яА-ЯёЁ\s]+$/;
 function HomePage() {
@@ -16,7 +18,22 @@ function HomePage() {
     const hintsContainerRef = useRef<HTMLDivElement>(null);
     const [options, setOptions] = React.useState<{ value: string }[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const [hintData, setHintData] = useState<HintsResponse>();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState<boolean>(true);
+
+    const getHint = async () => {
+        try {
+            setLoading(true);
+            const responseData: HintsResponse = await GetHintCards();
+            setHintData(responseData);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     const handleClick = async () => {
         const createdTravel = await CreateTravel()
@@ -28,38 +45,7 @@ function HomePage() {
         setValue(data);
     };
 
-    useEffect(() => {
-        let lastScrollY = 0;
-        const handleScroll = () => {
-            if (homepageRef.current) {
-                lastScrollY = homepageRef.current.scrollTop;
-                updatePositions();
-            }
-        };
 
-        const updatePositions = () => {
-            if (inputContainerRef.current && homepageRef.current) {
-                const homepageHeight = homepageRef.current.clientHeight;
-                const targetTop = 40 + (lastScrollY / homepageHeight) * 45;
-
-                inputContainerRef.current.style.top = `${targetTop}%`;
-            }
-            if (hintsContainerRef.current && homepageRef.current) {
-                const homepageHeight = homepageRef.current.clientHeight;
-                const targetBottom = (lastScrollY / homepageHeight) * 80;
-
-                hintsContainerRef.current.style.bottom = `${targetBottom}%`;
-                hintsContainerRef.current.style.transform = `translateY(${(targetBottom + 160)}%)`;
-            }
-        };
-
-        const currentHomepageRef = homepageRef.current;
-        currentHomepageRef?.addEventListener('scroll', handleScroll);
-
-        return () => {
-            currentHomepageRef?.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
 
     const handleSearch = async (value: string) => {
         setValue(value);
@@ -82,6 +68,7 @@ function HomePage() {
     const [visible, setVisible] = useState(false);
 
     const showDrawer = () => {
+        getHint();
         setVisible(true);
     };
 
@@ -131,13 +118,13 @@ function HomePage() {
             >
                 <div style={{display: 'flex', height: '100%', width: "100%"}}>
                     <div style={{flex: 1}}>
-                        <HintCard type={"friends"}/>
+                        <HintCard data={hintData?.friends_travels} title="друзья"/>
                     </div>
                     <div style={{flex: 1}}>
-                        <HintCard type={"popular"}/>
+                        <HintCard data={hintData?.best_travels} title="Лучшие маршруты"/>
                     </div>
                     <div style={{flex: 1}}>
-                        <HintCard type={"continue"}/>
+                        <HintCard data={hintData?.upcoming_travels} title="Продолжим?"/>
                     </div>
                 </div>
             </Drawer>

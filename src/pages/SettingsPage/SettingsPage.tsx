@@ -87,31 +87,30 @@ function SettingsPage() {
 
     const [form] = Form.useForm();
     const onFinish = async (values: UserInfoFields) => {
-
         try {
-
-
-            const response = await putProfileSettings(
-                1,
-                {
-                    ava: values.ava,
-                    name: values.name,
-                    surname: values.surname,
-                    gender: values.gender,
-                    birthDate: values.birthdate,
-                    email: values.email,
-                    username: values.username,
-                    city: values.city,
-                    interests: values.interests,
-
-                });
+            console.log(values.ava);
+            // Create a new FormData object
+            const formData = new FormData();
+            // Append each field to the FormData object
+            formData.append('img', values.ava);
+            formData.append('name', values.name);
+            formData.append('surname', values.surname);
+            formData.append('gender', values.gender);
+            formData.append('birthday', values.birthdate);
+            formData.append('email', values.email);
+            formData.append('username', values.username);
+            formData.append('city', values.city);
+            values.interests.forEach(interest => formData.append('interests[]', interest));
+            console.log(formData)
+            // Call the putProfileSettings function with the FormData object
+            const response = await putProfileSettings(formData);
 
             console.log('Change settings successful:', response);
-
         } catch (error) {
             console.error('Error:', error);
         }
     };
+
 
     return (
         <div className="settings-container">

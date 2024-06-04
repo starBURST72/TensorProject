@@ -27,12 +27,12 @@ let serverReady: Promise<void>;
 //     serverReady = Promise.resolve();
 // }
 
-serverReady = import('./Mocks/Manager').then(({startWorker})  => {
-    return startWorker();
-})
-
-
-serverReady.then(() => {
+// serverReady = import('./Mocks/Manager').then(({startWorker})  => {
+//     return startWorker();
+// })
+//
+//
+// serverReady.then(() => {
     const root = ReactDOM.createRoot(
         document.getElementById('root') as HTMLElement
     );
@@ -43,4 +43,4 @@ serverReady.then(() => {
             </BrowserRouter>
         </Context.Provider>
     );
-})
+// })

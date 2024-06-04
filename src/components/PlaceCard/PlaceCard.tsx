@@ -8,17 +8,18 @@ interface PlaceCardProps {
     place_id: number;
     coordinates: string;
     onDelete: () => void;
-    img:string;
+    img:{file:string}[] |[];
 }
 
 function PlaceCard({ Title, type, place_id, coordinates,onDelete,img }:PlaceCardProps){
 
-    const place={
+    console.log(img);
+    let place={
         title: Title,
         type: type,
         place_id: place_id,
         coordinates: coordinates,
-        img:img
+        img: img && img.length > 0 ? img[0]?.file : ""
     }
 
     const handleButtonClick = () => {
@@ -29,7 +30,9 @@ function PlaceCard({ Title, type, place_id, coordinates,onDelete,img }:PlaceCard
         <div className="add-place">
             <label>{place.title}</label>
             <p>{place.type}</p>
-            <Image className="place-img" width={50} height={50} src={place.img}></Image>
+            {place.img && (
+                <Image className="place-img" width={50} height={50} src={place.img} />
+            )}
             <Button className="DeleteButton" onClick={onDelete} type="primary" icon={<DeleteOutlined />}/>
             <button onClick={handleButtonClick}>Показать</button>
         </div>
