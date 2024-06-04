@@ -4,13 +4,13 @@ import {OUR_API_ENDPOINTS} from "../http/constants";
 import {HintsResponse} from "../Models/responses/HintsResponse";
 
 export const GetHintCards = async (
-    query: string
+
 ): Promise<HintsResponse> => {
     try {
-        const response: AxiosResponse<HintsResponse> = await $api.post<HintsResponse>(
+        const response: AxiosResponse<HintsResponse> = await $api.get<HintsResponse>(
             `${OUR_API_ENDPOINTS.HintCards}`,
-            { query: query}
         );
+        console.log(response.data)
         return response.data;
     } catch (error: any) {
         // Обработка ошибок

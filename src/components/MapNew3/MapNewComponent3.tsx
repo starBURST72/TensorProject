@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../..';
 import { FullMarkerFields, interestsStatic, PreviewMarkerFields } from "../../storage/storage";
 import CreateNewPlaceModal from '../createNewPlace/CreateNewPlaceModal';
+import {PlacePreviewResponse} from "../../Models/Travels";
 
 const parseCoordinates = (coordString: string): [number, number] => {
     const [latStr, lngStr] = coordString.split(',');
@@ -34,7 +35,7 @@ const interests: SelectProps['options'] = interestsStatic.map(interest => ({
 const MapNewComponent3 = observer(() => {
     const mapRef = useRef<ymaps.Map | null>(null);
     const [options, setOptions] = useState<{ value: string }[]>([]);
-    const [placesInCuty, setPlacesInCuty] = useState<PreviewMarkerFields[] | null>(null);
+    const [placesInCuty, setPlacesInCuty] = useState<PlacePreviewResponse[] | null>(null);
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [selectedPlace, setSelectedPlace] = useState<FullMarkerFields | null>(null);
     const [cityValue, setCityValue] = useState('');
@@ -49,7 +50,6 @@ const MapNewComponent3 = observer(() => {
                 // Fetch places data
                 const responsePlacesInCuty = await getPlacesInCity(store.city.nameCity, store.typeOfPlaces);
                 setPlacesInCuty(responsePlacesInCuty);
-
                 // Initialize Yandex Maps after data is fetched
                 const ymaps = window.ymaps;
                 ymaps.ready(() => {

@@ -5,6 +5,7 @@ import axios from "axios";
 import { AuthResponse } from "../Models/responses/AuthResponse";
 import { OUR_API_ADDRESS } from "../http/constants";
 import { ICity } from "../Models/ICity";
+import $api from "../http";
 
 const CITY_STORAGE_KEY = "selectedCity";
 const TYPE_OF_PLACES_STORAGE_KEY = "typeOfPlaces";
@@ -51,6 +52,7 @@ export default class Store {
         try {
             const response = await AuthService.login(username, password);
             localStorage.setItem("token", response.data.access_token);
+            localStorage.setItem("refresh_token",response.data.refresh_token);
             console.log(response.data);
             this.setAuth(true);
             this.setUsername(response.data.username);
@@ -64,6 +66,7 @@ export default class Store {
         try {
             const response = await AuthService.reg(email, username, password);
             localStorage.setItem("token", response.data.access_token);
+            localStorage.setItem("refresh_token",response.data.refresh_token);
             console.log(response.data);
             this.setAuth(true);
             this.setUsername(response.data.username);
@@ -77,6 +80,7 @@ export default class Store {
         try {
             const response = await AuthService.logout();
             localStorage.removeItem("token");
+            localStorage.removeItem("refresh_token");
             // localStorage.removeItem("selectedCity");
             // localStorage.removeItem("typeOfPlaces");
             console.log(response.data);
@@ -91,8 +95,9 @@ export default class Store {
 
     async checkAuth() {
         try {
-            const response = await axios.get<AuthResponse>(`${OUR_API_ADDRESS}/refresh_token`, { withCredentials: true })
+            const response = await $api.post<AuthResponse>(`/refresh_token`, { withCredentials: true })
             localStorage.setItem("token", response.data.access_token);
+            localStorage.setItem("refresh_token",response.data.refresh_token);
             console.log(response.data);
             this.setAuth(true);
             this.setUsername(response.data.username);

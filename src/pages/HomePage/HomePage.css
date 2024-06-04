@@ -21,7 +21,7 @@ html {
 
 .input-container {
     position: absolute;
-    top: 50%;
+    top: 30%;
     display: inline;
     align-items: center;
     padding: 10px;
@@ -65,5 +65,27 @@ html {
 .hidden-scroll {
     overflow: hidden;
 }
+.drawer-button{
+    align-items: end;
+}
 
+@keyframes fly {
+    0% {
+        transform: translateX(-1000px);
+    }
+    100% {
+        transform:  translateX(1000px);
+    }
+}
+
+.airplane{
+    margin-top: 100px;
+    z-index: 555;
+    width: 100px;
+    height: 50px;
+    background: url('../../img/airplane.png') no-repeat;
+    background-size: 50px 50px;
+    position: absolute;
+    animation: fly 6s linear infinite;
+}
 

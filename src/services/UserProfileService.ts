@@ -16,8 +16,6 @@ export const getProfileSettings = async () => {
     }
 };
 
-
-
 export const putProfileSettings = async (data: {
     file: string | null; // file is now a base64 string or null
     name: string;
@@ -28,6 +26,7 @@ export const putProfileSettings = async (data: {
     interests: number[];
 }) => {
     try {
+
         const interestsJSON = JSON.stringify(data.interests);
 
         const payload = {
@@ -44,6 +43,7 @@ export const putProfileSettings = async (data: {
 
         return response.data;
     } catch (error: any) {
+
         if (error.response && error.response.data && error.response.data.message) {
             throw new Error('Put settings failed: ' + error.response.data.message);
         } else {
