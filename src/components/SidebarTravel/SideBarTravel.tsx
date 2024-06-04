@@ -19,18 +19,16 @@ function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, 
     const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
     const [title, setTitle] = useState(travel?.title);
     const [description, setDescription] = useState(travel?.description);
-    const [DateStart, setDateStart] = useState<Date | null|undefined>(
+    const [DateStart, setDateStart] = useState<Date | null | undefined>(
         travel?.Date_start ? new Date(Date.parse(travel.Date_start.split('.').reverse().join('-'))) : null
     );
-
-
-    const [DateEnd, setDateEnd] = useState<Date | null|undefined>(
+    const [DateEnd, setDateEnd] = useState<Date | null | undefined>(
         travel?.Date_end ? new Date(Date.parse(travel.Date_end.split('.').reverse().join('-'))) : null
     );
-
     const [imageUrl, setImageUrl] = useState(travel?.img || '');
     const { Option } = Select;
     const [updatedMembers, setUpdatedMembers] = useState<number[]>([]);
+    const [idCounter, setIdCounter] = useState(0); // Initialize idCounter here
 
     const fakeMembers = [
         { user_id: 1, username: 'John Doe' },
@@ -40,7 +38,6 @@ function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, 
     ];
 
     useEffect(() => {
-        console.log(DateStart)
         setTitle(travel?.title);
         setDescription(travel?.description);
         setImageUrl(travel?.img || '');
@@ -50,10 +47,10 @@ function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, 
         }
     }, [travel]);
 
-
     const handleDelete = (id: number) => {
         setTimelineItems((timelineItems: TimelineItem[]) => timelineItems.filter(item => item.id !== id));
-        handleSettingsOk()
+        setIdCounter(prevIdCounter => Math.max(...timelineItems.map(item => item.id), 0)); // Update idCounter
+        handleSettingsOk();
     };
 
     const handleSettingsClick = () => {

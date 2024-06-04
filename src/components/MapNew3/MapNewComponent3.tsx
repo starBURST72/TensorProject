@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../..';
 import { FullMarkerFields, interestsStatic, PreviewMarkerFields } from "../../storage/storage";
 import CreateNewPlaceModal from '../createNewPlace/CreateNewPlaceModal';
+import {PlacePreviewResponse} from "../../Models/Travels";
 
 const parseCoordinates = (coordString: string): [number, number] => {
     const [latStr, lngStr] = coordString.split(',');
@@ -34,7 +35,7 @@ const interests: SelectProps['options'] = interestsStatic.map(interest => ({
 const MapNewComponent3 = observer(() => {
     const mapRef = useRef<ymaps.Map | null>(null);
     const [options, setOptions] = useState<{ value: string }[]>([]);
-    const [placesInCuty, setPlacesInCuty] = useState<PreviewMarkerFields[] | null>(null);
+    const [placesInCuty, setPlacesInCuty] = useState<PlacePreviewResponse[] | null>(null);
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [selectedPlace, setSelectedPlace] = useState<FullMarkerFields | null>(null);
     const [cityValue, setCityValue] = useState('');
@@ -68,7 +69,7 @@ const MapNewComponent3 = observer(() => {
                     responsePlacesInCuty.forEach((marker) => {
                         const newPlacemark = new ymaps.Placemark(parseCoordinates(marker.coordinates), { hintContent: marker.title });
                         newPlacemark.events.add(['click'], async (event: ymaps.MapEvent) => {
-                            const fullPlaceInfo = await getOnePLaceInCity(marker.id);
+                            const fullPlaceInfo = await getOnePLaceInCity(marker.place_id);
                             setSelectedPlace(fullPlaceInfo);
                             setSidebarVisible(true);
                         });
@@ -105,7 +106,7 @@ const MapNewComponent3 = observer(() => {
                 placesInCuty.forEach((marker) => {
                     const newPlacemark = new ymaps.Placemark(parseCoordinates(marker.coordinates), { hintContent: marker.title });
                     newPlacemark.events.add(['click'], async (event: ymaps.MapEvent) => {
-                        const fullPlaceInfo = await getOnePLaceInCity(marker.id);
+                        const fullPlaceInfo = await getOnePLaceInCity(marker.place_id);
                         setSelectedPlace(fullPlaceInfo);
                         setSidebarVisible(true);
                     });

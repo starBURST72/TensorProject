@@ -3,17 +3,16 @@ import React from "react";
 import {Button,Image} from "antd";
 import { DeleteOutlined } from '@ant-design/icons';
 interface PlaceCardProps {
-    Title: string;
-    type: string;
-    place_id: number;
-    coordinates: string;
+    Title?: string;
+    type?: string;
+    place_id?: number;
+    coordinates?: string;
     onDelete: () => void;
     img:{file:string}[] |[];
 }
 
 function PlaceCard({ Title, type, place_id, coordinates,onDelete,img }:PlaceCardProps){
 
-    console.log(img);
     let place={
         title: Title,
         type: type,

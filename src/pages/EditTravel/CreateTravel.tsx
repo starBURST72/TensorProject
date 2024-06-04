@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./CreateTravel.css";
-import { AutoComplete, Button, Input, List, Rate, Select, SelectProps, Switch } from 'antd';
+import { AutoComplete, Button, DatePicker, Input, List, Modal, Rate, Select, SelectProps, Switch } from 'antd';
 import SideBarTravel from "../../components/SidebarTravel/SideBarTravel";
 import { useNavigate, useParams } from "react-router-dom";
 import MapNewComponent3 from "../../components/MapNew3/MapNewComponent3";
@@ -11,12 +11,7 @@ import { TimelineItem, UserTravel } from "../../Models/IUserTravel";
 import { PlacePreviewResponse } from "../../Models/Travels";
 import { GetCity } from "../../services/SearchCityService";
 
-// const initialData = [
-//     { id: 1, title: "Title1", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Широтная 55", type: "Еда" },
-//     { id: 2, title: "Title2", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Максима Горького 27", type: "кино" },
-//     { id: 3, title: "Title3", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Харькова 23", type: "спорт" },
-//     { id: 4, title: "Title4", description: "Очень хорошее место", rating: 4.2, address: "Тюмень, ул. Республики 92", type: "музей" },
-// ];
+let idCounter = 0;
 
 const interests: SelectProps['options'] = interestsStatic.map(interest => ({
     label: interest,
@@ -37,9 +32,10 @@ function CreateTravel() {
     const [travel, setTravel] = useState<UserTravel | null>(null);
     const navigate = useNavigate();
     const [cityValue, setCityValue] = useState('');
-    const [placesInCuty, setPlacesInCuty] = useState<PreviewMarkerFields[] | null>(null);
     const [options, setOptions] = useState<{ value: string }[]>([]);
-
+    const [date, setDate] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
+    const[currentItem,setCurrentItem]=useState<TimelineItem|null>(null);
     useEffect(() => {
         const fetchData = async () => {
             const responsePlacesInCity = await getPlacesInCity(store.city.nameCity, store.typeOfPlaces);
@@ -54,10 +50,10 @@ function CreateTravel() {
         setCityValue(data);
         await store.infoAboutCity(cityValue);
         const responsePlacesInCuty = await getPlacesInCity(store.city.nameCity, store.typeOfPlaces);
-        setPlacesInCuty(responsePlacesInCuty);
-        console.log(responsePlacesInCuty)
+        setPlacesInCity(responsePlacesInCuty);
         filterData();
     };
+
     useEffect(() => {
         filterData();
     }, [typeValue, cityValue, searchTerm]);
@@ -83,7 +79,6 @@ function CreateTravel() {
             if (id) {
                 const userTravel: UserTravel | null = await GetUserTravel(id);
                 setTravel(userTravel);
-                console.log(userTravel);
                 if (userTravel && userTravel.places) {
                     setTimelineItems(userTravel.places);
                 }
@@ -95,7 +90,7 @@ function CreateTravel() {
 
     const handleUpdate = async () => {
         if (travel && travel.id !== undefined && travel.id !== null) {
-            travel.places=timelineItems;
+            travel.places = timelineItems;
             const result = await UpdateUserTravel(travel);
             if (result) {
                 navigate('/');
@@ -122,18 +117,37 @@ function CreateTravel() {
         onFinishRequests();
     };
 
-
     const createTimelineItem = (item: any) => {
-        const newTimelineItem = {
-            id: timelineItems.length + 1,
-            title: item.title,
-            type: item.address,
-            place_id: item.id,
-            coordinates: item.coordinates,
-            photos: item.photos && item.photos.length > 0 ? [{ file: item.photos[0].file }] : [],
+        setModalOpen(true);
+        setCurrentItem(item);
+    };
+
+    const handleOkClick = (date: any) => {
+        idCounter++;
+        if(currentItem){}
+
+        const newTimelineItem: TimelineItem = {
+            id: idCounter,
+            title: currentItem?.title,
+            type: currentItem?.type,
+            place_id: currentItem?.place_id,
+            date: date,
+            description: currentItem?.description,
+            creator_user_id: currentItem?.creator_user_id,
+            mean_score: currentItem?.mean_score,
+            order: idCounter,
+            coordinates: currentItem?.coordinates,
+            photos: currentItem?.photos && currentItem.photos.length > 0 && currentItem.photos[0] ? [{ file: currentItem.photos[0].file }] : [],
         };
 
-        setTimelineItems(prevTimelineItems => [...prevTimelineItems, newTimelineItem]);
+        setTimelineItems(prevTimelineItems => {
+            const updatedTimelineItems = [...prevTimelineItems, newTimelineItem];
+            updatedTimelineItems.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            updatedTimelineItems.forEach((item, index) => item.order = index + 1);
+            return updatedTimelineItems;
+        });
+
+        setModalOpen(false);
     };
 
     const handleSearchChange = (e: any) => {
@@ -215,6 +229,7 @@ function CreateTravel() {
                                 dataSource={filteredData}
                                 renderItem={item => (
                                     <List.Item
+                                        key={item.place_id}
                                         className="ListItem"
                                     >
                                         <List.Item.Meta
@@ -229,6 +244,23 @@ function CreateTravel() {
                                     </List.Item>
                                 )}
                             />
+                            <Modal
+                                open={modalOpen}
+                                onCancel={() => setModalOpen(false)}
+                                footer={[
+                                    <Button key="cancel" onClick={() => setModalOpen(false)}>
+                                        Cancel
+                                    </Button>,
+                                    <Button key="ok" type="primary" onClick={() => handleOkClick(date)}>
+                                        OK
+                                    </Button>,
+                                ]}
+                            >
+                                <DatePicker
+                                    value={date}
+                                    onChange={(date) => setDate(date)}
+                                />
+                            </Modal>
                         </>
                     ) : (
                         <MapNewComponent3 />

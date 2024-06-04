@@ -1,9 +1,14 @@
 export interface TimelineItem {
-    id: number;
-    title: string;
-    type: string;
-    place_id: number;
-    coordinates: string;
+    id:number;
+    place_id?: number;
+    title?: string;
+    type?: string;
+    creator_user_id?: number;
+    coordinates?: string;
+    date:string;
+    mean_score?:number;
+    description?:string;
+    order:number;
     photos: {
         file: string
     }[];
@@ -33,5 +38,10 @@ export interface UserPut{
     Date_end:string;
     img:string;
     status:string;
-    places:TimelineItem[]|[];
+    places?:{
+        id:number;
+        order:number;
+        date:string;
+        description:string;
+    }[]|[]
 }

@@ -70,22 +70,30 @@ export const travelData: UserTravel[] = [
         members:[],
         places: [
             {
-                id: 1,
-                title: 'Eiffel Tower',
-                type: 'Attraction',
-                place_id: 101,
-                coordinates: '48.8584° N, 2.2945° E',
-                photos:[{
-                    file:"https://avatars.mds.yandex.net/get-altay/10812438/2a0000018a1925ffb27156ef6c710642cf34/L"}
-                ]
+                id:0,
+                creator_user_id: 10, // Replace with the actual ID
+                mean_score:3,
+                title: 'New Place',
+                type: 'Type',
+                place_id: 100, // Replace with the actual place ID
+                coordinates: '0,0', // Replace with the actual coordinates
+                date: '2022-01-01', // Replace with the actual date
+                description: 'Description of the new place',
+                order: 5, // Replace with the actual order
+                photos: [], // Add photos if needed
             },
             {
-                id: 2,
-                title: 'Colosseum',
-                type: 'Historical Site',
-                place_id: 102,
-                coordinates: '41.8902° N, 12.4922° E',
-                photos: [{file:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIVj-enfMwlOJjdM7IAr2RwTIW3RxVsLmdrg&s"}],
+                id:1,
+                creator_user_id: 10,
+                mean_score: 4,// Replace with the actual ID
+                title: 'New Place',
+                type: 'Type',
+                place_id: 100, // Replace with the actual place ID
+                coordinates: '0,0', // Replace with the actual coordinates
+                date: '2022-01-01', // Replace with the actual date
+                description: 'Description of the new place',
+                order: 5, // Replace with the actual order
+                photos: [], // Add photos if needed
             },
             // more places...
         ],

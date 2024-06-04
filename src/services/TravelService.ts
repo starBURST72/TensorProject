@@ -3,6 +3,7 @@ import { PlaceFullResponse, PlacePreviewResponse } from "../Models/Travels";
 import $api from "../http";
 import { OUR_API_ENDPOINTS } from "../http/constants";
 import {TimelineItem, UserPut, UserTravel} from "../Models/IUserTravel";
+import * as Base64 from 'js-base64';
 
 
 export const getOneTravel = async (id: number) => {
@@ -118,22 +119,60 @@ export const GetUserTravel = async (id:string):Promise<UserTravel | null> => {
         return null;
     }
 };
-function transformUserTravelToUserPut(userTravel: UserTravel): UserPut {
+function transformUserTravelToUserPut(userTravel: UserTravel): {
+    Date_end: string;
+    img: string|null;
+    places: { date: string; description: string | undefined; id: number | undefined; order: number }[];
+    owner_user_id: string;
+    Date_start: string;
+    members: { user_id: number }[];
+    description: string;
+    title: string;
+    status: string
+} {
+// Decode the Base64 string to get the original image
+    const imageData = Base64.toUint8Array(userTravel.img);
+    const image = new Image();
+    image.src = URL.createObjectURL(new Blob([imageData]));
+
+// Compress the image
+    const canvas = document.createElement('canvas');
+    canvas.width = image.width;
+    canvas.height = image.height;
+    const ctx = canvas.getContext('2d');
+    ctx?.drawImage(image, 0, 0);
+    let compressedImageData: string | null = null;
+    if (canvas) {
+        compressedImageData = canvas.toDataURL('image/png');
+    }
+
+// Encode the compressed image back into a Base64 string
+    let compressedUserTravelImg: string | null;
+    if (compressedImageData) {
+        compressedUserTravelImg = compressedImageData.split(',')[1] ?? null;
+    } else {
+        compressedUserTravelImg = null;
+    }
     return {
         members: userTravel.members.map(member => ({ user_id: member.user_id })),
-        id: userTravel.id,
         title: userTravel.title,
         description: userTravel.description,
         owner_user_id: userTravel.owner_user_id,
         Date_start: userTravel.Date_start,
         Date_end: userTravel.Date_end,
-        img: userTravel.img,
+        img: compressedUserTravelImg ?? null,
         status: userTravel.status,
-        places: userTravel.places,
+        places: userTravel.places.map(place => ({
+            id: place.place_id ||undefined,
+            order: place.order,
+            date: place.date,
+            description: place.description  ||undefined,
+        })),
     };
 }
 export const UpdateUserTravel = async (Travel:UserTravel):Promise<string | null> => {
     const TravelPut = transformUserTravelToUserPut(Travel);
+    console.log(TravelPut)
     try {
         // Выполнение POST запроса для регистрации
         const response:AxiosResponse<string> = await $api.put(`${OUR_API_ENDPOINTS.userTravel}/${Travel.id}`,{TravelPut});
