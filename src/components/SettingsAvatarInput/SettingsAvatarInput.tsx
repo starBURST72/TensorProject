@@ -34,6 +34,7 @@ const SettingsAvatarInput: React.FC<SettingsAvatarInputProps> = ({
   const [previewTitle, setPreviewTitle] = useState('');
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
+
   useEffect(() => {
     if (file) {
       const uploadFile: UploadFile = {
@@ -55,6 +56,7 @@ const SettingsAvatarInput: React.FC<SettingsAvatarInputProps> = ({
     setPreviewOpen(true);
     setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
   };
+
 
   const handleChange: UploadProps['onChange'] = async ({ file, fileList }) => {
     setFileList(fileList);
@@ -79,6 +81,7 @@ const SettingsAvatarInput: React.FC<SettingsAvatarInputProps> = ({
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
+
 
   return (
     <Form.Item key={key} name={name} id={id}>
@@ -107,6 +110,7 @@ const SettingsAvatarInput: React.FC<SettingsAvatarInputProps> = ({
       </Modal>
     </Form.Item>
   );
+
 };
 
 export default SettingsAvatarInput;

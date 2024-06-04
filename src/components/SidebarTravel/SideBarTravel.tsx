@@ -1,31 +1,76 @@
-import {Button, Input, Modal, Timeline, Upload, Flex, message} from "antd";
+import {Button, Input, Modal, Timeline, Upload, message, Select, DatePicker} from "antd";
 import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
 import PlaceCard from "../PlaceCard/PlaceCard";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./SideBarTravel.css";
-import {TimelineItem, UserTravel} from "../../Models/IUserTravel";
-
+import { TimelineItem, UserTravel } from "../../Models/IUserTravel";
+import dayjs from "dayjs";
 
 interface SideBarTravelProps {
     timelineItems: TimelineItem[];
-    Travel:UserTravel|null;
+    travel: UserTravel | null;
     setTimelineItems: React.Dispatch<React.SetStateAction<TimelineItem[]>>;
     handleUpdate: () => Promise<void>;
+    setTravel: React.Dispatch<React.SetStateAction<UserTravel | null>>;
 }
 
-function SideBarTravel({ timelineItems,setTimelineItems, handleUpdate,Travel}: SideBarTravelProps) {
+function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, setTravel }: SideBarTravelProps) {
+    const { RangePicker } = DatePicker;
     const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');const handleDelete = (id: number) => {
+    const [title, setTitle] = useState(travel?.title);
+    const [description, setDescription] = useState(travel?.description);
+    const [DateStart, setDateStart] = useState<Date | null | undefined>(
+        travel?.Date_start ? new Date(Date.parse(travel.Date_start.split('.').reverse().join('-'))) : null
+    );
+    const [DateEnd, setDateEnd] = useState<Date | null | undefined>(
+        travel?.Date_end ? new Date(Date.parse(travel.Date_end.split('.').reverse().join('-'))) : null
+    );
+    const [imageUrl, setImageUrl] = useState(travel?.img || '');
+    const { Option } = Select;
+    const [updatedMembers, setUpdatedMembers] = useState<number[]>([]);
+    const [idCounter, setIdCounter] = useState(0); // Initialize idCounter here
+
+    const fakeMembers = [
+        { user_id: 1, username: 'John Doe' },
+        { user_id: 2, username: 'Jane Smith' },
+        { user_id: 3, username: 'Bob Johnson' },
+        // add more fake members as needed
+    ];
+
+    useEffect(() => {
+        setTitle(travel?.title);
+        setDescription(travel?.description);
+        setImageUrl(travel?.img || '');
+        if (travel?.members) {
+            const selectedMemberIds = travel.members.map(member => member.user_id);
+            setUpdatedMembers(selectedMemberIds);
+        }
+    }, [travel]);
+
+    const handleDelete = (id: number) => {
         setTimelineItems((timelineItems: TimelineItem[]) => timelineItems.filter(item => item.id !== id));
+        setIdCounter(prevIdCounter => Math.max(...timelineItems.map(item => item.id), 0)); // Update idCounter
+        handleSettingsOk();
     };
-
-
 
     const handleSettingsClick = () => {
         setIsSettingsModalVisible(true);
     };
 
     const handleSettingsOk = () => {
+        const updatedTravel: UserTravel | null = {
+            title: title ?? "",
+            description: description ?? "",
+            img: imageUrl,
+            members: updatedMembers.map(id => fakeMembers.find(member => member.user_id === id)!),
+            id: travel?.id ?? '',
+            owner_user_id: travel?.owner_user_id ?? '',
+            Date_start: DateStart?.toString() ?? '',
+            Date_end: DateEnd?.toString() ?? '',
+            status: travel?.status ?? '',
+            places: timelineItems
+        };
+        setTravel(updatedTravel);
         setIsSettingsModalVisible(false);
     };
 
@@ -59,24 +104,27 @@ function SideBarTravel({ timelineItems,setTimelineItems, handleUpdate,Travel}: S
         return isJpgOrPng && isLt2M;
     };
 
+    const handleChange = (value: number[]) => {
+        setUpdatedMembers(value);
+    };
+
     return (
         <div className="sidebar">
             <h1 className="sidebar-travel">
-                {Travel?.title}
-                <SettingOutlined style={{ cursor: 'pointer',marginLeft:"20px" }} onClick={handleSettingsClick}/>
+                {travel?.title}
+                <SettingOutlined style={{ cursor: 'pointer', marginLeft: "20px" }} onClick={handleSettingsClick} />
             </h1>
             <Timeline className="TimeLine">
                 {timelineItems.map(item => (
                     <Timeline.Item key={item.id}>
                         <PlaceCard
                             Title={item.title}
-                            img={item.img}
+                            img={item.photos || []}
                             type={item.type}
                             place_id={item.place_id}
                             coordinates={item.coordinates}
                             onDelete={() => handleDelete(item.id)}
                         />
-
                     </Timeline.Item>
                 ))}
             </Timeline>
@@ -86,24 +134,43 @@ function SideBarTravel({ timelineItems,setTimelineItems, handleUpdate,Travel}: S
                 onOk={handleSettingsOk}
                 onCancel={handleSettingsCancel}
             >
-                <Input placeholder="Enter new title" />
-                <Input placeholder="Enter new description" />
+                <Input placeholder="Название" value={title} onChange={e => setTitle(e.target.value)} />
+                <Input placeholder="Описание" value={description} onChange={e => setDescription(e.target.value)} />
+                <RangePicker
+                    placeholder={['Дата начала', 'Дата окончания']}
+                    value={[DateStart ? dayjs(DateStart) : null, DateEnd ? dayjs(DateEnd) : null]}
+                    onChange={(dates) => {
+                        setDateStart(dates && dates[0] ? dates[0].toDate() : null);
+                        setDateEnd(dates && dates[1] ? dates[1].toDate() : null);
+                    }}
+                />
+                <Select
+                    mode="tags"
+                    style={{ width: '100%' }}
+                    placeholder="Участники"
+                    onChange={handleChange}
+                    value={updatedMembers}
+                >
+                    {fakeMembers.map((member) =>
+                        <Option key={member.user_id} value={member.user_id}>
+                            {member.username}
+                        </Option>
+                    )}
+                </Select>
                 <Upload
                     name="avatar"
                     listType="picture-card"
                     className="avatar-uploader"
                     showUploadList={false}
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     beforeUpload={beforeUpload}
                     onChange={handleImageChange}
                 >
                     {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : <UploadOutlined />}
                 </Upload>
             </Modal>
-            <Flex className="confirm-container">
-                <Button type="primary" onClick={()=>handleUpdate()}>Сохранить</Button>
-            </Flex>
-
+            <div className="confirm-container">
+                <Button type="primary" onClick={handleUpdate}>Сохранить</Button>
+            </div>
         </div>
     );
 }

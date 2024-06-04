@@ -1,16 +1,9 @@
-// ElementsList.ts
 
-
-const elements = [
+export const elements = [
     {
         name: 'Главная',
         key: 0,
         link: '/',
-    },
-    {
-        name: 'Карта',
-        key: 1,
-        link: '/map',
     },
     {
         name: 'Мои маршруты',
@@ -25,11 +18,3 @@ const elements = [
 
 ];
 
-export function ElementsList() {
-    // const { signedIn } = useContext(Context);
-
-    // const filteredElements = signedIn ? elements.slice(0, -1) : elements;
-
-    // Возвращаем отфильтрованный массив элементов
-    return elements;
-}

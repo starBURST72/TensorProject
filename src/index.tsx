@@ -30,8 +30,6 @@ let serverReady: Promise<void>;
 // serverReady = import('./Mocks/Manager').then(({startWorker})  => {
 //     return startWorker();
 // })
-
-
 // serverReady.then(() => {
     const root = ReactDOM.createRoot(
         document.getElementById('root') as HTMLElement

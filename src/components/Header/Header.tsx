@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import './Header.css';
 import logo from '../../img/logo2.png';
-import { ElementsList } from "../ElementsList/ElementsList";
+import { elements } from "../ElementsList/ElementsList";
 import { Context } from '../../index';
 import { NavLink } from "react-router-dom";
 import UserMenuDropdown from "../UserMenuDropdown/UserMenuDropdown";
@@ -11,7 +11,6 @@ interface IElement {
     key: number;
     link: string;
 }
-const elements = ElementsList();
 
 export function Header() {
     const {store } = useContext(Context);
@@ -25,11 +24,8 @@ export function Header() {
                 <div className="nav-row">
                     <NavLink to='/'>
                         <div className="logo">
-
                             <img className="logo-img" src={logo} alt="Travel Together Logo" />
                             <a href="/" className="logo-text">Travel Together</a>
-
-
                         </div>
                     </NavLink>
                     <div className="nav-row">
