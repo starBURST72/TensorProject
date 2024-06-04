@@ -32,11 +32,13 @@ function UserMenuDropdown() {
             key: 1,
         },
         {
+
             label: (
                 <Link to={'/calendar'}>
                 Календарь
                 </Link>),
             key: 2,
+
         },
 
         {

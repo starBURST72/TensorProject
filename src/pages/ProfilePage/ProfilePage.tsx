@@ -19,12 +19,16 @@ type MenuItem = Required<MenuProps>['items'][number];
 const items: MenuItem[] = [
     {
         label: 'Созданные',
-        key: 'travels',
+        key: 'creating',
 
     },
     {
         label: 'История',
-        key: 'history',
+        key: 'passed',
+    },
+    {
+        label: 'Текущие',
+        key: 'now',
     },
 ];
 
@@ -85,7 +89,7 @@ function ProfilePage() {
     const [current, setCurrent] = useState('travels');
     const [createdTravelsRes, setCreatedTravelsRes] = useState<TravelInfoFields[]>([]);
     const [historyTravelsRes, setHistoryTravelsRes] = useState<TravelInfoFields[]>([]);
-    const [nowTravelRes, setNowTravelRes] = useState<TravelInfoFields | null>(null);
+    const [nowTravelsRes, setNowTravelsRes] = useState<TravelInfoFields[]>([]);
     const [userInfoRes, setUserInfoRes] = useState<UserInfoFields | null>(null)
     const [userFriendsRes, setUserFriendsRes] = useState<FriendFields[] | null>(null)
     const [isLoading, setIsLoading] = useState(true);
@@ -111,6 +115,9 @@ function ProfilePage() {
                 const responseUserPassedTravelInfo = await getUserTravelsInfo(store.id, 'passed')
                 console.log(responseUserPassedTravelInfo)
                 setHistoryTravelsRes(responseUserPassedTravelInfo)
+                const responseUserNowTravelInfo = await getUserTravelsInfo(store.id, 'now')
+                console.log(responseUserNowTravelInfo)
+                setNowTravelsRes(responseUserNowTravelInfo)
 
 
 
@@ -143,6 +150,9 @@ function ProfilePage() {
                         <div className="user-name">{`${userInfoRes?.surname} ${userInfoRes?.name}`}</div>
                         <div className="user-login">{userInfoRes?.username}</div>
                         <div className="user-city">{userInfoRes?.city}</div>
+                        {nowTravelsRes[0] &&
+                            <div className="userTravelNow">{`Сейчас проходит: ${nowTravelsRes[0]?.title}`}</div>
+                        }
                     </div>
                 </div>
 
@@ -166,13 +176,13 @@ function ProfilePage() {
                         },
                     }}
                 >
-                    <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ fontSize: '18px', width: '300px', caretColor: 'transparent' }} />
+                    <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ fontSize: '18px', width: '400px', caretColor: 'transparent' }} />
                 </ConfigProvider>
 
 
 
                 {
-                    current === 'travels' ?
+                    current === 'creating' ?
                         <div className="route-list">
                             {
                                 createdTravelsRes.length > 0 ? (
@@ -185,18 +195,30 @@ function ProfilePage() {
 
                             {/* <TravelCard /> */}
                         </div>
-                        :
-                        <div className="route-list">
-                            {
-                                historyTravelsRes.length > 0 ? (
-                                    historyTravelsRes?.map(historyTravel =>
-                                        <TravelCard {...historyTravel} key={historyTravel.id} />)
-                                ) : (
-                                    <Typography.Title level={3}>Нет пройденных маршрутов</Typography.Title>
-                                )
-                            }
+                        : current === 'passed' ?
+                            <div className="route-list">
+                                {
+                                    historyTravelsRes.length > 0 ? (
+                                        historyTravelsRes?.map(historyTravel =>
+                                            <TravelCard {...historyTravel} key={historyTravel.id} />)
+                                    ) : (
+                                        <Typography.Title level={3}>Нет пройденных маршрутов</Typography.Title>
+                                    )
+                                }
 
-                        </div>
+                            </div>
+                            :
+                            <div className="route-list">
+                                {
+                                    nowTravelsRes.length > 0 ? (
+                                        nowTravelsRes?.map(nowTravel =>
+                                            <TravelCard {...nowTravel} key={nowTravel.id} />)
+                                    ) : (
+                                        <Typography.Title level={3}>Нет текущих маршрутов</Typography.Title>
+                                    )
+                                }
+
+                            </div>
                 }
 
 
