@@ -30,18 +30,17 @@ export interface UserTravel{
 
 export interface UserPut{
     members: { user_id:number}[],
-    id:string;
     title:string;
     description:string;
     owner_user_id:string;
     Date_start:string;
     Date_end:string;
-    img:string;
+    img:string |null;
     status:string;
     places?:{
-        id:number;
+        place_id:number |undefined;
         order:number;
         date:string;
-        description:string;
+        description:string |undefined;
     }[]|[]
 }

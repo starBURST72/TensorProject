@@ -56,7 +56,8 @@
 }
 
 .ListItems{
-
+    height: 80%;
+    overflow-y: auto;
     margin-right: 25px;
     margin-left: 25px;
     margin-top: 20px;

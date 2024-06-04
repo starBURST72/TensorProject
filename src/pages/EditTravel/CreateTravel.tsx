@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./CreateTravel.css";
-import { AutoComplete, Button, DatePicker, Input, List, Modal, Rate, Select, SelectProps, Switch } from 'antd';
+import {AutoComplete, Avatar, Button, DatePicker, Input, List, Modal, Rate, Select, SelectProps, Switch} from 'antd';
 import SideBarTravel from "../../components/SidebarTravel/SideBarTravel";
 import { useNavigate, useParams } from "react-router-dom";
 import MapNewComponent3 from "../../components/MapNew3/MapNewComponent3";
@@ -10,6 +10,8 @@ import { Context } from "../../index";
 import { TimelineItem, UserTravel } from "../../Models/IUserTravel";
 import { PlacePreviewResponse } from "../../Models/Travels";
 import { GetCity } from "../../services/SearchCityService";
+import {use} from "msw/lib/core/utils/internal/requestHandlerUtils";
+import dayjs from "dayjs";
 
 let idCounter = 0;
 
@@ -78,6 +80,7 @@ function CreateTravel() {
         const fetchData = async () => {
             if (id) {
                 const userTravel: UserTravel | null = await GetUserTravel(id);
+                console.log(userTravel)
                 setTravel(userTravel);
                 if (userTravel && userTravel.places) {
                     setTimelineItems(userTravel.places);
@@ -90,6 +93,7 @@ function CreateTravel() {
 
     const handleUpdate = async () => {
         if (travel && travel.id !== undefined && travel.id !== null) {
+            console.log(timelineItems)
             travel.places = timelineItems;
             const result = await UpdateUserTravel(travel);
             if (result) {
@@ -123,15 +127,13 @@ function CreateTravel() {
     };
 
     const handleOkClick = (date: any) => {
-        idCounter++;
-        if(currentItem){}
 
         const newTimelineItem: TimelineItem = {
             id: idCounter,
             title: currentItem?.title,
             type: currentItem?.type,
-            place_id: currentItem?.place_id,
-            date: date,
+            place_id: currentItem?.id,
+            date: dayjs(date).format('YYYY-MM-DD'),
             description: currentItem?.description,
             creator_user_id: currentItem?.creator_user_id,
             mean_score: currentItem?.mean_score,
@@ -139,7 +141,7 @@ function CreateTravel() {
             coordinates: currentItem?.coordinates,
             photos: currentItem?.photos && currentItem.photos.length > 0 && currentItem.photos[0] ? [{ file: currentItem.photos[0].file }] : [],
         };
-
+        idCounter++;
         setTimelineItems(prevTimelineItems => {
             const updatedTimelineItems = [...prevTimelineItems, newTimelineItem];
             updatedTimelineItems.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
@@ -229,11 +231,12 @@ function CreateTravel() {
                                 dataSource={filteredData}
                                 renderItem={item => (
                                     <List.Item
-                                        key={item.place_id}
+                                        key={item.id}
                                         className="ListItem"
                                     >
                                         <List.Item.Meta
                                             className="Meta"
+                                            avatar={<Avatar src={item?.photos?.[0]?.file}/>}
                                             title={item.title}
                                             description={item.description}
                                         />

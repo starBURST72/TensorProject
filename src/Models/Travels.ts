@@ -14,7 +14,7 @@ export default class Travels {
 export interface PlacePreviewResponse {
     creator_user_id: number;
     title: string;
-    place_id: number;
+    id: number;
     description: string;
     address: string;
     date:string;

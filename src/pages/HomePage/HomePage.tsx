@@ -118,7 +118,7 @@ function HomePage() {
             >
                 <div style={{display: 'flex', height: '100%', width: "100%"}}>
                     <div style={{flex: 1}}>
-                        <HintCard data={hintData?.friends_travels} title="друзья"/>
+                        <HintCard data={hintData?.friends_travels} title="Друзья"/>
                     </div>
                     <div style={{flex: 1}}>
                         <HintCard data={hintData?.best_travels} title="Лучшие маршруты"/>

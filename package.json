@@ -16,6 +16,7 @@
     "@types/react-sidebar": "^3.0.4",
     "antd": "^5.17.0",
     "axios": "^1.7.2",
+    "browser-image-compression": "^2.0.2",
     "dayjs": "^1.11.11",
     "js-base64": "^3.7.7",
     "mobx-react-lite": "^4.0.7",

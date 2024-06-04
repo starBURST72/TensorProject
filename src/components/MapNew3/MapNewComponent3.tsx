@@ -69,7 +69,7 @@ const MapNewComponent3 = observer(() => {
                     responsePlacesInCuty.forEach((marker) => {
                         const newPlacemark = new ymaps.Placemark(parseCoordinates(marker.coordinates), { hintContent: marker.title });
                         newPlacemark.events.add(['click'], async (event: ymaps.MapEvent) => {
-                            const fullPlaceInfo = await getOnePLaceInCity(marker.place_id);
+                            const fullPlaceInfo = await getOnePLaceInCity(marker.id);
                             setSelectedPlace(fullPlaceInfo);
                             setSidebarVisible(true);
                         });
@@ -106,7 +106,7 @@ const MapNewComponent3 = observer(() => {
                 placesInCuty.forEach((marker) => {
                     const newPlacemark = new ymaps.Placemark(parseCoordinates(marker.coordinates), { hintContent: marker.title });
                     newPlacemark.events.add(['click'], async (event: ymaps.MapEvent) => {
-                        const fullPlaceInfo = await getOnePLaceInCity(marker.place_id);
+                        const fullPlaceInfo = await getOnePLaceInCity(marker.id);
                         setSelectedPlace(fullPlaceInfo);
                         setSidebarVisible(true);
                     });
