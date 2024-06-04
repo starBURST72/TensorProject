@@ -27,7 +27,7 @@ function HintCard({ data,title }: HintCardProps) {
     const navigate = useNavigate();
 
     const copyTravel1 = async (copy_id: number) => {
-        if(title=="Продолжим?"){
+        if(title==="Продолжим?"){
             const TravelId = copy_id;
             navigate(`/editTravel/${TravelId}`);
         }
@@ -62,7 +62,7 @@ function HintCard({ data,title }: HintCardProps) {
                                 <p>Рейтинг: {hint.mean_score}</p>
                                 <p>Прошли: {hint.count_users}</p>
                             </div>
-                            {title=="Продолжим?" ?(<Button className="CopyButton" onClick={() => copyTravel1(hint.id)}>Продолжить</Button>):(
+                            {title==="Продолжим?" ?(<Button className="CopyButton" onClick={() => copyTravel1(hint.id)}>Продолжить</Button>):(
                             <Button className="CopyButton" onClick={() => copyTravel1(hint.id)}>копировать</Button>)}
                         </div>
                     ))
