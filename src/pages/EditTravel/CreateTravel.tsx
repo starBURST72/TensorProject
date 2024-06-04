@@ -46,7 +46,7 @@ function CreateTravel() {
         };
 
         fetchData();
-    }, []);
+    }, [cityValue]);
 
     const onChangeCity = async (data: string) => {
         setCityValue(data);
@@ -210,7 +210,7 @@ function CreateTravel() {
                                     defaultValue={store.city.nameCity}
                                     options={options}
                                     className="city-autocomplete"
-                                    onSearch={handleSearchCity}
+                                    onSearch={onChangeCity}
                                     onSelect={onChangeCity}
                                     onChange={onChangeCity}
                                     placeholder="Введите город"
