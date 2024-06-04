@@ -40,6 +40,7 @@ const MapNewComponent3 = observer(() => {
     const [cityValue, setCityValue] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [modalCreatePlaceOpen, setModalCreatePlaceOpen] = useState(false);
+    const [selectedMarker, setSelectedMarker] = useState<ymaps.Placemark | null>(null);
     const { store } = useContext(Context);
 
     useEffect(() => {

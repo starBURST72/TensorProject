@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './FriendsPage.css';
 import { ConfigProvider, Menu, MenuProps, Spin, Typography } from 'antd';
 import { getFriends } from '../../services/FriendsService';
 import FriendCard from '../../components/FriendCard/FriendCard';
+import { Context } from '../..';
+import { Link } from 'react-router-dom';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -37,18 +39,19 @@ export default function FriendsPage() {
     const [userFriendsRes, setUserFriendsRes] = useState<FriendFields[] | null>(null)
     const [userFriendsSentRes, setUserFriendsSentRes] = useState<FriendFields[] | null>(null)
     const [userFriendsReceivedRes, setUserFriendsReceivedRes] = useState<FriendFields[] | null>(null)
+    const { store } = useContext(Context);
     const onClick: MenuProps['onClick'] = (e) => {
         console.log('click ', e);
         setCurrent(e.key);
     };
-    
+
     useEffect(() => {
-         
+
         const onFinishRequests = async () => {
             try {
 
-                
-                const responseUserFriendsInfo = await getFriends(1)
+
+                const responseUserFriendsInfo = await getFriends(store.id)
                 setUserFriendsRes(responseUserFriendsInfo.friends)
                 setUserFriendsSentRes(responseUserFriendsInfo.pending_sent)
                 setUserFriendsReceivedRes(responseUserFriendsInfo.pending_received)
@@ -87,7 +90,6 @@ export default function FriendsPage() {
                     <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ fontSize: '20px', width: 700, caretColor: 'transparent' }} />
                 </ConfigProvider>
 
-
                 {
                     current === 'friends' ?
                         <div className="friendList">
@@ -96,7 +98,9 @@ export default function FriendsPage() {
                                     <Typography.Title level={3}>Друзей нет</Typography.Title>
                                 ) : (
                                     userFriendsRes?.map(friend =>
-                                        <FriendCard {...friend} key={friend.id} />
+                                        <Link to={`/profile/${friend.id}`}>
+                                            <FriendCard {...friend} key={friend.id} />
+                                        </Link>
                                     )
                                 )
                             }
@@ -108,7 +112,9 @@ export default function FriendsPage() {
                                         <Typography.Title level={3}>Входящих заявок нет</Typography.Title>
                                     ) : (
                                         userFriendsReceivedRes?.map(friend =>
-                                            <FriendCard {...friend} typeOflist="received" key={friend.id} />
+                                            <Link to={`/profile/${friend.id}`}>
+                                                <FriendCard {...friend} typeOflist="received" key={friend.id} />
+                                            </Link>
                                         )
                                     )
                                 }
@@ -120,7 +126,9 @@ export default function FriendsPage() {
                                         <Typography.Title level={3}>Исходящих заявок нет</Typography.Title>
                                     ) : (
                                         userFriendsSentRes?.map(friend =>
-                                            <FriendCard {...friend} typeOflist="sent" key={friend.id} />
+                                            <Link to={`/profile/${friend.id}`}>
+                                                <FriendCard {...friend} typeOflist="sent" key={friend.id} />
+                                            </Link>
                                         )
                                     )
                                 }

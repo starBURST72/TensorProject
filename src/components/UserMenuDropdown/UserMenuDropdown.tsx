@@ -34,7 +34,7 @@ function UserMenuDropdown() {
             key: '1',
         },
         {
-            label: 'Календарь???',
+            label: 'Календарь',
             key: '2',
         },
 

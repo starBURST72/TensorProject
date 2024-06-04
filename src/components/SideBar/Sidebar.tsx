@@ -80,6 +80,7 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, place, parseCoordin
             <Button onClick={() => toggleModal('checkReviews', true)} className="reviewButton">Посмотреть отзывы</Button>
             <Button onClick={() => toggleModal('createReview', true)} className="reviewButton">Оставить отзыв</Button>
           </div>
+          <Button>Добавить в маршрут</Button>
         </div>
       </Drawer>
       <ReviewsModal
