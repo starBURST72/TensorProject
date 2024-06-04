@@ -136,21 +136,6 @@ export const historyTravels = [
 
 
 
-export const userInfo =
-{
-    ava: ava,
-    name: 'Саша',
-    surname: 'Иванов',
-    gender: 'Мужской',
-    birthdate: '15.04.2002',
-    email: 'sashazxc@mail.ru',
-    username: 'sanya52',
-    city: 'Тюмень',
-    interests: [
-        'кино',
-        'кафе'
-    ]
-}
 
 export const interestsStatic = [
     'Все',

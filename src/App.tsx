@@ -75,7 +75,7 @@ function App() {
                                 <Route index element={<HomePage />} />
                                 <Route path="map" element={<MapPage />} />
                                 <Route path="settings" element={<SettingsPage />} />
-                                <Route path="profile" element={<ProfilePage />} />
+                                <Route path="profile/:id" element={<ProfilePage />} />
                                 <Route path="*" element={<NotFound />} />
                                 <Route path="travels" element={<TravelsPage />} />
                                 <Route path="createTravel" element={<CreateTravel/>} />

@@ -10,7 +10,8 @@ const CITY_STORAGE_KEY = "selectedCity";
 const TYPE_OF_PLACES_STORAGE_KEY = "typeOfPlaces";
 
 export default class Store {
-    user = {} as IUser;
+    username=''
+    id=0
     isAuth = false;
     city = {} as ICity;
     typeOfPlaces = 'Все'
@@ -30,10 +31,12 @@ export default class Store {
     setAuth(bool: boolean): void {
         this.isAuth = bool;
     }
-    setUser(user: IUser): void {
-        this.user = user;
+    setUsername(username: string): void {
+        this.username = username;
     }
-
+    setId(id: number): void {
+        this.id = id;
+    }
     setCity(city: ICity): void {
         this.city = city;
         this.saveCityToLocalStorage();
@@ -50,7 +53,8 @@ export default class Store {
             localStorage.setItem("token", response.data.access_token);
             console.log(response.data);
             this.setAuth(true);
-            this.setUser(response.data.user);
+            this.setUsername(response.data.username);
+            this.setId(response.data.id);
         } catch (err: any) {
             console.log(err.response?.data?.message);
         }
@@ -62,7 +66,8 @@ export default class Store {
             localStorage.setItem("token", response.data.access_token);
             console.log(response.data);
             this.setAuth(true);
-            this.setUser(response.data.user);
+            this.setUsername(response.data.username);
+            this.setId(response.data.id);
         } catch (err: any) {
             console.log(err.response?.data?.message);
         }
@@ -76,7 +81,9 @@ export default class Store {
             // localStorage.removeItem("typeOfPlaces");
             console.log(response.data);
             this.setAuth(false);
-            this.setUser({} as IUser);
+            this.setUsername('');
+            this.setId(0);
+ 
         } catch (err: any) {
             console.log(err.response?.data?.message);
         }
@@ -88,7 +95,8 @@ export default class Store {
             localStorage.setItem("token", response.data.access_token);
             console.log(response.data);
             this.setAuth(true);
-            this.setUser(response.data.user);
+            this.setUsername(response.data.username);
+            this.setId(response.data.id);
         } catch (err: any) {
             console.log(err.response?.data?.message);
         }

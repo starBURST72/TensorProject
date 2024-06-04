@@ -15,17 +15,17 @@ function UserMenuDropdown() {
         store.logout();
     }
     const items: MenuProps['items'] = [
-        // {
-        //     label: `${store.user.username}`,
-        //     key: '0',
-        //     style:{fontWeight:"650"}
-        // },
+        {
+            label: `${store.username}`,
+            key: '0',
+            style:{fontWeight:"650"}
+        },
         {
             type: 'divider',
         },
         {
             label: (
-                <Link to={`/profile`}>
+                <Link to={`/profile/${store.id}`}>
                     Профиль
                 </Link>
                 //<Link to={`/profile/${store.user.id}`}>

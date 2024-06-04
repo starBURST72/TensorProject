@@ -1,16 +1,18 @@
 import "./ProfilePage.css"
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import TravelCard from "../../components/RouteCard/TravelCard";
 import type { MenuProps } from 'antd';
-import { Menu, ConfigProvider, Divider, Avatar } from "antd";
+import { Menu, ConfigProvider, Divider, Avatar, Typography } from "antd";
 import ava from '../../img/ava.jpg'
-import { historyTravels, userInfo } from "../../storage/storage";
+import { historyTravels } from "../../storage/storage";
 import { createdTravels } from '../../storage/storage';
-import { getUserCreatedTravelsInfo, getUserHistoryTravelsInfo, getUserProfileInfo } from "../../services/UserProfileService";
+import { getUserProfileInfo, getUserTravelsInfo } from "../../services/UserProfileService";
 import { Spin } from 'antd';
 import FriendsOnProfile from "../../components/FriendsOnProfile/FriendsOnProfile";
 import { getFriends } from "../../services/FriendsService";
 import InterestsOnProfile from "../../components/InterestsOnProfile/InterestsOnProfile";
+import { Context } from "../..";
+import Title from "antd/es/skeleton/Title";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -29,15 +31,22 @@ const items: MenuItem[] = [
 type UserInfoFields = {
     // message: string,
     // data: {
-    ava: any;
-    name: string;
-    surname: string;
-    gender: string;//мб некторые поля здесь не надо, в профиле мы выводим только часть инфы, или можем сделать доп кнопку типа подробнее и там фул инфа
-    birthDate: Date;//и это
-    email: string;//и это
-    username: string;
-    city: string;
-    interests: string[]
+    email: string,
+    username: string,
+    name: string,
+    surname: string,
+    id: number,
+    img: string,
+    gender: string,
+    birthday: string,
+    city: string,
+    interests:
+    {
+        interest_id: number,
+        name: string
+    }[]
+
+
     // }
 };
 
@@ -59,10 +68,10 @@ type TravelInfoFields =
         }[]
 
 
-    }[]
+    }
 
 type FriendFields = {
-    id: number,
+    friend_id: number,
     name: string,
     surname: string,
     img: any,
@@ -70,18 +79,17 @@ type FriendFields = {
     // status: number
 };
 
-type Friends = {
-    friends: FriendFields[];
-};
 
 
 function ProfilePage() {
     const [current, setCurrent] = useState('travels');
-    const [createdTravelsRes, setCreatedTravelsRes] = useState<TravelInfoFields | null>(null);
-    const [historyTravelsRes, setHistoryTravelsRes] = useState<TravelInfoFields | null>(null);
+    const [createdTravelsRes, setCreatedTravelsRes] = useState<TravelInfoFields[]>([]);
+    const [historyTravelsRes, setHistoryTravelsRes] = useState<TravelInfoFields[]>([]);
+    const [nowTravelRes, setNowTravelRes] = useState<TravelInfoFields | null>(null);
     const [userInfoRes, setUserInfoRes] = useState<UserInfoFields | null>(null)
     const [userFriendsRes, setUserFriendsRes] = useState<FriendFields[] | null>(null)
     const [isLoading, setIsLoading] = useState(true);
+    const { store } = useContext(Context);
     const onClick: MenuProps['onClick'] = (e) => {
         console.log('click ', e);
         setCurrent(e.key);
@@ -92,15 +100,19 @@ function ProfilePage() {
         const onFinishRequests = async () => {
             try {
 
-                const responseUserInfo = await getUserProfileInfo(1)
-                const responseUserCreatedTravelInfo = await getUserCreatedTravelsInfo(1)
-                const responseUserHistoryTravelInfo = await getUserHistoryTravelsInfo(1)
-                const responseUserFriendsInfo = await getFriends(1)
+                const responseUserInfo = await getUserProfileInfo(store.id)
                 setUserInfoRes(responseUserInfo)
-                setCreatedTravelsRes(responseUserCreatedTravelInfo)
-                setHistoryTravelsRes(responseUserHistoryTravelInfo)
-                setUserFriendsRes(responseUserFriendsInfo.friends)
+                const responseUserFriendsInfo = await getFriends(store.id)
                 console.log(responseUserFriendsInfo)
+                setUserFriendsRes(responseUserFriendsInfo.friends)
+                const responseUserCreatedTravelInfo = await getUserTravelsInfo(store.id, 'creating')
+                console.log(responseUserCreatedTravelInfo)
+                setCreatedTravelsRes(responseUserCreatedTravelInfo)
+                const responseUserPassedTravelInfo = await getUserTravelsInfo(store.id, 'passed')
+                console.log(responseUserPassedTravelInfo)
+                setHistoryTravelsRes(responseUserPassedTravelInfo)
+
+
 
             } catch (error) {
                 console.error('Error:', error);
@@ -118,14 +130,14 @@ function ProfilePage() {
             </div>
         );
     }
-    
+
     return (
 
         <div className="profile-container">
             <div className="top">
                 <div className="topConteiner">
-                    <Avatar className="avatar" src={userInfoRes?.ava} />
-                    {/* <img className="avatar" src={ava}></img> */}
+                    <Avatar className="avatar" src={userInfoRes?.img} />
+
 
                     <div className="user-info">
                         <div className="user-name">{`${userInfoRes?.surname} ${userInfoRes?.name}`}</div>
@@ -157,13 +169,17 @@ function ProfilePage() {
                     <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} style={{ fontSize: '18px', width: '300px', caretColor: 'transparent' }} />
                 </ConfigProvider>
 
+
+
                 {
                     current === 'travels' ?
                         <div className="route-list">
                             {
-                                createdTravelsRes?.map(createdTravel =>
-                                    <TravelCard {...createdTravel} key={createdTravel.id} />
-
+                                createdTravelsRes.length > 0 ? (
+                                    createdTravelsRes?.map(createdTravel =>
+                                        <TravelCard {...createdTravel} key={createdTravel.id} />)
+                                ) : (
+                                    <Typography.Title level={3}>Нет созданных маршрутов</Typography.Title>
                                 )
                             }
 
@@ -172,9 +188,11 @@ function ProfilePage() {
                         :
                         <div className="route-list">
                             {
-                                historyTravelsRes?.map(historyTravel =>
-                                    <TravelCard {...historyTravel} key={historyTravel.id} />
-
+                                historyTravelsRes.length > 0 ? (
+                                    historyTravelsRes?.map(historyTravel =>
+                                        <TravelCard {...historyTravel} key={historyTravel.id} />)
+                                ) : (
+                                    <Typography.Title level={3}>Нет пройденных маршрутов</Typography.Title>
                                 )
                             }
 

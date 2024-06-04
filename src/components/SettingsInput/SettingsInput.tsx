@@ -9,7 +9,7 @@ type SettingsInputProps = {
     id: string
     placeholder: string
     classNameSpace: string
-    rules:[{}]
+    rules: [{}]
 
 };
 
@@ -22,9 +22,14 @@ const SettingsInput: React.FC<SettingsInputProps> = ({ title, classNameFormItemI
                 name={name}
                 id={id}
                 rules={rules}
-                
+
             >
-                <Input key={key} placeholder={placeholder} className={classNameFormItemInput}/>
+                {name === 'username' || name === 'email'
+                    ?
+                    <Input disabled key={key} placeholder={placeholder} className={classNameFormItemInput} />
+                    :
+                    <Input key={key} placeholder={placeholder} className={classNameFormItemInput} />
+                }
             </Form.Item>
         </Space.Compact>
     );
