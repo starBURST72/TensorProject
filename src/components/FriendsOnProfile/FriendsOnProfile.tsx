@@ -1,5 +1,6 @@
 import React from 'react';
 import './FriendsOnProfile.css';
+import { Link } from 'react-router-dom';
 
 interface FriendFields {
     friend_id: number,
@@ -20,10 +21,12 @@ const FriendsOnProfile: React.FC<Friends> = ({ friends }) => {
             <div className="friends-list">
                 {friends.length > 0 ? (
                     friends.slice(0, 5).map((friend) => (
-                        <div key={friend.friend_id} className="friend">
-                            <img className="friend-avatar" src={friend.img} alt={`${friend.name} ${friend.surname}`} />
-                            <div className="friend-name">{friend.name}</div>
-                        </div>
+                        <Link to={`/profile/${friend.friend_id}`}>
+                            <div key={friend.friend_id} className="friend">
+                                <img className="friend-avatar" src={friend.img} alt={`${friend.name} ${friend.surname}`} />
+                                <div className="friend-name">{friend.name}</div>
+                            </div>
+                        </Link>
                     ))
                 ) : (
                     <div>Друзей нет</div>

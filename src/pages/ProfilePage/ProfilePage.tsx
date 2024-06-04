@@ -13,6 +13,7 @@ import { getFriends } from "../../services/FriendsService";
 import InterestsOnProfile from "../../components/InterestsOnProfile/InterestsOnProfile";
 import { Context } from "../..";
 import Title from "antd/es/skeleton/Title";
+import { useParams } from "react-router-dom";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -98,25 +99,25 @@ function ProfilePage() {
         console.log('click ', e);
         setCurrent(e.key);
     };
-
+    const { id } = useParams()
     useEffect(() => {
 
         const onFinishRequests = async () => {
             try {
 
-                const responseUserInfo = await getUserProfileInfo(store.id)
+                const responseUserInfo = await getUserProfileInfo(Number(id))
                 console.log(responseUserInfo)
                 setUserInfoRes(responseUserInfo)
-                const responseUserFriendsInfo = await getFriends(store.id)
+                const responseUserFriendsInfo = await getFriends(Number(id))
                 console.log(responseUserFriendsInfo)
                 setUserFriendsRes(responseUserFriendsInfo.friends)
-                const responseUserCreatedTravelInfo = await getUserTravelsInfo(store.id, 'creating')
+                const responseUserCreatedTravelInfo = await getUserTravelsInfo(Number(id), 'creating')
                 console.log(responseUserCreatedTravelInfo)
                 setCreatedTravelsRes(responseUserCreatedTravelInfo)
-                const responseUserPassedTravelInfo = await getUserTravelsInfo(store.id, 'passed')
+                const responseUserPassedTravelInfo = await getUserTravelsInfo(Number(id), 'passed')
                 console.log(responseUserPassedTravelInfo)
                 setHistoryTravelsRes(responseUserPassedTravelInfo)
-                const responseUserNowTravelInfo = await getUserTravelsInfo(store.id, 'now')
+                const responseUserNowTravelInfo = await getUserTravelsInfo(Number(id), 'now')
                 console.log(responseUserNowTravelInfo)
                 setNowTravelsRes(responseUserNowTravelInfo)
 
@@ -129,7 +130,7 @@ function ProfilePage() {
             }
         };
         onFinishRequests()
-    }, []);
+    }, [id]);
 
     if (isLoading) {
         return (
