@@ -83,6 +83,7 @@ function CreateTravel() {
             if (id) {
                 const userTravel: UserTravel | null = await GetUserTravel(id);
                 setTravel(userTravel);
+                console.log(userTravel);
                 if (userTravel && userTravel.places) {
                     setTimelineItems(userTravel.places);
                 }

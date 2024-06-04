@@ -1,9 +1,10 @@
-import { Button, Input, Modal, Timeline, Upload, message, Select } from "antd";
+import {Button, Input, Modal, Timeline, Upload, message, Select, DatePicker} from "antd";
 import { SettingOutlined, UploadOutlined } from '@ant-design/icons';
 import PlaceCard from "../PlaceCard/PlaceCard";
 import React, { useState, useEffect } from "react";
 import "./SideBarTravel.css";
 import { TimelineItem, UserTravel } from "../../Models/IUserTravel";
+import dayjs from "dayjs";
 
 interface SideBarTravelProps {
     timelineItems: TimelineItem[];
@@ -14,9 +15,19 @@ interface SideBarTravelProps {
 }
 
 function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, setTravel }: SideBarTravelProps) {
+    const { RangePicker } = DatePicker;
     const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
     const [title, setTitle] = useState(travel?.title);
     const [description, setDescription] = useState(travel?.description);
+    const [DateStart, setDateStart] = useState<Date | null|undefined>(
+        travel?.Date_start ? new Date(Date.parse(travel.Date_start.split('.').reverse().join('-'))) : null
+    );
+
+
+    const [DateEnd, setDateEnd] = useState<Date | null|undefined>(
+        travel?.Date_end ? new Date(Date.parse(travel.Date_end.split('.').reverse().join('-'))) : null
+    );
+
     const [imageUrl, setImageUrl] = useState(travel?.img || '');
     const { Option } = Select;
     const [updatedMembers, setUpdatedMembers] = useState<number[]>([]);
@@ -29,6 +40,7 @@ function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, 
     ];
 
     useEffect(() => {
+        console.log(DateStart)
         setTitle(travel?.title);
         setDescription(travel?.description);
         setImageUrl(travel?.img || '');
@@ -56,8 +68,8 @@ function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, 
             members: updatedMembers.map(id => fakeMembers.find(member => member.user_id === id)!),
             id: travel?.id ?? '',
             owner_user_id: travel?.owner_user_id ?? '',
-            Date_start: travel?.Date_start ?? '',
-            Date_end: travel?.Date_end ?? '',
+            Date_start: DateStart?.toString() ?? '',
+            Date_end: DateEnd?.toString() ?? '',
             status: travel?.status ?? '',
             places: timelineItems
         };
@@ -127,6 +139,14 @@ function SideBarTravel({ timelineItems, setTimelineItems, handleUpdate, travel, 
             >
                 <Input placeholder="Название" value={title} onChange={e => setTitle(e.target.value)} />
                 <Input placeholder="Описание" value={description} onChange={e => setDescription(e.target.value)} />
+                <RangePicker
+                    placeholder={['Дата начала', 'Дата окончания']}
+                    value={[DateStart ? dayjs(DateStart) : null, DateEnd ? dayjs(DateEnd) : null]}
+                    onChange={(dates) => {
+                        setDateStart(dates && dates[0] ? dates[0].toDate() : null);
+                        setDateEnd(dates && dates[1] ? dates[1].toDate() : null);
+                    }}
+                />
                 <Select
                     mode="tags"
                     style={{ width: '100%' }}
