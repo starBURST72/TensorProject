@@ -53,6 +53,7 @@ function App() {
     }, []);
 
     useLayoutEffect(() => {
+
         if (!loading) {
             if (store.isAuth) {
                 if (location.pathname === '/Auth') {

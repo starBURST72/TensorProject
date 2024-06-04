@@ -106,6 +106,7 @@ export default class Store {
             localStorage.setItem("refresh_token",response.data.refresh_token);
             console.log(response.data);
             this.setAuth(true);
+            this.setImg(response.data.img)
             this.setUsername(response.data.username);
             this.setId(response.data.id);
         } catch (err: any) {
