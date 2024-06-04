@@ -12,6 +12,7 @@ const TYPE_OF_PLACES_STORAGE_KEY = "typeOfPlaces";
 
 export default class Store {
     username=''
+    img=''
     id=0
     isAuth = false;
     city = {} as ICity;
@@ -38,6 +39,9 @@ export default class Store {
     setId(id: number): void {
         this.id = id;
     }
+    setImg(img: string): void {
+        this.img = img;
+    }
     setCity(city: ICity): void {
         this.city = city;
         this.saveCityToLocalStorage();
@@ -57,6 +61,7 @@ export default class Store {
             this.setAuth(true);
             this.setUsername(response.data.username);
             this.setId(response.data.id);
+            this.setImg(response.data.img);
         } catch (err: any) {
             console.log(err.response?.data?.message);
         }
@@ -71,6 +76,7 @@ export default class Store {
             this.setAuth(true);
             this.setUsername(response.data.username);
             this.setId(response.data.id);
+            this.setImg(response.data.img);
         } catch (err: any) {
             console.log(err.response?.data?.message);
         }
@@ -87,7 +93,7 @@ export default class Store {
             this.setAuth(false);
             this.setUsername('');
             this.setId(0);
- 
+            this.setImg('');
         } catch (err: any) {
             console.log(err.response?.data?.message);
         }
