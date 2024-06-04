@@ -1,21 +1,18 @@
 {
   "files": {
-    "main.css": "/TensorProject/static/css/main.6b9783d1.css",
-    "main.js": "/TensorProject/static/js/main.8cff42dc.js",
-    "static/js/754.fefda3b2.chunk.js": "/TensorProject/static/js/754.fefda3b2.chunk.js",
-    "static/js/438.47a3fca9.chunk.js": "/TensorProject/static/js/438.47a3fca9.chunk.js",
+    "main.css": "/TensorProject/static/css/main.800205c1.css",
+    "main.js": "/TensorProject/static/js/main.6a9b4d2e.js",
     "static/media/Duner на углях.png": "/TensorProject/static/media/Duner на углях.b868217b7a08114a0e3e.png",
     "static/media/ava.jpg": "/TensorProject/static/media/ava.af4e1e617e6f0085bce8.jpg",
     "static/media/Шаурма.png": "/TensorProject/static/media/Шаурма.fbfadfee83ebff5cdcb7.png",
     "static/media/logo2.png": "/TensorProject/static/media/logo2.cfb37f59221f31cd1a17.png",
+    "static/media/airplane.png": "/TensorProject/static/media/airplane.f388ef99ce42b766b6c8.png",
     "index.html": "/TensorProject/index.html",
-    "main.6b9783d1.css.map": "/TensorProject/static/css/main.6b9783d1.css.map",
-    "main.8cff42dc.js.map": "/TensorProject/static/js/main.8cff42dc.js.map",
-    "754.fefda3b2.chunk.js.map": "/TensorProject/static/js/754.fefda3b2.chunk.js.map",
-    "438.47a3fca9.chunk.js.map": "/TensorProject/static/js/438.47a3fca9.chunk.js.map"
+    "main.800205c1.css.map": "/TensorProject/static/css/main.800205c1.css.map",
+    "main.6a9b4d2e.js.map": "/TensorProject/static/js/main.6a9b4d2e.js.map"
   },
   "entrypoints": [
-    "static/css/main.6b9783d1.css",
-    "static/js/main.8cff42dc.js"
+    "static/css/main.800205c1.css",
+    "static/js/main.6a9b4d2e.js"
   ]
 }
