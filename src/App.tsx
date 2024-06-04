@@ -63,7 +63,7 @@ function App() {
                 navigate("/Auth");
             }
         }
-    }, [loading,store.isAuth]);
+    }, [loading]);
     
     //в profile жобавить id
     return (

@@ -150,7 +150,6 @@ function transformUserTravelToUserPut(userTravel: UserTravel): {
 }
 export const UpdateUserTravel = async (Travel:UserTravel):Promise<string | null> => {
     const TravelPut = transformUserTravelToUserPut(Travel);
-    console.log(TravelPut);
     try {
         // Выполнение POST запроса для регистрации
         const response:AxiosResponse<string> = await $api.put(`${OUR_API_ENDPOINTS.userTravel}/${Travel.id}`,{TravelPut});

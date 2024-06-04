@@ -8,7 +8,7 @@ export const GetCity = async (
 ): Promise<SearchResponse> => {
     try {
         const response: AxiosResponse<SearchResponse> = await axios.post<SearchResponse>(
-            'http://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address',
+            'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address',
             { query: query,
                 "locations": [
                     {
