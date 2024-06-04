@@ -6,7 +6,7 @@ import './UserMenuDropdown.css';
 import { Link } from 'react-router-dom';
 import {Context} from '../../index'
 import {observer} from "mobx-react-lite";
-
+import { UserOutlined } from '@ant-design/icons';
 
 function UserMenuDropdown() {
     
@@ -74,7 +74,7 @@ function UserMenuDropdown() {
             <a onClick={(e) => e.preventDefault()} >
                 <Space style={{cursor:"pointer"}}>
                     <Badge count={0} >
-                        <Avatar shape="circle" size={'large'} src={ava} />
+                        <Avatar shape="circle" size={'large'} src={store.img} icon={<UserOutlined />}/>
                     </Badge>
                 </Space>
             </a>

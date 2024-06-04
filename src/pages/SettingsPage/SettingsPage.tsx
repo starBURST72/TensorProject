@@ -86,9 +86,9 @@ function SettingsPage() {
       });
     }
   }, [userSettingsInfoRes, form]);
-
+ 
   const onFinish = async (settings: {
-    file: string | null;
+    file: string;
     name: string;
     surname: string;
     gender: string;
@@ -102,6 +102,7 @@ function SettingsPage() {
       console.log(settings);
       settings.birthday = dayjs(settings.birthday).format('YYYY-MM-DD');
       await putProfileSettings(settings);
+      store.setImg(settings.file)
       console.log('Настройки изменены', settings);
     } catch (error) {
       console.error('Ошибка при изменении настроек:', error);

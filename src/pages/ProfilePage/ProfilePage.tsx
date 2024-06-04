@@ -2,7 +2,7 @@ import "./ProfilePage.css"
 import React, { useContext, useEffect, useState } from 'react';
 import TravelCard from "../../components/RouteCard/TravelCard";
 import type { MenuProps } from 'antd';
-import { Menu, ConfigProvider, Divider, Avatar, Typography } from "antd";
+import { Menu, ConfigProvider, Divider, Avatar, Typography, Image } from "antd";
 import ava from '../../img/ava.jpg'
 import { historyTravels } from "../../storage/storage";
 import { createdTravels } from '../../storage/storage';
@@ -105,6 +105,7 @@ function ProfilePage() {
             try {
 
                 const responseUserInfo = await getUserProfileInfo(store.id)
+                console.log(responseUserInfo)
                 setUserInfoRes(responseUserInfo)
                 const responseUserFriendsInfo = await getFriends(store.id)
                 console.log(responseUserFriendsInfo)
@@ -143,7 +144,9 @@ function ProfilePage() {
         <div className="profile-container">
             <div className="top">
                 <div className="topConteiner">
-                    <Avatar className="avatar" src={userInfoRes?.img} />
+                    <Avatar className="avatar" src={userInfoRes?.img.substring(2, userInfoRes?.img.length-1)} />
+                    {/* <img className="avatar" src={userInfoRes?.img} alt="ava" /> */}
+                    {/* <Image src={userInfoRes?.img.substring(2, userInfoRes?.img.length-1)}/> */}
 
 
                     <div className="user-info">

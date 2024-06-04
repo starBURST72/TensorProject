@@ -19,7 +19,7 @@ export const getProfileSettings = async () => {
 
 
 export const putProfileSettings = async (data: {
-    file: string | null; // file is now a base64 string or null
+    file: string; // file is now a base64 string or null
     name: string;
     surname: string;
     gender: string;
