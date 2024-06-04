@@ -5,11 +5,9 @@ import ava from '../../img/ava.jpg';
 import './UserMenuDropdown.css';
 import { Link } from 'react-router-dom';
 import {Context} from '../../index'
-import {observer} from "mobx-react-lite";
 
 
 function UserMenuDropdown() {
-    
     const {store}=useContext(Context);
     function logout(){
         store.logout();
@@ -26,16 +24,19 @@ function UserMenuDropdown() {
         {
             label: (
                 <Link to={`/profile/${store.id}`}>
+
                     Профиль
                 </Link>
                 //<Link to={`/profile/${store.user.id}`}>
             ),
-
-            key: '1',
+            key: 1,
         },
         {
-            label: 'Календарь???',
-            key: '2',
+            label: (
+                <Link to={'/calendar'}>
+                Календарь
+                </Link>),
+            key: 2,
         },
 
         {
@@ -43,30 +44,26 @@ function UserMenuDropdown() {
                 <Link to={'/friends'}>
                     Друзья
                 </Link>),
-            key: '3',
+            key: 3,
         },
         // {
         //     label: 'Настройки',
         //     key: '4',
-            
+
         // },
         {
             label: (
                 <Link to={'/settings'}>
                     Настройки
-                </Link>),
-            key: '4',
+                </Link>
+              ),
+            key: 4,
         },
         {
-
-            key: '5',
+            key: 5,
             label: 'Exit',
             className:'exit-button',
             onClick:logout
-            
-            
-
-
         },
     ];
     return (

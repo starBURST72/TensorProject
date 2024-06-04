@@ -13,13 +13,16 @@
     border-image-slice: 1;
     border-image-source: linear-gradient(90deg, red, green, blue);
 }
-
+.container h1{
+    font-size: 20px;
+    margin-bottom: 10px;
+}
 .hint-card {
     position: relative;
     font-size: 11px;
     text-align: right;
     display: flex;
-    width: 90%;
+    width: 100%;
     height: 150px;
     margin-bottom: 20px;
     padding: 20px;
@@ -44,12 +47,13 @@
 }
 
 .hint-card h2 {
+    width: 40%;
+    margin-top: 5px;
     font-size: 13px;
     position: absolute;
     top: 0;
     left: 70%;
     transform: translateX(-50%);
-    margin: 0;
     z-index: 2;
 }
 .hint-card .paragraphs{

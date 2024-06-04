@@ -27,6 +27,60 @@
   display: flex;
   flex-direction: column;
 }
+/* Общие стили для боковой панели */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Скрываем переполнение */
+}
+
+.sidebar-travel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  flex-shrink: 0; /* Запрещаем сжиматься */
+}
+
+.TimeLine {
+  overflow-y: auto; /* Добавляем вертикальную прокрутку */
+  padding: 20px;
+  height: 70%;
+}
+
+.confirm-container {
+  padding: 20px;
+  flex-shrink: 0; /* Запрещаем сжиматься */
+}
+
+.avatar-uploader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-uploader img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+}
+
+/* Стили для модального окна */
+.ant-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ant-select-selector {
+  display: flex;
+  align-items: center;
+}
+
+.ant-upload-list-picture-card-container {
+  display: none; /* Скрываем список загруженных файлов */
+}
 
 .sidebarContainer {
   display: flex;

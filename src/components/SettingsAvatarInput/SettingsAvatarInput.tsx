@@ -38,7 +38,6 @@ const SettingsAvatarInput: React.FC<SettingsAvatarInputProps> = ({ file, key, na
             onAvatarLoad();
         }
     }, [file, onAvatarLoad]);
-
     const handlePreview = async (file: UploadFile) => {
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj as File);
@@ -95,6 +94,7 @@ const SettingsAvatarInput: React.FC<SettingsAvatarInputProps> = ({ file, key, na
                 }}
                 maxCount={1}
             >
+
                 {currentFile ? null : uploadButton}
             </Upload>
             <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>

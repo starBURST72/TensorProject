@@ -16,8 +16,6 @@ export const getProfileSettings = async (id: number) => {
     }
 };
 
-
-
 export const putProfileSettings = async (data: {
     file: File;
     name: string;
@@ -44,10 +42,9 @@ export const putProfileSettings = async (data: {
                 'Content-Type': 'multipart/form-data'
             }
         });
-
         return response.data;
     } catch (error: any) {
-        // Обработка ошибок регистрации
+        // Handle errors
         if (error.response && error.response.data && error.response.data.message) {
             throw new Error('Put settings failed: ' + error.response.data.message);
         } else {

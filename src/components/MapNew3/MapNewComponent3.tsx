@@ -48,7 +48,6 @@ const MapNewComponent3 = observer(() => {
                 // Fetch places data
                 const responsePlacesInCuty = await getPlacesInCity(store.city.nameCity, store.typeOfPlaces);
                 setPlacesInCuty(responsePlacesInCuty);
-
                 // Initialize Yandex Maps after data is fetched
                 const ymaps = window.ymaps;
                 ymaps.ready(() => {
