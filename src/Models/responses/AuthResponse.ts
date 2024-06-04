@@ -5,4 +5,5 @@ export interface AuthResponse {
     refresh_token: string;
     username:string;
     id:number
+    img:string
 }
