@@ -25,7 +25,7 @@ const items: MenuItem[] = [
 ];
 
 type FriendFields = {
-    id: number,
+    friend_id: number,
     name: string,
     surname: string,
     img: any,
@@ -98,8 +98,8 @@ export default function FriendsPage() {
                                     <Typography.Title level={3}>Друзей нет</Typography.Title>
                                 ) : (
                                     userFriendsRes?.map(friend =>
-                                        <Link to={`/profile/${friend.id}`}>
-                                            <FriendCard {...friend} key={friend.id} />
+                                        <Link to={`/profile/${friend.friend_id}`}>
+                                            <FriendCard {...friend} key={friend.friend_id} />
                                         </Link>
                                     )
                                 )
@@ -112,8 +112,8 @@ export default function FriendsPage() {
                                         <Typography.Title level={3}>Входящих заявок нет</Typography.Title>
                                     ) : (
                                         userFriendsReceivedRes?.map(friend =>
-                                            <Link to={`/profile/${friend.id}`}>
-                                                <FriendCard {...friend} typeOflist="received" key={friend.id} />
+                                            <Link to={`/profile/${friend.friend_id}`}>
+                                                <FriendCard {...friend} typeOflist="received" key={friend.friend_id} />
                                             </Link>
                                         )
                                     )
@@ -126,8 +126,8 @@ export default function FriendsPage() {
                                         <Typography.Title level={3}>Исходящих заявок нет</Typography.Title>
                                     ) : (
                                         userFriendsSentRes?.map(friend =>
-                                            <Link to={`/profile/${friend.id}`}>
-                                                <FriendCard {...friend} typeOflist="sent" key={friend.id} />
+                                            <Link to={`/profile/${friend.friend_id}`}>
+                                                <FriendCard {...friend} typeOflist="sent" key={friend.friend_id} />
                                             </Link>
                                         )
                                     )

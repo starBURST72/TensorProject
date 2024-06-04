@@ -5,7 +5,7 @@ import { PlusSquareOutlined, CloseOutlined, CheckOutlined } from '@ant-design/ic
 import { answerOfInviteToFriends } from '../../services/FriendsService';
 
 interface FriendsProps {
-    id: number;
+    friend_id: number;
     name: string;
     surname: string;
     img: string;
@@ -17,11 +17,11 @@ interface FriendsProps {
 
 
 export default function FriendCard(props: FriendsProps) {
-    const { id, name, surname, img, username, typeOflist } = props;
+    const { friend_id, name, surname, img, username, typeOflist } = props;
 
 
     const clickAnswerOfInvite = async (action: 'accept' | 'reject') => {
-        await answerOfInviteToFriends(action, id)
+        await answerOfInviteToFriends(action, friend_id)
     };
 
     return (
