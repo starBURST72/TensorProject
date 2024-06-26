@@ -76,6 +76,7 @@ export const getPlacesInCity = async (city: string, type: string): Promise<Place
             `/${OUR_API_ENDPOINTS.places}`,
             { params: { city, type } }
         );
+        console.log(response.data);
         return response.data;
     } catch (error: any) {
         // Обработка ошибок получения всех путешествий

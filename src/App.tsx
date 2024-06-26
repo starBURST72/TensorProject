@@ -13,7 +13,7 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import {Context} from "./index";
 import {observer} from "mobx-react-lite";
 import CreateTravel from "./pages/EditTravel/CreateTravel";
-import CalendarPage from "./pages/Calendar /CalendarPage";
+import CalendarPage from "./pages/Calendar/CalendarPage";
 import FriendsPage from './pages/FriendsPage/FriendsPage';
 
 

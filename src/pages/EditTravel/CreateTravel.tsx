@@ -10,7 +10,6 @@ import { Context } from "../../index";
 import { TimelineItem, UserTravel } from "../../Models/IUserTravel";
 import { PlacePreviewResponse } from "../../Models/Travels";
 import { GetCity } from "../../services/SearchCityService";
-import {use} from "msw/lib/core/utils/internal/requestHandlerUtils";
 import dayjs from "dayjs";
 
 let idCounter = 0;
@@ -40,19 +39,27 @@ function CreateTravel() {
     const[currentItem,setCurrentItem]=useState<TimelineItem|null>(null);
     useEffect(() => {
         const fetchData = async () => {
-            const responsePlacesInCity = await getPlacesInCity(store.city.nameCity, store.typeOfPlaces);
-            setFilteredData(responsePlacesInCity);
-            setInitialData(responsePlacesInCity);
+            try {
+                console.log(store.city.nameCity)
+                console.log(store.typeOfPlaces);
+                const responsePlacesInCity = await getPlacesInCity(store.city.nameCity, store.typeOfPlaces);
+                setFilteredData(responsePlacesInCity);
+                setInitialData(responsePlacesInCity);
+                console.log(responsePlacesInCity);
+            } catch (error) {
+                console.error('Error fetching places:', error);
+            }
         };
 
         fetchData();
-    }, [cityValue]);
+    }, [cityValue, typeValue, store.city.nameCity, store.typeOfPlaces]);
 
     const onChangeCity = async (data: string) => {
         setCityValue(data);
         await store.infoAboutCity(cityValue);
         const responsePlacesInCuty = await getPlacesInCity(store.city.nameCity, store.typeOfPlaces);
         setPlacesInCity(responsePlacesInCuty);
+
         filterData();
     };
 
@@ -67,7 +74,6 @@ function CreateTravel() {
                 const newOptions = responseData.suggestions.map(suggestion => ({
                     value: `${suggestion.data.city}`
                 }));
-                setOptions(newOptions);
             } catch (error) {
                 console.error(error);
             }
@@ -210,7 +216,7 @@ function CreateTravel() {
                                     defaultValue={store.city.nameCity}
                                     options={options}
                                     className="city-autocomplete"
-                                    onSearch={onChangeCity}
+                                    onSearch={handleSearchCity}
                                     onSelect={onChangeCity}
                                     onChange={onChangeCity}
                                     placeholder="Введите город"

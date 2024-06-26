@@ -23,18 +23,18 @@
   color: black;
 }
 
-.sidebar {
+.mapbar {
   display: flex;
   flex-direction: column;
 }
 /* Общие стили для боковой панели */
-.sidebar {
+.mapbar {
   display: flex;
   flex-direction: column;
   overflow: hidden; /* Скрываем переполнение */
 }
 
-.sidebar-travel {
+.mapbar-travel {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -82,7 +82,7 @@
   display: none; /* Скрываем список загруженных файлов */
 }
 
-.sidebarContainer {
+.mapbarContainer {
   display: flex;
 
   flex-direction: column;
@@ -106,12 +106,12 @@
   gap: 5px;
 }
 
-.sidebarRatingValue {
+.mapbarRatingValue {
   font-size: 16px;
   font-weight: 500;
 }
 
-.sidebarStar {
+.mapbarStar {
   color: gold;
   font-size: 20px;
 }

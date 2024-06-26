@@ -55,14 +55,14 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClose, place, parseCoordin
         key={placement}
         mask={false}
         getContainer={false}
-        className='sidebar'
+        className='mapbar'
       >
-        <div className='sidebarContainer'>
+        <div className='mapbarContainer'>
           <div className='typeAndScore'>
             <div>{place?.type}</div>
-            <div className="sidebarRating">
-              <div className="sidebarRatingValue">{place?.mean_score.toFixed(2)}</div>
-              <StarFilled className='sidebarStar' />
+            <div className="mapbarRating">
+              <div className="mapbarRatingValue">{place?.mean_score.toFixed(2)}</div>
+              <StarFilled className='mapbarStar' />
             </div>
           </div>
           <div className="carouselContainer">
